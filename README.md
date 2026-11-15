@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # tradeX
 
 Mobile-first React campus board prototype.
@@ -22,3 +23,25 @@ Check 320px, 390px, 768px and desktop widths for overflow. Search and combine fi
 ## Service navigation
 
 Home combines all listings. Delivery, Exchange, Games, and Style each provide a dedicated board and preselected posting category. Mobile uses a fixed service navigation bar; desktop uses a horizontal bar. Service URL fragments support opening a specific board directly. Existing saved listings retain their categoriees.
+=======
+<div align="center">
+<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
+</div>
+
+# Run and deploy your AI Studio app
+
+This contains everything you need to run your app locally.
+
+View your app in AI Studio: https://ai.studio/apps/eed48fea-40d8-454a-b855-8e9a5e611aa9
+
+## Run Locally
+
+**Prerequisites:**  Node.js
+
+
+1. Install dependencies:
+   `npm install`
+2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
+3. Run the app:
+   `npm run dev`
+>>>>>>> 8d578b4 (commit new file)

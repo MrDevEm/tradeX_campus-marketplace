@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { FormEvent, useEffect, useMemo, useRef, useState } from 'react'
 
 type Category = 'Marketplace' | 'Delivery' | 'Sports' | 'Outfits'
@@ -95,3 +96,14 @@ export default function App() {
     <div role="status" aria-live="polite" className={`toast ${toast ? 'show' : ''}`}>{toast}</div>
   </div>
 }
+=======
+/**
+ * @license
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+export default function App() {
+  return null;
+}
+
+>>>>>>> 8d578b4 (commit new file)
