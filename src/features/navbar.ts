@@ -33,6 +33,7 @@ export function initNavbar(): void {
   const userDropdownBadge = document.getElementById('user-dropdown-badge');
   const userMenuProfile = document.getElementById('user-menu-profile');
   const userMenuStatus = document.getElementById('user-menu-status');
+  const userMenuAdmin = document.getElementById('user-menu-admin');
   const btnLogout = document.getElementById('btn-logout');
 
   function renderNavbarSession(user: AuthUser | null): void {
@@ -108,6 +109,12 @@ export function initNavbar(): void {
     userDropdownCard?.classList.remove('is-open');
     const openStatusFn = (window as unknown as { openIdVerificationModal?: () => void }).openIdVerificationModal;
     if (typeof openStatusFn === 'function') openStatusFn();
+  });
+
+  userMenuAdmin?.addEventListener('click', () => {
+    userDropdownCard?.classList.remove('is-open');
+    const openAdminFn = (window as unknown as { openAdminDashboard?: () => void }).openAdminDashboard;
+    if (typeof openAdminFn === 'function') openAdminFn();
   });
 
   const handleLogout = async () => {

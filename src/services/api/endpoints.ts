@@ -35,4 +35,15 @@ export const API_ENDPOINTS = {
     summary: '/dashboard/summary',
     myListings: '/dashboard/listings',
   },
+  admin: {
+    summary: '/admin/summary',
+    verifications: '/admin/verifications',
+    approveVerification: (id: string) => `/admin/verifications/${encodeURIComponent(id)}/approve`,
+    rejectVerification: (id: string) => `/admin/verifications/${encodeURIComponent(id)}/reject`,
+    students: '/admin/students',
+    updateStudentStatus: (id: string) => `/admin/students/${encodeURIComponent(id)}/status`,
+    reports: '/admin/reports',
+    resolveReport: (id: string) => `/admin/reports/${encodeURIComponent(id)}/resolve`,
+    auditLogs: '/admin/audit-logs',
+  },
 } as const;
