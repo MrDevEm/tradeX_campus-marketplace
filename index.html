@@ -1,0 +1,1249 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>tradeX — Buy. Sell. Swap. | TradeX Makes It Better.</title>
+    <meta
+      name="description"
+      content="Buy. Sell. Swap. TradeX Makes It Better. Find what you need. Sell what you don't. Trade with your campus community."
+    />
+    <meta property="og:title" content="tradeX — Buy. Sell. Swap. | TradeX Makes It Better." />
+    <meta
+      property="og:description"
+      content="Buy. Sell. Swap. TradeX Makes It Better. Find what you need. Sell what you don't. Trade with your campus community."
+    />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Josefin+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
+
+  </head>
+  <body>
+    <!-- SVG Defs for Dynamic Rounded Quad Clips & Brand Logo Recolor -->
+    <svg class="clip-defs" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <filter id="tx-emerald-recolor" color-interpolation-filters="sRGB" x="-5%" y="-5%" width="110%" height="110%">
+          <feColorMatrix
+            type="matrix"
+            values="0 0 0 0 0
+                    0 0 0 0 0
+                    0 0 0 0 0
+                    -0.538 -0.538 -0.538 0 1.484"
+            result="alphaMask"
+          />
+          <feFlood flood-color="#06D6A0" result="emeraldFill" />
+          <feComposite in="emeraldFill" in2="alphaMask" operator="in" />
+        </filter>
+      </defs>
+      <defs id="svg-defs-container"></defs>
+    </svg>
+
+    <!-- Main Full-width Stage (Preserved Hero Animation & Geometry) -->
+    <main class="stage" id="stage" role="main">
+      <!-- Floating Pill Top Navbar -->
+      <header class="top-navbar" id="top-navbar">
+        <!-- Top Bar: Logo -->
+        <a href="#stage" class="logo" id="nav-logo" aria-label="tradeX Campus Marketplace">
+          <div class="logo-icon-wrap" aria-hidden="true">
+            <svg class="logo-brand-svg" viewBox="97 20 294 256" aria-hidden="true">
+              <image
+                href="/images/brand/tradex-mark.png"
+                x="0"
+                y="0"
+                width="478"
+                height="276"
+                filter="url(#tx-emerald-recolor)"
+              />
+            </svg>
+          </div>
+          <span class="logo-text">trade<span>X</span></span>
+        </a>
+
+        <!-- Top Bar: Navigation -->
+        <nav class="nav-links" id="nav-links" aria-label="Primary Navigation">
+          <svg class="nav-wave-svg" id="nav-wave-svg" aria-hidden="true">
+            <defs>
+              <linearGradient id="nav-wave-stroke-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#06D6A0" stop-opacity="0.18" />
+                <stop offset="12%" stop-color="#06D6A0" stop-opacity="0.88" />
+                <stop offset="50%" stop-color="#5DF2C9" stop-opacity="1" />
+                <stop offset="88%" stop-color="#06D6A0" stop-opacity="0.88" />
+                <stop offset="100%" stop-color="#06D6A0" stop-opacity="0.18" />
+              </linearGradient>
+              <linearGradient id="nav-wave-fill-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#06D6A0" stop-opacity="0.18" />
+                <stop offset="55%" stop-color="#06D6A0" stop-opacity="0.06" />
+                <stop offset="100%" stop-color="#06D6A0" stop-opacity="0" />
+              </linearGradient>
+            </defs>
+            <path class="nav-wave-fill" id="nav-wave-fill" fill="url(#nav-wave-fill-grad)" d="" />
+            <path class="nav-wave-stroke" id="nav-wave-stroke" fill="none" stroke="url(#nav-wave-stroke-grad)" d="" />
+          </svg>
+
+          <a href="#stage" class="nav-item is-active is-arch-focus">
+            <span class="nav-item-icon" aria-hidden="true">
+              <svg class="nav-icon-svg" viewBox="0 0 24 24">
+                <path class="nav-icon-outline" d="M4 10.6L12 4.2l8 6.4v8.2a1.7 1.7 0 0 1-1.7 1.7h-3.6v-4.7a2.7 2.7 0 0 0-5.4 0v4.7H5.7A1.7 1.7 0 0 1 4 18.8z" />
+                <path class="nav-icon-solid" fill-rule="evenodd" clip-rule="evenodd" d="M12.9 3.6a1.4 1.4 0 0 0-1.8 0l-7.4 6A1.6 1.6 0 0 0 3 10.9v7.8A2.3 2.3 0 0 0 5.3 21h4.1v-4.9a2.6 2.6 0 0 1 5.2 0V21h4.1a2.3 2.3 0 0 0 2.3-2.3v-7.8a1.6 1.6 0 0 0-.7-1.3z" />
+              </svg>
+              <span class="nav-icon-dot"></span>
+            </span>
+            <span class="nav-item-label">Home</span>
+          </a>
+
+          <a href="#categories" class="nav-item">
+            <span class="nav-item-icon" aria-hidden="true">
+              <svg class="nav-icon-svg" viewBox="0 0 24 24">
+                <g class="nav-icon-outline">
+                  <rect x="4" y="4" width="6.5" height="6.5" rx="1.8" />
+                  <rect x="13.5" y="4" width="6.5" height="6.5" rx="3.25" />
+                  <rect x="4" y="13.5" width="6.5" height="6.5" rx="1.8" />
+                  <rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.8" />
+                </g>
+                <g class="nav-icon-solid">
+                  <rect x="3.5" y="3.5" width="7.2" height="7.2" rx="2.1" />
+                  <circle cx="16.9" cy="7.1" r="3.6" />
+                  <rect x="3.5" y="13.3" width="7.2" height="7.2" rx="2.1" />
+                  <rect x="13.3" y="13.3" width="7.2" height="7.2" rx="2.1" />
+                </g>
+              </svg>
+              <span class="nav-icon-dot"></span>
+            </span>
+            <span class="nav-item-label">Categories</span>
+          </a>
+
+          <a href="#marketplace" class="nav-item">
+            <span class="nav-item-icon" aria-hidden="true">
+              <svg class="nav-icon-svg" viewBox="0 0 24 24">
+                <g class="nav-icon-outline">
+                  <path d="M5.2 9.2h13.6l1.1 9.5a2 2 0 0 1-2 2.2H6.1a2 2 0 0 1-2-2.2z" />
+                  <path d="M8.5 9.2V7a3.5 3.5 0 0 1 7 0v2.2" />
+                  <circle cx="12" cy="14.5" r="1.4" />
+                </g>
+                <path class="nav-icon-solid" fill-rule="evenodd" clip-rule="evenodd" d="M8.5 6.8a3.5 3.5 0 0 1 7 0v1.8h3.4a1.1 1.1 0 0 1 1.1 1l1 9A2.3 2.3 0 0 1 18.7 21H5.3A2.3 2.3 0 0 1 3 18.6l1-9a1.1 1.1 0 0 1 1.1-1h3.4zm1.8 1.8h3.4V6.8a1.7 1.7 0 0 0-3.4 0zM12 13.1a1.7 1.7 0 1 0 0 3.4 1.7 1.7 0 0 0 0-3.4z" />
+              </svg>
+              <span class="nav-icon-dot"></span>
+            </span>
+            <span class="nav-item-label">Marketplace</span>
+          </a>
+
+          <a href="#how-it-works" class="nav-item">
+            <span class="nav-item-icon" aria-hidden="true">
+              <svg class="nav-icon-svg" viewBox="0 0 24 24">
+                <g class="nav-icon-outline">
+                  <circle cx="12" cy="12" r="8.2" />
+                  <path d="M13.2 7.6L9.6 12.4h3l-.8 4 3.6-4.8h-3z" />
+                </g>
+                <path class="nav-icon-solid" fill-rule="evenodd" clip-rule="evenodd" d="M12 3.2a8.8 8.8 0 1 0 0 17.6 8.8 8.8 0 0 0 0-17.6zm1.5 3.9a.7.7 0 0 1 .6 1.1l-2.3 3h2.4a.7.7 0 0 1 .5 1.1l-3.6 4.7a.7.7 0 0 1-1.2-.6l.7-3.1H8.8a.7.7 0 0 1-.6-1.1l3.6-4.7a.7.7 0 0 1 .7-.4z" />
+              </svg>
+              <span class="nav-icon-dot"></span>
+            </span>
+            <span class="nav-item-label">How It Works</span>
+          </a>
+
+          <a href="#community" class="nav-item">
+            <span class="nav-item-icon" aria-hidden="true">
+              <svg class="nav-icon-svg" viewBox="0 0 24 24">
+                <g class="nav-icon-outline">
+                  <path d="M12 3.8a8 8 0 0 1 8 8 8 8 0 0 1-8 8 8.2 8.2 0 0 1-3.5-.8L4.2 20.2l1.2-4.1A7.9 7.9 0 0 1 4 11.8a8 8 0 0 1 8-8z" />
+                  <circle cx="9.6" cy="11.8" r="0.9" />
+                  <circle cx="14.4" cy="11.8" r="0.9" />
+                </g>
+                <path class="nav-icon-solid" fill-rule="evenodd" clip-rule="evenodd" d="M12 3.3a8.4 8.4 0 0 0-8.4 8.4c0 1.6.5 3.1 1.3 4.4l-1.1 3.7a.9.9 0 0 0 1.1 1.1l3.7-1a8.5 8.5 0 0 0 3.4.7 8.4 8.4 0 1 0 0-16.8zm-2.4 7.3a1.1 1.1 0 1 0 0 2.2 1.1 1.1 0 0 0 0-2.2zm4.8 0a1.1 1.1 0 1 0 0 2.2 1.1 1.1 0 0 0 0-2.2z" />
+              </svg>
+              <span class="nav-icon-dot"></span>
+            </span>
+            <span class="nav-item-label">About</span>
+          </a>
+        </nav>
+
+        <!-- Top Bar: Right Actions -->
+        <div class="nav-actions" id="nav-actions">
+          <button class="btn-dashboard-toggle" id="btn-toggle-dash" title="Open Student Profile">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="9.2" stroke-opacity="0.45"></circle>
+              <circle cx="12" cy="9.2" r="2.8" fill="currentColor" fill-opacity="0.22"></circle>
+              <path d="M6.8 18.4a5.6 5.6 0 0 1 10.4 0"></path>
+            </svg>
+            Profile
+          </button>
+          <button class="btn-login" id="btn-login">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M14 4.5h3.5a2.5 2.5 0 0 1 2.5 2.5v10a2.5 2.5 0 0 1-2.5 2.5H14"></path>
+              <path d="M4 12h11"></path>
+              <path d="M11.2 8.2L15 12l-3.8 3.8"></path>
+            </svg>
+            Log In
+          </button>
+          <button class="btn-signup" id="btn-signup">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="9.5" cy="8.2" r="3.2" fill="currentColor" fill-opacity="0.16"></circle>
+              <path d="M3.8 19.2a5.8 5.8 0 0 1 11.4 0"></path>
+              <path d="M19 8v6M16 11h6"></path>
+            </svg>
+            Sign Up
+          </button>
+          <button class="btn-mobile-menu" id="btn-mobile-menu" aria-label="Toggle Navigation Menu" aria-expanded="false" aria-controls="mobile-nav-drawer">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <line x1="4" y1="7" x2="20" y2="7"></line>
+              <line x1="4" y1="12" x2="20" y2="12"></line>
+              <line x1="4" y1="17" x2="20" y2="17"></line>
+            </svg>
+          </button>
+        </div>
+      </header>
+
+      <!-- Responsive Mobile & Tablet Navigation Menu -->
+      <nav class="mobile-nav-drawer" id="mobile-nav-drawer" aria-label="Mobile Navigation" aria-hidden="true">
+        <a href="#stage" class="mobile-nav-link is-active">
+          <svg viewBox="0 0 24 24"><path d="M4 10.6L12 4.2l8 6.4v8.2a1.7 1.7 0 0 1-1.7 1.7h-3.6v-4.7a2.7 2.7 0 0 0-5.4 0v4.7H5.7A1.7 1.7 0 0 1 4 18.8z" /></svg>
+          Home
+        </a>
+        <a href="#categories" class="mobile-nav-link">
+          <svg viewBox="0 0 24 24"><rect x="4" y="4" width="6.5" height="6.5" rx="1.8" /><rect x="13.5" y="4" width="6.5" height="6.5" rx="3.25" /><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.8" /><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.8" /></svg>
+          Categories
+        </a>
+        <a href="#marketplace" class="mobile-nav-link">
+          <svg viewBox="0 0 24 24"><path d="M5.2 9.2h13.6l1.1 9.5a2 2 0 0 1-2 2.2H6.1a2 2 0 0 1-2-2.2z" /><path d="M8.5 9.2V7a3.5 3.5 0 0 1 7 0v2.2" /><circle cx="12" cy="14.5" r="1.4" /></svg>
+          Marketplace
+        </a>
+        <a href="#how-it-works" class="mobile-nav-link">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.2" /><path d="M13.2 7.6L9.6 12.4h3l-.8 4 3.6-4.8h-3z" /></svg>
+          How It Works
+        </a>
+        <a href="#community" class="mobile-nav-link">
+          <svg viewBox="0 0 24 24"><path d="M12 3.8a8 8 0 0 1 8 8 8 8 0 0 1-8 8 8.2 8.2 0 0 1-3.5-.8L4.2 20.2l1.2-4.1A7.9 7.9 0 0 1 4 11.8a8 8 0 0 1 8-8z" /><circle cx="9.6" cy="11.8" r="0.9" /><circle cx="14.4" cy="11.8" r="0.9" /></svg>
+          About
+        </a>
+        <div class="mobile-nav-divider"></div>
+        <div class="mobile-nav-actions">
+          <button type="button" class="mobile-nav-btn" id="mobile-btn-dash" style="border-radius: 12px;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="9.2" stroke-opacity="0.45"></circle>
+              <circle cx="12" cy="9.2" r="2.8" fill="currentColor" fill-opacity="0.22"></circle>
+              <path d="M6.8 18.4a5.6 5.6 0 0 1 10.4 0"></path>
+            </svg>
+            Profile
+          </button>
+          <button type="button" class="mobile-nav-btn mobile-nav-btn-login" id="mobile-btn-login" style="border-radius: 12px;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M14 4.5h3.5a2.5 2.5 0 0 1 2.5 2.5v10a2.5 2.5 0 0 1-2.5 2.5H14"></path>
+              <path d="M4 12h11"></path>
+              <path d="M11.2 8.2L15 12l-3.8 3.8"></path>
+            </svg>
+            Log In
+          </button>
+        </div>
+      </nav>
+
+      <!-- Campus Badge -->
+      <div class="badge" id="badge">
+        <span class="badge-live-group">
+          <span class="badge-dot" aria-hidden="true"></span>
+          <span class="badge-live-tag">Live</span>
+        </span>
+        <span class="badge-text">Built for the University Student Community.</span>
+        <svg class="badge-sparkle" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M12 2.5L14.4 9.6L21.5 12L14.4 14.4L12 21.5L9.6 14.4L2.5 12L9.6 9.6L12 2.5Z" />
+        </svg>
+      </div>
+
+      <!-- Main Headline -->
+      <header class="headline-container" id="headline-container">
+        <h1 class="headline-line headline-line-1" id="headline-line-1">Buy. Sell. Swap.</h1>
+        <span class="headline-line headline-line-2" id="headline-line-2">TradeX Makes It Better.</span>
+      </header>
+
+      <!-- Subline -->
+      <p class="subline" id="subline">
+        Find what you need. Sell what you don't. Trade with your campus community.
+      </p>
+
+      <!-- Curved Product Image Carousel Row (Preserved Animation Math & Architecture) -->
+      <div class="carousel-track" id="carousel-track" aria-label="Campus marketplace showcase carousel">
+        <!-- 12 Card elements populated and driven by vanilla JS -->
+      </div>
+
+      <!-- Bottom CTAs: Explore Marketplace & Create a Listing -->
+      <div class="hero-action-buttons" id="hero-action-buttons">
+        <a href="#marketplace" class="btn-primary-cta" id="btn-explore-mkt">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="M21 21l-4.35-4.35"></path>
+          </svg>
+          Explore Marketplace
+        </a>
+        <button class="btn-secondary-cta" id="btn-create-listing-hero">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+          Create a Listing
+        </button>
+      </div>
+    </main>
+
+    <!-- SECTION A: Marketplace Categories -->
+    <section class="section-wrap" id="categories">
+      <div class="section-header">
+        <span class="section-kicker">Campus Departments & Essentials</span>
+        <h2 class="section-title">Explore by Category</h2>
+        <p class="section-desc">
+          Browse university items listed directly by your classmates. From expensive course textbooks to dorm upgrades, find what you need in seconds.
+        </p>
+      </div>
+
+      <div class="categories-grid" id="categories-grid-container">
+        <!-- Injected via JS -->
+      </div>
+    </section>
+
+    <!-- SECTION B: Latest Marketplace Feed with Search & Filters -->
+    <section class="section-wrap" id="marketplace" style="padding-top: 20px;">
+      <div class="section-header">
+        <span class="section-kicker">Real Campus Deals</span>
+        <h2 class="section-title">Latest Student Listings</h2>
+        <p class="section-desc">
+          Verified student items available for pickup on campus. Handover safely at the library, student union, or dining hall.
+        </p>
+      </div>
+
+      <!-- Search & Filter Controls -->
+      <div class="marketplace-controls">
+        <div class="search-bar-row">
+          <div class="search-input-wrap">
+            <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <path d="M21 21l-4.35-4.35"></path>
+            </svg>
+            <input
+              type="text"
+              class="search-input"
+              id="search-input"
+              placeholder="Search items, textbooks, electronics, meeting spots..."
+            />
+          </div>
+          <button class="btn-post-listing-top" id="btn-post-listing-feed">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            Post a Listing
+          </button>
+        </div>
+
+        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px;">
+          <div class="filter-tags-row" id="filter-category-pills">
+            <button class="filter-chip is-active" data-category="all">All Items</button>
+            <button class="filter-chip" data-category="Electronics">Electronics</button>
+            <button class="filter-chip" data-category="Books">Books & Study</button>
+            <button class="filter-chip" data-category="Fashion">Clothing & Shoes</button>
+            <button class="filter-chip" data-category="Free">Free Corner</button>
+            <button class="filter-chip" data-category="Other">Other</button>
+          </div>
+
+          <div class="filter-dropdowns">
+            <select class="filter-select" id="filter-type-select">
+              <option value="all">All Listing Types</option>
+              <option value="Buy / Sell">Buy / Sell</option>
+              <option value="Swap">Swap Items</option>
+              <option value="Giveaway">Free Giveaway</option>
+            </select>
+
+            <select class="filter-select" id="filter-sort-select">
+              <option value="newest">Newest First</option>
+              <option value="price-low">Price: Low to High</option>
+              <option value="price-high">Price: High to Low</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Listing Grid -->
+      <div class="listings-grid" id="listings-grid">
+        <!-- Rendered dynamically via JavaScript -->
+      </div>
+    </section>
+
+    <!-- SECTION C: How tradeX Works -->
+    <section class="section-wrap how-it-works-section" id="how-it-works">
+      <div class="section-header">
+        <span class="section-kicker">Simple & Transparent</span>
+        <h2 class="section-title">How tradeX Works</h2>
+        <p class="section-desc">
+          Five straightforward steps designed exclusively for university students to exchange goods safely on campus.
+        </p>
+      </div>
+
+      <div class="how-it-works-grid">
+        <div class="step-card">
+          <div class="step-number">01</div>
+          <h3 class="step-title">Create Account</h3>
+          <p class="step-desc">
+            Sign up in under 60 seconds with your student name, official university email, and academic department.
+          </p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-number">02</div>
+          <h3 class="step-title">Verify Student ID</h3>
+          <p class="step-desc">
+            Confirm your campus email with a quick OTP and upload your student ID to earn the verified peer badge.
+          </p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-number">03</div>
+          <h3 class="step-title">Discover or Post</h3>
+          <p class="step-desc">
+            Browse campus deals or post your textbook or gear with photos, price in ETB, and preferred meeting spot.
+          </p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-number">04</div>
+          <h3 class="step-title">Chat In-App</h3>
+          <p class="step-desc">
+            Directly message sellers inside tradeX. Negotiate price, agree on swap items, or confirm availability.
+          </p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-number">05</div>
+          <h3 class="step-title">Campus Handover</h3>
+          <p class="step-desc">
+            Meet in high-visibility campus spots (library, student center, or café) to inspect the item and finalize.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION D: Marketplace Activities -->
+    <section class="section-wrap" id="activities">
+      <div class="section-header">
+        <span class="section-kicker">Multi-Format Exchange</span>
+        <h2 class="section-title">Marketplace Activities</h2>
+        <p class="section-desc">
+          tradeX goes far beyond traditional selling. Choose the exchange format that fits your semester needs.
+        </p>
+      </div>
+
+      <div class="activities-grid">
+        <div class="activity-card">
+          <span class="activity-badge type-sell">Buy & Sell</span>
+          <h3 class="activity-title">Buy & Sell</h3>
+          <p class="activity-desc">
+            Sell past-semester gear directly to juniors. Fair prices, cash or mobile transfer in person, and 0% commission fees.
+          </p>
+          <ul class="activity-perks">
+            <li class="activity-perk-item">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              No packaging or postage needed
+            </li>
+            <li class="activity-perk-item">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              Keep 100% of your earnings
+            </li>
+          </ul>
+        </div>
+
+        <div class="activity-card">
+          <span class="activity-badge type-swap">Barter</span>
+          <h3 class="activity-title">Swap Items</h3>
+          <p class="activity-desc">
+            Trade items 1-for-1. Swap Calculus textbooks for Physics, or trade video games and accessories with classmates.
+          </p>
+          <ul class="activity-perks">
+            <li class="activity-perk-item">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              Cashless direct item barter
+            </li>
+            <li class="activity-perk-item">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              Specify exact swap preferences
+            </li>
+          </ul>
+        </div>
+
+        <div class="activity-card">
+          <span class="activity-badge type-free">Free Corner</span>
+          <h3 class="activity-title">Give Away Items</h3>
+          <p class="activity-desc">
+            Moving out or finished a course? Pay it forward by gifting study notes, desk organizers, or course materials.
+          </p>
+          <ul class="activity-perks">
+            <li class="activity-perk-item">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              Zero cost, pure student community
+            </li>
+            <li class="activity-perk-item">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              Keep reusable goods out of landfills
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION E & F: Student Community & Safety -->
+    <section class="section-wrap" id="community">
+      <div class="safety-banner-grid">
+        <div>
+          <span class="section-kicker" style="color: var(--emerald-500);">Exclusively for Campus</span>
+          <h2 class="section-title" style="text-align: left; font-size: 32px; color: #ffffff;">The Student Trust Circle</h2>
+          <p class="section-desc" style="text-align: left; margin-bottom: 24px; color: var(--brunswick-200);">
+            tradeX is strictly restricted to students of the university. No outside vendors, no anonymous strangers, and no scam shipping links.
+          </p>
+          <div class="safety-stats-row">
+            <div>
+              <div style="font-size: 28px; font-weight: 700; color: var(--emerald-500); font-family: var(--font-display);">100%</div>
+              <div style="font-size: 13px; color: var(--polar-500);">Verified Students</div>
+            </div>
+            <div class="safety-stats-divider" style="width: 1px; height: 42px; background: rgba(6, 214, 160, 0.25);"></div>
+            <div>
+              <div style="font-size: 28px; font-weight: 700; color: var(--emerald-500); font-family: var(--font-display);">0 ETB</div>
+              <div style="font-size: 13px; color: var(--polar-500);">Listing Fees</div>
+            </div>
+            <div class="safety-stats-divider" style="width: 1px; height: 42px; background: rgba(6, 214, 160, 0.25);"></div>
+            <div>
+              <div style="font-size: 28px; font-weight: 700; color: var(--emerald-500); font-family: var(--font-display);">5 min</div>
+              <div style="font-size: 13px; color: var(--polar-500);">Campus Handover</div>
+            </div>
+          </div>
+        </div>
+
+        <div id="safety">
+          <h3 style="font-size: 20px; font-weight: 700; margin-bottom: 18px; color: #ffffff; font-family: var(--font-display);">Campus Safety & Trust Standards</h3>
+          <div class="safety-list">
+            <div class="safety-item">
+              <div class="safety-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+              </div>
+              <div>
+                <h4 class="safety-title">Verified University Email & ID</h4>
+                <p class="safety-desc">Every student completes university email verification and student ID validation before posting or messaging.</p>
+              </div>
+            </div>
+
+            <div class="safety-item">
+              <div class="safety-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+              </div>
+              <div>
+                <h4 class="safety-title">Designated Public Meeting Spots</h4>
+                <p class="safety-desc">We strongly recommend meeting during daylight hours at the campus library lobby, student union, or dining hall.</p>
+              </div>
+            </div>
+
+            <div class="safety-item">
+              <div class="safety-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+              </div>
+              <div>
+                <h4 class="safety-title">Private In-Platform Messaging</h4>
+                <p class="safety-desc">Negotiate and arrange exchanges without revealing your phone number, social media, or personal address.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION G: Footer -->
+    <footer class="footer-wrap">
+      <div class="footer-inner">
+        <div class="footer-top-grid">
+          <div class="footer-brand">
+            <span class="footer-logo">trade<span>X</span></span>
+            <p class="footer-tagline">
+              Your Campus Marketplace, All in One Place. Built exclusively for university students to buy, sell, swap, and connect sustainably.
+            </p>
+            <div style="font-size: 13px; color: var(--emerald-500); font-weight: 600;">
+              Exclusively for Verified University Students
+            </div>
+          </div>
+
+          <div>
+            <h4 class="footer-col-title">Marketplace</h4>
+            <ul class="footer-links">
+              <li><a href="#marketplace" class="footer-link">All Listings</a></li>
+              <li><a href="#categories" class="footer-link">Textbooks & Notes</a></li>
+              <li><a href="#categories" class="footer-link">Electronics</a></li>
+              <li><a href="#categories" class="footer-link">Free Corner</a></li>
+              <li><a href="#categories" class="footer-link">Other Items</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 class="footer-col-title">Platform</h4>
+            <ul class="footer-links">
+              <li><a href="#how-it-works" class="footer-link">How It Works</a></li>
+              <li><a href="#activities" class="footer-link">Exchange Types</a></li>
+              <li><a href="#safety" class="footer-link">Safety Guidelines</a></li>
+              <li><a href="#community" class="footer-link">Student Verification</a></li>
+              <li><a href="#" class="footer-link" id="footer-post-link">Post a Listing</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 class="footer-col-title">Help & Trust</h4>
+            <ul class="footer-links">
+              <li><a href="#safety" class="footer-link">Campus Meeting Spots</a></li>
+              <li><a href="#safety" class="footer-link">Report Listing</a></li>
+              <li><a href="#safety" class="footer-link">Student Honor Code</a></li>
+              <li><a href="#safety" class="footer-link">Privacy Policy</a></li>
+              <li><a href="#safety" class="footer-link">Terms of Service</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <div>&copy; 2026 tradeX Campus Marketplace. All rights reserved.</div>
+          <div>Built by students, for students. Peer-to-peer campus exchange.</div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- MODAL 1: Listing Details -->
+    <div class="modal-backdrop" id="modal-details">
+      <div class="modal-box" style="max-width: 620px;">
+        <div class="modal-header">
+          <h3 class="modal-title" id="modal-details-title">Item Details</h3>
+          <button class="modal-close-btn" id="btn-close-details">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div style="width: 100%; height: 260px; border-radius: 16px; overflow: hidden; background: #e2e8f0; margin-bottom: 20px;">
+            <img id="modal-details-img" src="" alt="Listing Item" style="width: 100%; height: 100%; object-fit: cover;" />
+          </div>
+          <div style="display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 12px;">
+            <div id="modal-details-price" style="font-size: 24px; font-weight: 700; color: var(--brunswick-900); font-family: var(--font-sans); font-variant-numeric: tabular-nums;"></div>
+            <div id="modal-details-type" class="listing-badge-type type-sell" style="position: static;"></div>
+          </div>
+          <h4 id="modal-details-heading" style="font-size: 20px; font-weight: 700; margin-bottom: 12px; color: var(--brunswick-900); font-family: var(--font-display);"></h4>
+          <p id="modal-details-desc" style="font-size: 15px; color: var(--brand-body); line-height: 1.6; margin-bottom: 20px;"></p>
+
+          <div style="background: var(--polar-100); border: 1px solid var(--brand-border); border-radius: 14px; padding: 16px; margin-bottom: 24px;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 13.5px;">
+              <span style="color: var(--brand-muted);">Condition:</span>
+              <strong id="modal-details-cond" style="color: var(--brunswick-900);"></strong>
+            </div>
+            <div id="modal-details-spot-row" style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 13.5px;">
+              <span style="color: var(--brand-muted);">Campus Meeting Spot:</span>
+              <strong id="modal-details-spot" style="color: var(--emerald-700);"></strong>
+            </div>
+            <div style="display: flex; justify-content: space-between; font-size: 13.5px;">
+              <span style="color: var(--brand-muted);">Listed by:</span>
+              <strong id="modal-details-seller" style="color: var(--brunswick-900);"></strong>
+            </div>
+          </div>
+
+          <div class="modal-detail-actions">
+            <button class="btn-view-listing" id="btn-bookmark-item" style="width: 100%; padding: 12px 16px; font-size: 14px;">
+              Save Item
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL 2: Create a Listing -->
+    <div class="modal-backdrop" id="modal-create-listing">
+      <div class="modal-box">
+        <div class="modal-header">
+          <h3 class="modal-title">Create Campus Listing</h3>
+          <button class="modal-close-btn" id="btn-close-create">&times;</button>
+        </div>
+        <div class="modal-body">
+          <form id="form-create-listing">
+            <div class="form-group">
+              <label class="form-label">Item Title *</label>
+              <input type="text" class="form-input" id="create-title" placeholder="e.g. Calculus Early Transcendentals 9th Ed." required />
+            </div>
+
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label class="form-label">Category *</label>
+                <select class="form-select-field" id="create-category" required>
+                  <option value="Books">Books & Study Materials</option>
+                  <option value="Electronics">Electronics & Gadgets</option>
+                  <option value="Fashion">Clothing & Shoes</option>
+                  <option value="Accessories">Accessories</option>
+                  <option value="Free">Free Corner</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Listing Type *</label>
+                <select class="form-select-field" id="create-type" required>
+                  <option value="Buy / Sell">Buy / Sell</option>
+                  <option value="Swap">Swap Items</option>
+                  <option value="Giveaway">Free Giveaway</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label class="form-label">Price in ETB (0 for Free/Swap)</label>
+                <input type="number" class="form-input" id="create-price" placeholder="e.g. 750" min="0" />
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Condition *</label>
+                <select class="form-select-field" id="create-condition" required>
+                  <option value="Brand New">Brand New</option>
+                  <option value="Like New">Like New</option>
+                  <option value="Used">Used</option>
+                  <option value="Good Condition">Good Condition</option>
+                  <option value="Fair Condition">Fair Condition</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Item Photo</label>
+              <label class="image-upload-dropzone" id="create-image-dropzone" for="create-image-file">
+                <span class="image-upload-icon" aria-hidden="true">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="5" width="18" height="14" rx="2.5"></rect>
+                    <circle cx="8.5" cy="10.5" r="1.5"></circle>
+                    <path d="M21 16l-5-5-4.5 4.5-2.5-2.5L3 18"></path>
+                  </svg>
+                </span>
+                <span class="image-upload-title" id="create-image-label">Click or drag photo here to upload</span>
+                <span class="image-upload-hint">PNG, JPG, WEBP supported</span>
+              </label>
+              <input type="file" id="create-image-file" accept="image/*" style="display: none;" />
+              <div class="image-preview-wrap" id="create-image-preview-wrap">
+                <img id="create-image-preview" class="image-preview-img" alt="Listing photo preview" />
+                <button type="button" class="btn-remove-image" id="btn-remove-create-image">Remove Photo</button>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Item Description</label>
+              <textarea class="form-textarea" id="create-desc" placeholder="Describe the item condition, course relevance, included accessories, or swap preferences..."></textarea>
+            </div>
+
+            <button type="submit" class="btn-submit-modal">Post Listing to Campus</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL 3: Student Peer-to-Peer Messaging (Dark Obsidian Chat Studio) -->
+    <div class="modal-backdrop" id="modal-messaging">
+      <div class="chat-modal-shell" id="chat-modal-shell" data-mobile-view="chat">
+        <!-- Mobile Top Feature Switcher Bar (100% Web Feature Parity) -->
+        <div class="chat-mobile-tabs" role="tablist" aria-label="Chat Sections">
+          <div class="chat-mobile-tab-track">
+            <button type="button" class="chat-mobile-tab" data-chat-tab="inbox" role="tab" aria-selected="false">
+              <span>Chats</span>
+              <span class="chat-mobile-tab-badge" id="chat-mobile-tab-count">(2)</span>
+            </button>
+            <button type="button" class="chat-mobile-tab is-active" data-chat-tab="chat" role="tab" aria-selected="true">
+              <span>Messages</span>
+            </button>
+            <button type="button" class="chat-mobile-tab" data-chat-tab="info" role="tab" aria-selected="false">
+              <span>Info &amp; Media</span>
+            </button>
+          </div>
+          <button type="button" class="chat-icon-btn" id="btn-close-msg-mobile" aria-label="Close Chat">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+
+        <div class="chat-panels-stage">
+          <!-- Left Pane: Conversations Inbox -->
+          <aside class="chat-inbox-card" aria-label="Conversations">
+            <div class="chat-inbox-header">
+              <div class="chat-inbox-title-wrap">
+                <button type="button" class="chat-icon-btn chat-back-btn chat-inbox-back-btn" id="btn-chat-inbox-back" title="Back" aria-label="Back">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                </button>
+                <h3 class="chat-inbox-title">Chats</h3>
+                <span class="chat-inbox-count" id="chat-inbox-count">(2)</span>
+              </div>
+              <button type="button" class="chat-icon-btn" id="btn-close-msg-inbox" aria-label="Close Messages">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+              </button>
+            </div>
+            <div class="chat-inbox-search-wrap">
+              <div class="chat-inbox-search-box">
+                <svg class="chat-inbox-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <input type="text" class="chat-inbox-search" id="chat-inbox-search" placeholder="Search seller or item..." />
+              </div>
+            </div>
+            <div class="messaging-sidebar" id="conv-list">
+              <!-- Populated via JS -->
+            </div>
+          </aside>
+
+          <!-- Center Pane: Active Chat Conversation -->
+          <section class="chat-main-card" aria-label="Active Chat">
+            <header class="chat-main-header">
+              <div class="chat-header-left">
+                <button type="button" class="chat-icon-btn chat-back-btn" id="btn-chat-back-inbox" title="Back" aria-label="Back">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                </button>
+                <button type="button" class="chat-peer-trigger" id="btn-chat-open-info" aria-label="View Seller Profile and Shared Media">
+                  <div class="chat-header-avatar-wrap">
+                    <div class="chat-header-avatar" id="active-chat-avatar">D</div>
+                    <span class="chat-header-online-dot" aria-hidden="true"></span>
+                  </div>
+                  <div class="chat-peer-meta">
+                    <div class="chat-peer-name" id="active-chat-seller">Dawit M.</div>
+                    <div class="chat-peer-status" id="active-chat-status">Online</div>
+                  </div>
+                </button>
+              </div>
+              <div class="chat-header-actions">
+                <button type="button" class="chat-icon-btn chat-info-toggle-btn" id="btn-chat-toggle-info" aria-label="Seller Info and Shared Media">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                </button>
+                <button type="button" class="chat-icon-btn" id="btn-chat-more-menu" aria-label="Conversation Options">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="5" r="1.3" fill="currentColor"></circle><circle cx="12" cy="12" r="1.3" fill="currentColor"></circle><circle cx="12" cy="19" r="1.3" fill="currentColor"></circle></svg>
+                </button>
+                <button type="button" class="chat-icon-btn" id="btn-close-msg" aria-label="Close Chat">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+                <div class="chat-menu-dropdown" id="chat-menu-dropdown">
+                  <button type="button" class="chat-menu-item" id="chat-menu-view-listing">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="3"></rect><line x1="8" y1="9" x2="16" y2="9"></line><line x1="8" y1="13" x2="14" y2="13"></line></svg>
+                    View Listing Details
+                  </button>
+                  <button type="button" class="chat-menu-item" id="chat-menu-pin">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 17v5"></path><path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"></path></svg>
+                    Pin Conversation
+                  </button>
+                  <div class="chat-menu-divider"></div>
+                  <button type="button" class="chat-menu-item is-danger" id="chat-menu-clear">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"></path><path d="M8 6V4h8v2"></path><path d="M19 6l-1 14H6L5 6"></path></svg>
+                    Clear Messages
+                  </button>
+                  <button type="button" class="chat-menu-item is-danger" id="chat-menu-delete">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                    Delete Chat
+                  </button>
+                  <button type="button" class="chat-menu-item is-danger" id="btn-report-chat">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path><line x1="4" y1="22" x2="4" y2="15"></line></svg>
+                    Report User
+                  </button>
+                </div>
+              </div>
+            </header>
+
+            <!-- Active Listing Context Strip (Pinned for Desktop & Mobile Parity) -->
+            <div class="chat-listing-strip" id="chat-listing-strip">
+              <div class="chat-listing-strip-info">
+                <img class="chat-listing-strip-thumb" id="chat-strip-img" src="/images/products/laptop.jpg" alt="" />
+                <div class="chat-listing-strip-text">
+                  <div class="chat-listing-strip-title" id="chat-strip-title">MacBook Pro 14&quot; M2</div>
+                  <div class="chat-listing-strip-price" id="chat-strip-price">88,000 ETB</div>
+                </div>
+              </div>
+              <button type="button" class="chat-listing-strip-btn" id="btn-chat-strip-view">
+                <span>View Item</span>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+              </button>
+            </div>
+
+            <div class="messages-thread" id="chat-thread">
+              <!-- Injected dynamically -->
+            </div>
+
+            <div class="chat-composer-wrap" id="chat-composer-wrap">
+              <div class="chat-attach-popover" id="chat-attach-popover">
+                <div class="chat-quick-chips">
+                  <button type="button" class="chat-quick-btn" id="btn-chat-upload-photo">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1"><rect x="3" y="3" width="18" height="18" rx="3"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                    Attach Photo
+                  </button>
+                  <button type="button" class="chat-quick-btn" data-quick-msg="Is this still available today?">Is this still available?</button>
+                  <button type="button" class="chat-quick-btn" data-quick-msg="Can we meet near the Main Library Plaza?">Meet at Library Plaza?</button>
+                  <button type="button" class="chat-quick-btn" data-quick-msg="I'm on campus now, let me know when you're free.">On campus now</button>
+                </div>
+                <input type="file" id="chat-photo-input" accept="image/*" hidden />
+              </div>
+
+              <form class="messaging-input-row" id="form-send-message">
+                <button type="button" class="chat-plus-btn" id="btn-chat-plus" aria-label="Quick campus replies">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                </button>
+                <button type="button" class="chat-plus-btn" id="btn-chat-photo-direct" title="Send Photo" aria-label="Send Photo">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                </button>
+                <input type="text" class="chat-msg-input" id="chat-msg-input" placeholder="Type a message..." autocomplete="off" required />
+                <button type="submit" class="chat-send-btn">
+                  <span>Send</span>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"></path>
+                  </svg>
+                </button>
+              </form>
+            </div>
+          </section>
+
+          <!-- Scrim for tablet slide-over -->
+          <div class="chat-tablet-scrim" id="chat-tablet-scrim"></div>
+
+          <!-- Right Pane: Seller Profile, Action Icons & Shared Media / Posts -->
+          <aside class="chat-info-card" aria-label="Seller Info and Shared Items">
+            <div class="chat-info-mobile-bar">
+              <button type="button" class="chat-icon-btn" id="btn-chat-back-from-info" aria-label="Back to Chat">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+              </button>
+              <span style="font-family: var(--font-display); font-size: 14.5px; font-weight: 700; color: #F2FDF9;">Seller Info &amp; Media</span>
+              <button type="button" class="chat-icon-btn" id="btn-close-msg-info" aria-label="Close Chat">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+              </button>
+            </div>
+
+            <div class="chat-info-scroll">
+              <div class="chat-profile-hero">
+                <div class="chat-profile-avatar" id="chat-info-avatar">D</div>
+                <div class="chat-profile-name" id="chat-info-name">Dawit M.</div>
+                <div class="chat-profile-handle" id="chat-info-handle">@dawit_m</div>
+
+                <div class="chat-profile-actions">
+                  <button type="button" class="chat-profile-action-btn" id="btn-chat-flag" title="Report User" aria-label="Report User">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path><line x1="4" y1="22" x2="4" y2="15"></line></svg>
+                    <span class="chat-profile-action-label">Report</span>
+                  </button>
+                  <button type="button" class="chat-profile-action-btn" id="btn-chat-trust" title="Campus Verification" aria-label="Campus Verification">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                    <span class="chat-profile-action-label">Verify</span>
+                  </button>
+                  <button type="button" class="chat-profile-action-btn" id="btn-chat-details" title="Listing Info" aria-label="Listing Info">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                    <span class="chat-profile-action-label">Item</span>
+                  </button>
+                  <button type="button" class="chat-profile-action-btn" id="btn-chat-pin" title="Pin Chat" aria-label="Pin Chat">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 17v5"></path><path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"></path></svg>
+                    <span class="chat-profile-action-label">Pin</span>
+                  </button>
+                  <button type="button" class="chat-profile-action-btn is-danger" id="btn-chat-delete" title="Delete Chat" aria-label="Delete Chat">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                    <span class="chat-profile-action-label">Delete</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Accordion 1: Shared Document / Handover Slip -->
+              <div class="chat-accordion" data-acc="doc">
+                <button type="button" class="chat-accordion-trigger">
+                  <span>Shared Document</span>
+                  <span class="chat-accordion-chevron">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                  </span>
+                </button>
+                <div class="chat-accordion-body">
+                  <div class="chat-accordion-inner">
+                    <div class="chat-accordion-pad">
+                      <div class="chat-shared-doc-item">
+                        <span class="chat-shared-doc-icon">
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                        </span>
+                        <div style="min-width: 0; flex: 1;">
+                          <div style="font-weight: 600; color: #F2FDF9; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" id="chat-doc-title">Campus_Handover_Pass.pdf</div>
+                          <div style="font-size: 11px; color: #7AA99A;">Verified Student Trade Note</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Accordion 2: Shared Media -->
+              <div class="chat-accordion is-open" data-acc="media">
+                <button type="button" class="chat-accordion-trigger">
+                  <span>Shared Media</span>
+                  <span class="chat-accordion-chevron">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                  </span>
+                </button>
+                <div class="chat-accordion-body">
+                  <div class="chat-accordion-inner">
+                    <div class="chat-accordion-pad">
+                      <div class="chat-media-grid" id="chat-shared-media-grid">
+                        <!-- Populated via JS -->
+                      </div>
+                      <button type="button" class="chat-view-all-btn" id="btn-chat-view-all-media">View All (6)</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Accordion 3: Shared Post -->
+              <div class="chat-accordion is-open" data-acc="posts">
+                <button type="button" class="chat-accordion-trigger">
+                  <span>Shared Post</span>
+                  <span class="chat-accordion-chevron">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                  </span>
+                </button>
+                <div class="chat-accordion-body">
+                  <div class="chat-accordion-inner">
+                    <div class="chat-accordion-pad">
+                      <div class="chat-media-grid" id="chat-shared-post-grid">
+                        <!-- Populated via JS -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </aside>
+        </div>
+
+        <!-- Inline Toast (with Undo) & Photo Lightbox -->
+        <div class="chat-toast" id="chat-toast" role="status" aria-live="polite">
+          <span id="chat-toast-text"></span>
+          <button type="button" class="chat-toast-undo" id="btn-chat-undo" style="display: none;">Undo</button>
+        </div>
+        <div class="chat-lightbox" id="chat-lightbox">
+          <img id="chat-lightbox-img" src="" alt="Shared media preview" />
+          <button type="button" class="chat-lightbox-close" id="btn-close-chat-lightbox">Close Preview</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL 4: Student Auth & Verification -->
+    <div class="modal-backdrop" id="modal-auth">
+      <div class="modal-box" style="max-width: 500px;">
+        <div class="modal-header">
+          <h3 class="modal-title" id="auth-modal-title">Student Sign In</h3>
+          <button class="modal-close-btn" id="btn-close-auth">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div style="display: flex; gap: 8px; margin-bottom: 24px; background: rgba(9, 34, 27, 0.06); border: 1px solid var(--brand-border); padding: 4px; border-radius: 12px;">
+            <button style="flex: 1; padding: 8px; border: none; border-radius: 8px; font-size: 13.5px; font-weight: 600; cursor: pointer; background: linear-gradient(135deg, #06D6A0 0%, #05BA8B 100%); color: var(--brunswick-950); box-shadow: 0 2px 6px rgba(6, 214, 160, 0.25); font-family: var(--font-sans);" id="tab-login">Log In</button>
+            <button style="flex: 1; padding: 8px; border: none; border-radius: 8px; font-size: 13.5px; font-weight: 500; cursor: pointer; background: transparent; color: var(--brand-muted); font-family: var(--font-sans);" id="tab-register">Register</button>
+            <button style="flex: 1; padding: 8px; border: none; border-radius: 8px; font-size: 13.5px; font-weight: 500; cursor: pointer; background: transparent; color: var(--brand-muted); font-family: var(--font-sans);" id="tab-verify">ID Status</button>
+          </div>
+
+          <!-- Login Form -->
+          <form id="form-login">
+            <div class="form-group">
+              <label class="form-label">University Email</label>
+              <input type="email" class="form-input" placeholder="student.name@university.edu" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Password</label>
+              <input type="password" class="form-input" placeholder="••••••••" required />
+            </div>
+            <button type="submit" class="btn-submit-modal">Sign In to tradeX</button>
+          </form>
+
+          <!-- Register Form (hidden by default) -->
+          <form id="form-register" style="display: none;">
+            <div class="form-group">
+              <label class="form-label">Full Name *</label>
+              <input type="text" class="form-input" placeholder="e.g. Sara Bekele" required />
+            </div>
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label class="form-label">Student ID *</label>
+                <input type="text" class="form-input" placeholder="e.g. UGR/1402/14" required />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Academic Year *</label>
+                <select class="form-select-field">
+                  <option>1st Year</option>
+                  <option>2nd Year</option>
+                  <option>3rd Year</option>
+                  <option>4th Year</option>
+                  <option>5th+ Year</option>
+                  <option>Postgraduate</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Department *</label>
+              <input type="text" class="form-input" placeholder="e.g. Software Engineering / Pre-Med" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label">University Email (.edu) *</label>
+              <input type="email" class="form-input" placeholder="sara.b@campus.edu" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Create Password *</label>
+              <input type="password" class="form-input" placeholder="Minimum 8 characters" required />
+            </div>
+            <button type="submit" class="btn-submit-modal">Create Student Account</button>
+          </form>
+
+          <!-- Verification Screen (hidden by default) -->
+          <div id="verify-screen" style="display: none; text-align: center;">
+            <div style="width: 56px; height: 56px; border-radius: 9999px; background: var(--polar-500); color: var(--emerald-700); border: 1px solid var(--brand-border-emerald); display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            </div>
+            <h4 style="font-family: var(--font-display); font-size: 18px; font-weight: 700; color: var(--brunswick-900); margin-bottom: 8px;">Identity Verification Status</h4>
+            <p style="font-size: 14px; color: var(--brand-body); margin-bottom: 20px;">
+              Your student ID is verified for the current semester. You have full permissions to post listings, message peers, and participate in campus exchanges.
+            </p>
+            <div style="background: var(--polar-100); border: 1px solid var(--brand-border); border-radius: 12px; padding: 14px; text-align: left; font-size: 13.5px; margin-bottom: 20px;">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                <span style="color: var(--brand-muted);">Badge:</span>
+                <span style="color: var(--emerald-700); font-weight: 600;">Verified Student</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                <span style="color: var(--brand-muted);">Email OTP:</span>
+                <span style="color: var(--emerald-700); font-weight: 600;">Confirmed</span>
+              </div>
+              <div style="display: flex; justify-content: space-between;">
+                <span style="color: var(--brand-muted);">Fee Status:</span>
+                <span style="color: var(--emerald-700); font-weight: 600;">0% Student Tier</span>
+              </div>
+            </div>
+            <button class="btn-submit-modal" id="btn-close-verify-screen">Back to Marketplace</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIEW 5: Student Profile Overlay View -->
+    <div class="dashboard-view-container" id="dashboard-view-container">
+      <div class="dash-mobile-bar">
+        <button type="button" class="dash-back-btn" id="btn-exit-dash-mobile" aria-label="Back to Marketplace">
+          <span class="dash-back-icon" aria-hidden="true">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+          </span>
+          <span>Back</span>
+        </button>
+        <span style="font-family: var(--font-display); font-size: 19px; font-weight: 700; color: var(--brunswick-900);">trade<span style="color: var(--emerald-700);">X</span></span>
+      </div>
+
+      <aside class="dash-sidebar">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div style="width: 42px; height: 36px; padding: 4px; border-radius: 10px; background: var(--gradient-dark-monestra); border: 1px solid rgba(6, 214, 160, 0.5); display: flex; align-items: center; justify-content: center; overflow: hidden;">
+            <svg style="width: 100%; height: 100%; display: block;" viewBox="97 20 294 256" aria-hidden="true">
+              <image href="/images/brand/tradex-mark.png" x="0" y="0" width="478" height="276" filter="url(#tx-emerald-recolor)" />
+            </svg>
+          </div>
+          <span style="font-family: var(--font-display); font-size: 22px; font-weight: 700; color: var(--brunswick-900);">trade<span style="color: var(--emerald-700);">X</span></span>
+        </div>
+
+        <nav class="dash-sidebar-nav">
+          <a href="#" class="dash-nav-item is-active">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            Student Profile
+          </a>
+          <a href="#" class="dash-nav-item" id="dash-open-messages">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+            Messages (2)
+          </a>
+          <a href="#" class="dash-nav-item">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+            My Listings (3)
+          </a>
+          <a href="#" class="dash-nav-item">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+            Saved Items (4)
+          </a>
+          <a href="#" class="dash-nav-item">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><path d="M21 21l-4.35-4.35"></path></svg>
+            Marketplace Feed
+          </a>
+        </nav>
+
+        <div style="margin-top: auto; padding-top: 20px; border-top: 1px solid var(--brand-border);">
+          <button type="button" class="dash-back-btn is-sidebar" id="btn-exit-dash" aria-label="Back to Marketplace">
+            <span class="dash-back-icon" aria-hidden="true">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+            </span>
+            <span>Back to Marketplace</span>
+          </button>
+        </div>
+      </aside>
+
+      <main class="dash-main">
+        <div class="dash-top-back-wrap">
+          <button type="button" class="dash-back-btn" id="btn-exit-dash-top" aria-label="Back to Marketplace">
+            <span class="dash-back-icon" aria-hidden="true">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+            </span>
+            <span>Back to Marketplace</span>
+          </button>
+        </div>
+        <div class="dash-main-header">
+          <div>
+            <h2 style="font-family: var(--font-display); font-size: 26px; font-weight: 700; color: var(--brunswick-900);">Student Profile</h2>
+            <p style="font-size: 14.5px; color: var(--brand-muted);">Welcome back, Dawit. Manage your profile and campus marketplace activity.</p>
+          </div>
+          <button class="btn-post-listing-top" id="dash-btn-post">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            Post New Listing
+          </button>
+        </div>
+
+        <div class="dash-stats-grid">
+          <div class="dash-stat-card">
+            <div style="font-size: 13px; color: var(--brand-muted); font-weight: 600;">Active Listings</div>
+            <div class="dash-stat-num">3</div>
+          </div>
+          <div class="dash-stat-card">
+            <div style="font-size: 13px; color: var(--brand-muted); font-weight: 600;">Saved Items</div>
+            <div class="dash-stat-num">4</div>
+          </div>
+          <div class="dash-stat-card">
+            <div style="font-size: 13px; color: var(--brand-muted); font-weight: 600;">Unread Chats</div>
+            <div class="dash-stat-num" style="color: var(--emerald-700);">2</div>
+          </div>
+          <div class="dash-stat-card">
+            <div style="font-size: 13px; color: var(--brand-muted); font-weight: 600;">Peer Trust Score</div>
+            <div class="dash-stat-num" style="color: var(--emerald-700);">100%</div>
+          </div>
+        </div>
+
+        <h3 style="font-family: var(--font-display); font-size: 18px; font-weight: 700; color: var(--brunswick-900); margin-bottom: 16px;">My Active Campus Listings</h3>
+        <div class="dash-table-wrap">
+          <table style="width: 100%; min-width: 540px; border-collapse: collapse; text-align: left; font-size: 14px;">
+            <thead>
+              <tr style="background: var(--polar-100); border-bottom: 1px solid var(--brand-border); color: var(--brand-body); font-size: 12px; text-transform: uppercase; font-family: var(--font-sans); font-weight: 600; letter-spacing: 0.04em;">
+                <th style="padding: 14px 20px;">Item Title</th>
+                <th style="padding: 14px 20px;">Category</th>
+                <th style="padding: 14px 20px;">Price</th>
+                <th style="padding: 14px 20px;">Status</th>
+                <th style="padding: 14px 20px;">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid var(--brand-border);">
+                <td style="padding: 16px 20px; font-weight: 600; color: var(--brunswick-900);">MacBook Pro 14 M2 (16GB, 512GB)</td>
+                <td style="padding: 16px 20px; color: var(--brand-muted);">Electronics</td>
+                <td style="padding: 16px 20px; font-weight: 700; font-family: var(--font-sans); font-variant-numeric: tabular-nums; color: var(--brunswick-900);">88,000 ETB</td>
+                <td style="padding: 16px 20px;"><span style="background: var(--polar-500); color: var(--emerald-700); padding: 4px 10px; border-radius: 9999px; font-size: 12px; font-weight: 600;">Available</span></td>
+                <td style="padding: 16px 20px;"><button style="border: none; background: none; color: var(--emerald-700); font-weight: 600; cursor: pointer;">Edit</button></td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--brand-border);">
+                <td style="padding: 16px 20px; font-weight: 600; color: var(--brunswick-900);">Calculus: Early Transcendentals (9th Edition)</td>
+                <td style="padding: 16px 20px; color: var(--brand-muted);">Books</td>
+                <td style="padding: 16px 20px; font-weight: 700; font-family: var(--font-sans); font-variant-numeric: tabular-nums; color: var(--emerald-700);">Swap / 650 ETB</td>
+                <td style="padding: 16px 20px;"><span style="background: #fef3c7; color: #b45309; padding: 4px 10px; border-radius: 9999px; font-size: 12px; font-weight: 600;">Pending Swap</span></td>
+                <td style="padding: 16px 20px;"><button style="border: none; background: none; color: var(--emerald-700); font-weight: 600; cursor: pointer;">Edit</button></td>
+              </tr>
+              <tr>
+                <td style="padding: 16px 20px; font-weight: 600; color: var(--brunswick-900);">TI-84 Plus CE Graphing Calculator</td>
+                <td style="padding: 16px 20px; color: var(--brand-muted);">Electronics</td>
+                <td style="padding: 16px 20px; font-weight: 700; font-family: var(--font-sans); font-variant-numeric: tabular-nums; color: var(--brunswick-800);">4,200 ETB</td>
+                <td style="padding: 16px 20px;"><span style="background: var(--polar-500); color: var(--emerald-700); padding: 4px 10px; border-radius: 9999px; font-size: 12px; font-weight: 600;">Available</span></td>
+                <td style="padding: 16px 20px;"><button style="border: none; background: none; color: var(--emerald-700); font-weight: 600; cursor: pointer;">Edit</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </main>
+    </div>
+
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
