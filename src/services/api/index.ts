@@ -1,4 +1,4 @@
-export { ApiError, apiRequest, getStoredAuthToken, setStoredAuthToken } from './client';
+export { ApiError, apiRequest, getStoredAuthToken, setStoredAuthToken, getStoredAuthUser, setStoredAuthUser } from './client';
 export { API_ENDPOINTS } from './endpoints';
 export { authService } from './auth.service';
 export { listingsService } from './listings.service';

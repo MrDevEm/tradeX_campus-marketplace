@@ -7,6 +7,9 @@ export const API_ENDPOINTS = {
   auth: {
     login: '/auth/login',
     register: '/auth/register',
+    verifyEmail: '/auth/verify-email',
+    resendOtp: '/auth/resend-otp',
+    uploadStudentId: '/verification/upload-id',
     logout: '/auth/logout',
     verificationStatus: '/auth/verification-status',
   },

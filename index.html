@@ -189,6 +189,37 @@
             </svg>
             Sign Up
           </button>
+
+          <!-- Authenticated User Dropdown Menu -->
+          <div class="nav-user-menu" id="nav-user-menu" style="display: none;">
+            <button type="button" class="btn-user-session" id="btn-user-session" aria-label="Account Menu" aria-expanded="false">
+              <span class="user-avatar-pill" id="nav-user-avatar">D</span>
+              <span class="user-name-pill" id="nav-user-name">Dawit</span>
+              <span class="user-status-dot" id="nav-user-status-dot" title="Verified Student"></span>
+            </button>
+            <div class="user-dropdown-card" id="user-dropdown-card">
+              <div class="user-dropdown-header">
+                <div class="user-dropdown-name" id="user-dropdown-fullname">Dawit M.</div>
+                <div class="user-dropdown-email" id="user-dropdown-email">dawit.m@university.edu</div>
+                <div class="user-dropdown-badge" id="user-dropdown-badge">Verified Student</div>
+              </div>
+              <div class="user-dropdown-divider"></div>
+              <button type="button" class="user-dropdown-item" id="user-menu-profile">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                Student Profile
+              </button>
+              <button type="button" class="user-dropdown-item" id="user-menu-status">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                ID Verification Status
+              </button>
+              <div class="user-dropdown-divider"></div>
+              <button type="button" class="user-dropdown-item is-logout" id="btn-logout">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                Log Out
+              </button>
+            </div>
+          </div>
+
           <button class="btn-mobile-menu" id="btn-mobile-menu" aria-label="Toggle Navigation Menu" aria-expanded="false" aria-controls="mobile-nav-drawer">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
               <line x1="4" y1="7" x2="20" y2="7"></line>
@@ -238,6 +269,14 @@
               <path d="M11.2 8.2L15 12l-3.8 3.8"></path>
             </svg>
             Log In
+          </button>
+          <button type="button" class="mobile-nav-btn" id="mobile-btn-logout" style="border-radius: 12px; display: none; color: #ef4444; border-color: rgba(239, 68, 68, 0.3);">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+              <polyline points="16 17 21 12 16 7"></polyline>
+              <line x1="21" y1="12" x2="9" y2="12"></line>
+            </svg>
+            Log Out
           </button>
         </div>
       </nav>
@@ -1077,33 +1116,126 @@
               <label class="form-label">Create Password *</label>
               <input type="password" class="form-input" placeholder="Minimum 8 characters" required />
             </div>
-            <button type="submit" class="btn-submit-modal">Create Student Account</button>
+            <button type="submit" class="btn-submit-modal">Continue to Email OTP</button>
           </form>
+
+          <!-- Step 2: Email OTP Verification Screen -->
+          <div id="verify-otp-screen" style="display: none; text-align: center;">
+            <div style="width: 54px; height: 54px; border-radius: 9999px; background: rgba(6, 214, 160, 0.14); color: var(--emerald-700); border: 1px solid var(--brand-border-emerald); display: flex; align-items: center; justify-content: center; margin: 0 auto 14px;">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+                <polyline points="3 7 12 13 21 7"></polyline>
+              </svg>
+            </div>
+            <h4 style="font-family: var(--font-display); font-size: 19px; font-weight: 700; color: var(--brunswick-900); margin-bottom: 6px;">Check Your Campus Inbox</h4>
+            <p style="font-size: 13.5px; color: var(--brand-body); margin-bottom: 18px; line-height: 1.5;">
+              We sent a 6-digit confirmation code to<br />
+              <strong id="otp-target-email" style="color: var(--emerald-800); word-break: break-all;">student@university.edu</strong>
+            </p>
+
+            <form id="form-verify-otp">
+              <div class="otp-inputs-grid" id="otp-inputs-grid">
+                <input type="text" inputmode="numeric" maxlength="1" class="otp-digit-input" data-otp-idx="0" autocomplete="one-time-code" required />
+                <input type="text" inputmode="numeric" maxlength="1" class="otp-digit-input" data-otp-idx="1" required />
+                <input type="text" inputmode="numeric" maxlength="1" class="otp-digit-input" data-otp-idx="2" required />
+                <input type="text" inputmode="numeric" maxlength="1" class="otp-digit-input" data-otp-idx="3" required />
+                <input type="text" inputmode="numeric" maxlength="1" class="otp-digit-input" data-otp-idx="4" required />
+                <input type="text" inputmode="numeric" maxlength="1" class="otp-digit-input" data-otp-idx="5" required />
+              </div>
+
+              <div class="otp-meta-row">
+                <span>Expires in: <strong id="otp-timer-display" style="color: var(--brunswick-900); font-variant-numeric: tabular-nums;">05:00</strong></span>
+                <button type="button" class="btn-resend-otp" id="btn-resend-otp" disabled>Resend Code (60s)</button>
+              </div>
+
+              <button type="submit" class="btn-submit-modal" id="btn-submit-otp">Verify Email & Continue</button>
+              <button type="button" class="btn-secondary-link" id="btn-back-to-register">← Change Email or Details</button>
+            </form>
+          </div>
+
+          <!-- Step 3: Student ID Card Upload Screen -->
+          <div id="upload-id-screen" style="display: none;">
+            <div style="text-align: center; margin-bottom: 20px;">
+              <div style="width: 54px; height: 54px; border-radius: 9999px; background: rgba(6, 214, 160, 0.14); color: var(--emerald-700); border: 1px solid var(--brand-border-emerald); display: flex; align-items: center; justify-content: center; margin: 0 auto 14px;">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="4" width="18" height="16" rx="2"></rect>
+                  <circle cx="9" cy="10" r="2"></circle>
+                  <line x1="15" y1="8" x2="17" y2="8"></line>
+                  <line x1="15" y1="12" x2="17" y2="12"></line>
+                  <line x1="7" y1="16" x2="17" y2="16"></line>
+                </svg>
+              </div>
+              <h4 style="font-family: var(--font-display); font-size: 19px; font-weight: 700; color: var(--brunswick-900); margin-bottom: 6px;">Upload Student ID Card</h4>
+              <p style="font-size: 13.5px; color: var(--brand-body); line-height: 1.5;">
+                To keep trading safe and scam-free, upload a clear photo of your official university ID card.
+              </p>
+            </div>
+
+            <form id="form-upload-id">
+              <div class="form-group">
+                <label class="image-upload-dropzone" id="id-image-dropzone" for="id-image-file">
+                  <span class="image-upload-icon" aria-hidden="true">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="3" y="5" width="18" height="14" rx="2.5"></rect>
+                      <circle cx="8.5" cy="10.5" r="1.5"></circle>
+                      <path d="M21 16l-5-5-4.5 4.5-2.5-2.5L3 18"></path>
+                    </svg>
+                  </span>
+                  <span class="image-upload-title" id="id-image-label">Click or drag student ID card photo here</span>
+                  <span class="image-upload-hint">PNG, JPG, WEBP (Max 5MB)</span>
+                </label>
+                <input type="file" id="id-image-file" accept="image/*" style="display: none;" />
+                <div class="image-preview-wrap" id="id-image-preview-wrap">
+                  <img id="id-image-preview" class="image-preview-img" alt="Student ID preview" />
+                  <button type="button" class="btn-remove-image" id="btn-remove-id-image">Remove ID Photo</button>
+                </div>
+              </div>
+
+              <div style="background: rgba(6, 214, 160, 0.08); border: 1px solid rgba(6, 214, 160, 0.25); border-radius: 12px; padding: 12px 14px; margin-bottom: 20px; font-size: 12.5px; color: var(--brunswick-950); display: flex; gap: 10px; align-items: flex-start;">
+                <svg style="flex-shrink: 0; margin-top: 2px;" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#05BA8B" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                <span><strong>Strictly Confidential</strong>: Your student ID scan is stored in encrypted private storage and is only accessible by verified reviewers. It is never shown to other students.</span>
+              </div>
+
+              <button type="submit" class="btn-submit-modal" id="btn-submit-id-upload" disabled>Submit Student ID for Review</button>
+              <button type="button" class="btn-secondary-link" id="btn-skip-id-upload">I'll do this later (Go to Marketplace)</button>
+            </form>
+          </div>
 
           <!-- Verification Screen (hidden by default) -->
           <div id="verify-screen" style="display: none; text-align: center;">
-            <div style="width: 56px; height: 56px; border-radius: 9999px; background: var(--polar-500); color: var(--emerald-700); border: 1px solid var(--brand-border-emerald); display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            <div id="verify-status-icon-wrap" style="width: 56px; height: 56px; border-radius: 9999px; background: var(--polar-500); color: var(--emerald-700); border: 1px solid var(--brand-border-emerald); display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">
+              <svg id="verify-status-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
             </div>
-            <h4 style="font-family: var(--font-display); font-size: 18px; font-weight: 700; color: var(--brunswick-900); margin-bottom: 8px;">Identity Verification Status</h4>
-            <p style="font-size: 14px; color: var(--brand-body); margin-bottom: 20px;">
+            <h4 id="verify-status-heading" style="font-family: var(--font-display); font-size: 19px; font-weight: 700; color: var(--brunswick-900); margin-bottom: 8px;">Identity Verification Status</h4>
+            <p id="verify-status-desc" style="font-size: 14px; color: var(--brand-body); margin-bottom: 20px; line-height: 1.5;">
               Your student ID is verified for the current semester. You have full permissions to post listings, message peers, and participate in campus exchanges.
             </p>
             <div style="background: var(--polar-100); border: 1px solid var(--brand-border); border-radius: 12px; padding: 14px; text-align: left; font-size: 13.5px; margin-bottom: 20px;">
               <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
-                <span style="color: var(--brand-muted);">Badge:</span>
-                <span style="color: var(--emerald-700); font-weight: 600;">Verified Student</span>
+                <span style="color: var(--brand-muted);">Account Badge:</span>
+                <span id="verify-info-badge" style="color: var(--emerald-700); font-weight: 600;">Verified Student</span>
               </div>
               <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
                 <span style="color: var(--brand-muted);">Email OTP:</span>
-                <span style="color: var(--emerald-700); font-weight: 600;">Confirmed</span>
+                <span id="verify-info-otp" style="color: var(--emerald-700); font-weight: 600;">Confirmed</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                <span style="color: var(--brand-muted);">ID Card Scan:</span>
+                <span id="verify-info-id" style="color: var(--emerald-700); font-weight: 600;">Approved</span>
+              </div>
+              <div id="verify-rejection-row" style="display: none; margin-bottom: 6px; color: #dc2626;">
+                <span style="color: var(--brand-muted);">Rejection Note:</span>
+                <span id="verify-info-rejection" style="font-weight: 600;">Please re-upload a readable ID photo</span>
               </div>
               <div style="display: flex; justify-content: space-between;">
-                <span style="color: var(--brand-muted);">Fee Status:</span>
-                <span style="color: var(--emerald-700); font-weight: 600;">0% Student Tier</span>
+                <span style="color: var(--brand-muted);">Student Tier:</span>
+                <span style="color: var(--emerald-700); font-weight: 600;">0% Commission Tier</span>
               </div>
             </div>
-            <button class="btn-submit-modal" id="btn-close-verify-screen">Back to Marketplace</button>
+            <div id="verify-actions-wrap" style="display: flex; flex-direction: column; gap: 8px;">
+              <button class="btn-submit-modal" id="btn-reupload-id" style="display: none;">Upload New Student ID Scan</button>
+              <button class="btn-submit-modal" id="btn-close-verify-screen">Back to Marketplace</button>
+            </div>
           </div>
         </div>
       </div>

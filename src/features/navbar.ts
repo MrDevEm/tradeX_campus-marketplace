@@ -1,3 +1,6 @@
+import { authService } from '../services/api';
+import type { AuthUser } from '../types/marketplace';
+
 export function initNavbar(): void {
   const topNavbarEl = document.getElementById('top-navbar');
   const navLinksEl = document.getElementById('nav-links');
@@ -12,9 +15,110 @@ export function initNavbar(): void {
     : [];
   const mobileBtnDash = document.getElementById('mobile-btn-dash');
   const mobileBtnLogin = document.getElementById('mobile-btn-login');
+  const mobileBtnLogout = document.getElementById('mobile-btn-logout');
   const btnToggleDash = document.getElementById('btn-toggle-dash');
   const btnLogin = document.getElementById('btn-login');
+  const btnSignup = document.getElementById('btn-signup');
   const navPrefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Authenticated user navigation elements
+  const navUserMenu = document.getElementById('nav-user-menu');
+  const btnUserSession = document.getElementById('btn-user-session');
+  const userDropdownCard = document.getElementById('user-dropdown-card');
+  const navUserAvatar = document.getElementById('nav-user-avatar');
+  const navUserName = document.getElementById('nav-user-name');
+  const navUserStatusDot = document.getElementById('nav-user-status-dot');
+  const userDropdownFullname = document.getElementById('user-dropdown-fullname');
+  const userDropdownEmail = document.getElementById('user-dropdown-email');
+  const userDropdownBadge = document.getElementById('user-dropdown-badge');
+  const userMenuProfile = document.getElementById('user-menu-profile');
+  const userMenuStatus = document.getElementById('user-menu-status');
+  const btnLogout = document.getElementById('btn-logout');
+
+  function renderNavbarSession(user: AuthUser | null): void {
+    if (user) {
+      if (btnLogin) btnLogin.style.display = 'none';
+      if (btnSignup) btnSignup.style.display = 'none';
+      if (navUserMenu) navUserMenu.style.display = 'flex';
+
+      const initial = (user.fullName || 'S').charAt(0).toUpperCase();
+      const firstName = (user.fullName || 'Student').split(' ')[0] || 'Student';
+      const isApproved = user.status === 'APPROVED';
+      const isPending = user.status === 'PENDING_APPROVAL' || user.status === 'PENDING_UPLOAD';
+
+      if (navUserAvatar) navUserAvatar.textContent = initial;
+      if (navUserName) navUserName.textContent = firstName;
+      if (navUserStatusDot) {
+        navUserStatusDot.classList.toggle('is-pending', !isApproved);
+        navUserStatusDot.title = isApproved ? 'Verified Student' : isPending ? 'Pending Verification' : 'Verification Required';
+      }
+
+      if (userDropdownFullname) userDropdownFullname.textContent = user.fullName;
+      if (userDropdownEmail) userDropdownEmail.textContent = user.email;
+      if (userDropdownBadge) {
+        userDropdownBadge.textContent = isApproved
+          ? 'Verified Student'
+          : isPending
+            ? 'Pending Review'
+            : user.status === 'REJECTED'
+              ? 'Action Required'
+              : 'Pending Upload';
+        userDropdownBadge.className = `user-dropdown-badge ${isApproved ? '' : user.status === 'REJECTED' ? 'is-rejected' : 'is-pending'}`;
+      }
+
+      if (mobileBtnLogin) mobileBtnLogin.style.display = 'none';
+      if (mobileBtnLogout) mobileBtnLogout.style.display = 'flex';
+    } else {
+      if (btnLogin) btnLogin.style.display = 'inline-flex';
+      if (btnSignup) btnSignup.style.display = 'inline-flex';
+      if (navUserMenu) navUserMenu.style.display = 'none';
+      if (userDropdownCard) userDropdownCard.classList.remove('is-open');
+
+      if (mobileBtnLogin) mobileBtnLogin.style.display = 'flex';
+      if (mobileBtnLogout) mobileBtnLogout.style.display = 'none';
+    }
+  }
+
+  // Subscribe to reactive auth session changes
+  authService.subscribe((user) => renderNavbarSession(user));
+  renderNavbarSession(authService.getCurrentUser());
+
+  if (btnUserSession && userDropdownCard) {
+    btnUserSession.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const open = userDropdownCard.classList.toggle('is-open');
+      btnUserSession.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+
+    document.addEventListener('click', (e) => {
+      const target = e.target as Node | null;
+      if (target && !userDropdownCard.contains(target) && !btnUserSession.contains(target)) {
+        userDropdownCard.classList.remove('is-open');
+        btnUserSession.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
+
+  userMenuProfile?.addEventListener('click', () => {
+    userDropdownCard?.classList.remove('is-open');
+    btnToggleDash?.click();
+  });
+
+  userMenuStatus?.addEventListener('click', () => {
+    userDropdownCard?.classList.remove('is-open');
+    const openStatusFn = (window as unknown as { openIdVerificationModal?: () => void }).openIdVerificationModal;
+    if (typeof openStatusFn === 'function') openStatusFn();
+  });
+
+  const handleLogout = async () => {
+    userDropdownCard?.classList.remove('is-open');
+    setMobileMenuOpen(false);
+    await authService.logout();
+    window.alert('You have been signed out.');
+  };
+
+  btnLogout?.addEventListener('click', handleLogout);
+  mobileBtnLogout?.addEventListener('click', handleLogout);
 
   if (topNavbarEl) {
     topNavbarEl.addEventListener('mousemove', (e) => {

@@ -1,6 +1,8 @@
 import { ENV, isApiConfigured } from '../../config/env';
+import type { AuthUser } from '../../types/marketplace';
 
 const AUTH_TOKEN_STORAGE_KEY = 'tradex_auth_token';
+const AUTH_USER_STORAGE_KEY = 'tradex_auth_user';
 
 export class ApiError extends Error {
   readonly status: number;
@@ -28,6 +30,27 @@ export function setStoredAuthToken(token: string | null): void {
       window.localStorage.setItem(AUTH_TOKEN_STORAGE_KEY, token);
     } else {
       window.localStorage.removeItem(AUTH_TOKEN_STORAGE_KEY);
+    }
+  } catch {
+    // Storage access may be restricted in sandboxed contexts.
+  }
+}
+
+export function getStoredAuthUser(): AuthUser | null {
+  try {
+    const raw = window.localStorage.getItem(AUTH_USER_STORAGE_KEY);
+    return raw ? (JSON.parse(raw) as AuthUser) : null;
+  } catch {
+    return null;
+  }
+}
+
+export function setStoredAuthUser(user: AuthUser | null): void {
+  try {
+    if (user) {
+      window.localStorage.setItem(AUTH_USER_STORAGE_KEY, JSON.stringify(user));
+    } else {
+      window.localStorage.removeItem(AUTH_USER_STORAGE_KEY);
     }
   } catch {
     // Storage access may be restricted in sandboxed contexts.

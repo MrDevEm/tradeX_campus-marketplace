@@ -6,7 +6,15 @@ export type ListingSortOrder = 'newest' | 'price-low' | 'price-high';
 
 export type ChatMobileView = 'inbox' | 'chat' | 'info';
 
-export type AuthTab = 'login' | 'register' | 'verify';
+export type AuthTab = 'login' | 'register' | 'otp' | 'upload-id' | 'verify';
+
+export type UserStatus =
+  | 'PENDING_EMAIL'
+  | 'PENDING_UPLOAD'
+  | 'PENDING_APPROVAL'
+  | 'APPROVED'
+  | 'REJECTED'
+  | 'SUSPENDED';
 
 export interface CarouselItem {
   src: string;
@@ -83,21 +91,41 @@ export interface RegisterPayload {
   password: string;
 }
 
+export interface VerifyEmailPayload {
+  email: string;
+  otp: string;
+}
+
+export interface UploadStudentIdPayload {
+  idDocumentDataUrl: string;
+  fileName?: string;
+}
+
+export interface AuthUser {
+  id: string;
+  fullName: string;
+  email: string;
+  studentId?: string;
+  department?: string;
+  academicYear?: string;
+  verified: boolean;
+  status: UserStatus;
+  role?: 'STUDENT' | 'ADMIN';
+  idDocumentUploaded?: boolean;
+  rejectionReason?: string;
+}
+
 export interface AuthSession {
   token: string;
-  user: {
-    id: string;
-    fullName: string;
-    email: string;
-    studentId?: string;
-    department?: string;
-    verified: boolean;
-  };
+  user: AuthUser;
 }
 
 export interface VerificationStatus {
+  status: UserStatus;
   badge: string;
   emailConfirmed: boolean;
+  idDocumentUploaded: boolean;
+  rejectionReason?: string;
   feeTier: string;
 }
 
