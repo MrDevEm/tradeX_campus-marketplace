@@ -1,6 +1,0 @@
-{
-  "name": "tradeX",
-  "description": "Your Campus Marketplace, All in One Place. Buy, sell, swap, and exchange within your university student community.",
-  "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
-}
