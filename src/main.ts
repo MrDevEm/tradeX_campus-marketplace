@@ -1,5 +1,6 @@
 import './styles/index.css';
 
+import { initAdmin } from './features/admin';
 import { initAuth } from './features/auth';
 import { initHeroCarousel } from './features/carousel';
 import { initDashboard } from './features/dashboard';
@@ -12,6 +13,7 @@ function bootstrapTradeX(): void {
   initHeroCarousel();
   initNavbar();
   initAuth();
+  initAdmin();
 
   let messagingCtrl: ReturnType<typeof initMessaging> | null = null;
 

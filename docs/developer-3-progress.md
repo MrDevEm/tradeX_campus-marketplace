@@ -12,24 +12,31 @@
 - [x] Architecture alignment (Vite 8 SPA frontend + external REST API contract).
 - [x] Technical contract & Prisma database specification prepared for Developer 1.
 - [x] Fresh development feature branch `ab-pro` created from latest `origin/main`.
-- [x] **Phase 1.1 Client-Side Auth & Verification Flow Completed**:
+- [x] **Phase 1.1 Client-Side Auth & Verification Flow Completed & Merged**:
   - 6-digit email OTP verification screen (`#verify-otp-screen`) with auto-advance, paste support, 5-minute expiry timer, and 60-second resend cooldown.
   - Student ID card image upload dropzone (`#upload-id-screen`) with preview, drag-and-drop, and client-side format/size validation.
   - Reactive identity verification status dashboard (`#verify-screen`) supporting `APPROVED`, `PENDING_APPROVAL`, `REJECTED`, and `PENDING_UPLOAD`.
   - Dynamic session state in top navbar (`#nav-user-menu`) with user avatar, name, status indicator dot, dropdown menu, and mobile logout action.
-  - Strict TypeScript compliance (`tsc --noEmit` clean) and production bundle built without errors.
+  - Pull Request #1 created and squash-merged into `main`.
+- [x] **Phase 1.2 Admin Dashboard (Verification, Student Directory, Reports, Audit Trail) Completed**:
+  - Impeccable Operate-mode UI design following `docs/DESIGN_SYSTEM.md` (no generic gradients, restrained dark slate canvas `#061712`, high-contrast typography, high information density).
+  - Split Review Console (`#admin-pane-verif`): Document inspector with zoom (+/-/reset/rotate) and student dossier with one-click approve, preset rejection reasons drawer, and custom notes.
+  - Student Directory (`#admin-pane-students`): Fast tabular directory with instant search across name, email, student ID, department, and status filters with suspend/reactivate actions.
+  - Listing Reports Queue (`#admin-pane-reports`): Campus peer reports triage with listing removal, user suspension, and dismissal actions.
+  - Audit Trail (`#admin-pane-audit`): Immutable chronological log tracking all reviewer approvals, rejections, suspensions, and moderation actions.
+  - Summary stats & live pills in top bar and sidebar badges.
+  - Complete TypeScript types, REST endpoints contract, and `adminService` with offline mock fallback and live API hooks.
 
 ---
 
 ## 2. Current Task
-- **Phase 1.1 Review & PR Creation**: Commit and push Phase 1.1 changes to `origin/ab-pro` and open a Pull Request into `main`.
+- **Phase 1.2 Review & PR Creation**: Commit and push Phase 1.2 changes to `origin/feat/admin-dashboard` and open Pull Request #2 into `main`.
 
 ---
 
 ## 3. Pending Tasks
 - [ ] Connect live Auth & Verification endpoints once Developer 1 deploys them.
 - [ ] In-app notification drawer & unread notification events.
-- [ ] Admin Dashboard UI (Verification queue, reports triage, student account suspension).
 - [ ] Real-time Chat integration via Pusher Channels / WebSocket.
 - [ ] End-to-end integration tests (Vitest / Playwright).
 

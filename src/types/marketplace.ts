@@ -135,3 +135,62 @@ export interface DashboardSummary {
   unreadChatsCount: number;
   trustScore: string;
 }
+
+export interface VerificationQueueItem {
+  id: string;
+  userId: string;
+  studentName: string;
+  studentId: string;
+  department: string;
+  academicYear: string;
+  email: string;
+  idDocumentUrl: string;
+  submittedAt: string;
+  status: UserStatus;
+  rejectionReason?: string;
+}
+
+export interface AdminStudent {
+  id: string;
+  fullName: string;
+  studentId: string;
+  department: string;
+  academicYear: string;
+  email: string;
+  status: UserStatus;
+  role: 'STUDENT' | 'ADMIN';
+  joinedAt: string;
+  activeListingsCount: number;
+  trustScore: number;
+}
+
+export interface ModerationReport {
+  id: string;
+  reporterName: string;
+  reporterId: string;
+  targetType: 'LISTING' | 'USER' | 'CHAT';
+  targetId: string;
+  targetTitle: string;
+  reason: string;
+  details: string;
+  timestamp: string;
+  status: 'OPEN' | 'RESOLVED' | 'DISMISSED';
+  resolutionNote?: string;
+}
+
+export interface AuditLogEntry {
+  id: string;
+  timestamp: string;
+  actorName: string;
+  action: string;
+  targetType: string;
+  targetName: string;
+  notes?: string;
+}
+
+export interface AdminSummary {
+  pendingVerificationsCount: number;
+  openReportsCount: number;
+  verifiedStudentsCount: number;
+  totalListingsCount: number;
+}
