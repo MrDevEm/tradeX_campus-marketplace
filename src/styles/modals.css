@@ -2778,3 +2778,373 @@ body.chat-modal-open {
   }
 }
 
+/* ========================================================= */
+/* REAL-TIME NOTIFICATION BELL & FLYOUT DRAWER */
+/* ========================================================= */
+.nav-notif-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-right: 8px;
+}
+
+.btn-notif-bell {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(6, 214, 160, 0.35);
+  background: rgba(6, 214, 160, 0.08);
+  color: #E2F5EE;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.18s ease;
+}
+
+.btn-notif-bell:hover {
+  background: rgba(6, 214, 160, 0.2);
+  border-color: #06D6A0;
+  color: #06D6A0;
+}
+
+.notif-badge {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  min-width: 17px;
+  height: 17px;
+  padding: 0 4px;
+  border-radius: 9999px;
+  background: #EF4444;
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 6px rgba(239, 68, 68, 0.7);
+  animation: notifPulse 2s infinite ease-in-out;
+}
+
+@keyframes notifPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+.notif-drawer-card {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  width: 340px;
+  max-width: 90vw;
+  background: #081F17;
+  border: 1px solid rgba(6, 214, 160, 0.3);
+  border-radius: 18px;
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.55);
+  z-index: 125;
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.notif-drawer-card.is-open {
+  display: flex;
+  animation: dropdownFadeIn 0.15s ease-out;
+}
+
+.notif-drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  background: rgba(6, 214, 160, 0.05);
+  border-bottom: 1px solid rgba(6, 214, 160, 0.15);
+}
+
+.notif-header-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.notif-header-title {
+  font-family: var(--font-display);
+  font-size: 14.5px;
+  font-weight: 700;
+  color: #F2FDF9;
+}
+
+.notif-unread-count {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 9999px;
+  background: rgba(6, 214, 160, 0.2);
+  color: #06D6A0;
+}
+
+.btn-mark-all-read {
+  background: none;
+  border: none;
+  color: var(--polar-500);
+  font-size: 11.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.btn-mark-all-read:hover {
+  color: #06D6A0;
+}
+
+.notif-list {
+  max-height: 360px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.notif-item {
+  display: flex;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba(6, 214, 160, 0.08);
+  cursor: pointer;
+  transition: background 0.12s ease;
+  position: relative;
+  text-align: left;
+}
+
+.notif-item:hover {
+  background: rgba(6, 214, 160, 0.06);
+}
+
+.notif-item.is-unread {
+  background: rgba(6, 214, 160, 0.04);
+}
+
+.notif-item-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.notif-item-icon.type-chat {
+  background: rgba(6, 214, 160, 0.15);
+  color: #06D6A0;
+}
+
+.notif-item-icon.type-verif {
+  background: rgba(59, 130, 246, 0.15);
+  color: #60A5FA;
+}
+
+.notif-item-icon.type-offer {
+  background: rgba(245, 158, 11, 0.15);
+  color: #F59E0B;
+}
+
+.notif-item-icon.type-alert {
+  background: rgba(239, 68, 68, 0.15);
+  color: #EF4444;
+}
+
+.notif-item-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.notif-item-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #F2FDF9;
+  margin-bottom: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.notif-item-time {
+  font-size: 11px;
+  color: var(--polar-500);
+  font-weight: normal;
+}
+
+.notif-item-text {
+  font-size: 12px;
+  color: #9EC7BA;
+  line-height: 1.4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.notif-item-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #06D6A0;
+  flex-shrink: 0;
+  margin-top: 6px;
+}
+
+.notif-drawer-footer {
+  padding: 10px 16px;
+  background: rgba(6, 214, 160, 0.03);
+  border-top: 1px solid rgba(6, 214, 160, 0.12);
+  text-align: center;
+}
+
+.notif-footer-note {
+  font-size: 11px;
+  color: var(--polar-500);
+}
+
+/* ========================================================= */
+/* CAMPUS SAFE MEETUP SPOTS & CHAT CARDS */
+/* ========================================================= */
+.chat-meetup-popover {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 14px;
+  right: 14px;
+  background: #081F17;
+  border: 1px solid rgba(6, 214, 160, 0.35);
+  border-radius: 16px;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6);
+  z-index: 50;
+  overflow: hidden;
+}
+
+.chat-meetup-popover-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: rgba(6, 214, 160, 0.08);
+  border-bottom: 1px solid rgba(6, 214, 160, 0.15);
+}
+
+.chat-meetup-spots-list {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 240px;
+  overflow-y: auto;
+}
+
+.chat-meetup-spot-card {
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(6, 214, 160, 0.15);
+  background: rgba(6, 214, 160, 0.04);
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.15s ease;
+}
+
+.chat-meetup-spot-card:hover {
+  background: rgba(6, 214, 160, 0.14);
+  border-color: #06D6A0;
+}
+
+.chat-meetup-spot-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: #F2FDF9;
+  margin-bottom: 2px;
+}
+
+.chat-meetup-spot-rating {
+  font-size: 11px;
+  font-weight: 600;
+  color: #06D6A0;
+  margin-bottom: 3px;
+}
+
+.chat-meetup-spot-desc {
+  font-size: 11.5px;
+  color: var(--polar-500);
+}
+
+/* Meetup Proposal Message Card inside chat thread */
+.chat-meetup-proposal-card {
+  margin-top: 6px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: rgba(6, 214, 160, 0.12);
+  border: 1px solid rgba(6, 214, 160, 0.35);
+  color: #F2FDF9;
+}
+
+.chat-meetup-card-title {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #06D6A0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+
+.chat-meetup-card-spot {
+  font-size: 13px;
+  font-weight: 600;
+  color: #FFFFFF;
+  margin-bottom: 2px;
+}
+
+.chat-meetup-card-meta {
+  font-size: 11px;
+  color: #9EC7BA;
+}
+
+/* Typing Indicator */
+.chat-typing-indicator {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 14px;
+  background: rgba(6, 214, 160, 0.08);
+  border: 1px solid rgba(6, 214, 160, 0.18);
+  color: #9EC7BA;
+  font-size: 12px;
+  width: fit-content;
+  margin: 6px 0;
+}
+
+.chat-typing-dots {
+  display: flex;
+  gap: 3px;
+}
+
+.chat-typing-dots span {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #06D6A0;
+  animation: typingBounce 1.2s infinite ease-in-out;
+}
+
+.chat-typing-dots span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.chat-typing-dots span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes typingBounce {
+  0%, 80%, 100% { transform: translateY(0); opacity: 0.4; }
+  40% { transform: translateY(-4px); opacity: 1; }
+}
+
+

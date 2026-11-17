@@ -1,5 +1,5 @@
-import { authService } from '../services/api';
-import type { AuthUser } from '../types/marketplace';
+import { authService, notificationService } from '../services/api';
+import type { AuthUser, CampusNotification } from '../types/marketplace';
 
 export function initNavbar(): void {
   const topNavbarEl = document.getElementById('top-navbar');
@@ -35,6 +35,79 @@ export function initNavbar(): void {
   const userMenuStatus = document.getElementById('user-menu-status');
   const userMenuAdmin = document.getElementById('user-menu-admin');
   const btnLogout = document.getElementById('btn-logout');
+
+  // In-App Notification Elements
+  const btnNotifBell = document.getElementById('btn-notif-bell');
+  const navNotifBadge = document.getElementById('nav-notif-badge');
+  const notifDrawerCard = document.getElementById('notif-drawer-card');
+  const notifUnreadCount = document.getElementById('notif-unread-count');
+  const btnNotifMarkRead = document.getElementById('btn-notif-mark-read');
+  const notifList = document.getElementById('notif-list');
+
+  function renderNotifications(notifs: CampusNotification[]): void {
+    if (!notifList || !navNotifBadge || !notifUnreadCount) return;
+
+    const unread = notifs.filter((n) => !n.read);
+    const unreadCount = unread.length;
+
+    if (unreadCount > 0) {
+      navNotifBadge.style.display = 'flex';
+      navNotifBadge.textContent = String(unreadCount);
+      notifUnreadCount.textContent = `${unreadCount} unread`;
+    } else {
+      navNotifBadge.style.display = 'none';
+      notifUnreadCount.textContent = 'All read';
+    }
+
+    if (notifs.length === 0) {
+      notifList.innerHTML = `
+        <div style="padding: 28px 16px; text-align: center; color: var(--polar-500); font-size: 13px;">
+          No campus notifications yet.
+        </div>
+      `;
+      return;
+    }
+
+    notifList.innerHTML = notifs
+      .map((n) => {
+        const typeClass =
+          n.type === 'CHAT'
+            ? 'type-chat'
+            : n.type === 'VERIFICATION'
+              ? 'type-verif'
+              : n.type === 'LISTING_OFFER'
+                ? 'type-offer'
+                : 'type-alert';
+
+        const iconSvg =
+          n.type === 'CHAT'
+            ? '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>'
+            : n.type === 'VERIFICATION'
+              ? '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>'
+              : n.type === 'LISTING_OFFER'
+                ? '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"></path><line x1="12" y1="6" x2="12" y2="8"></line><line x1="12" y1="16" x2="12" y2="18"></line></svg>'
+                : '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>';
+
+        return `
+          <div class="notif-item ${n.read ? '' : 'is-unread'}" data-notif-id="${n.id}">
+            <div class="notif-item-icon ${typeClass}">
+              ${iconSvg}
+            </div>
+            <div class="notif-item-body">
+              <div class="notif-item-title">
+                <span>${n.title}</span>
+                <span class="notif-item-time">${n.timestamp}</span>
+              </div>
+              <div class="notif-item-text">${n.message}</div>
+            </div>
+            ${n.read ? '' : '<span class="notif-item-dot" aria-hidden="true"></span>'}
+          </div>
+        `;
+      })
+      .join('');
+  }
+
+  notificationService.subscribe((notifs) => renderNotifications(notifs));
 
   function renderNavbarSession(user: AuthUser | null): void {
     if (user) {
@@ -83,6 +156,53 @@ export function initNavbar(): void {
   // Subscribe to reactive auth session changes
   authService.subscribe((user) => renderNavbarSession(user));
   renderNavbarSession(authService.getCurrentUser());
+
+  // Notification Bell & Drawer Handlers
+  if (btnNotifBell && notifDrawerCard) {
+    btnNotifBell.addEventListener('click', (e) => {
+      e.stopPropagation();
+      userDropdownCard?.classList.remove('is-open');
+      const open = notifDrawerCard.classList.toggle('is-open');
+      btnNotifBell.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+
+    btnNotifMarkRead?.addEventListener('click', async (e) => {
+      e.stopPropagation();
+      await notificationService.markAllAsRead();
+    });
+
+    notifList?.addEventListener('click', async (e) => {
+      const target = e.target as HTMLElement | null;
+      const itemEl = target?.closest<HTMLElement>('.notif-item');
+      if (!itemEl) return;
+
+      const notifId = itemEl.getAttribute('data-notif-id');
+      if (!notifId) return;
+
+      await notificationService.markAsRead(notifId);
+      const allNotifs = notificationService.getNotifications();
+      const notif = allNotifs.find((n) => n.id === notifId);
+
+      notifDrawerCard.classList.remove('is-open');
+      btnNotifBell.setAttribute('aria-expanded', 'false');
+
+      if (notif?.type === 'CHAT') {
+        const openInboxFn = (window as unknown as { openInboxModal?: () => void }).openInboxModal;
+        if (typeof openInboxFn === 'function') openInboxFn();
+      } else if (notif?.type === 'VERIFICATION') {
+        const openStatusFn = (window as unknown as { openIdVerificationModal?: () => void }).openIdVerificationModal;
+        if (typeof openStatusFn === 'function') openStatusFn();
+      }
+    });
+
+    document.addEventListener('click', (e) => {
+      const target = e.target as Node | null;
+      if (target && !notifDrawerCard.contains(target) && !btnNotifBell.contains(target)) {
+        notifDrawerCard.classList.remove('is-open');
+        btnNotifBell.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
 
   if (btnUserSession && userDropdownCard) {
     btnUserSession.addEventListener('click', (e) => {
