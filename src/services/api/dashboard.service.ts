@@ -1,7 +1,7 @@
-import { isApiConfigured } from '../../config/env';
-import type { DashboardSummary, Listing } from '../../types/marketplace';
-import { apiRequest } from './client';
-import { API_ENDPOINTS } from './endpoints';
+import { isApiConfigured } from '../../config/env.ts';
+import type { DashboardSummary, Listing } from '../../types/marketplace.ts';
+import { apiRequest } from './client.ts';
+import { API_ENDPOINTS } from './endpoints.ts';
 
 export const dashboardService = {
   async fetchSummary(): Promise<DashboardSummary | null> {

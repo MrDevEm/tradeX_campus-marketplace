@@ -1,7 +1,7 @@
-import { isApiConfigured } from '../../config/env';
-import type { CampusNotification, NotificationType } from '../../types/marketplace';
-import { apiRequest } from './client';
-import { API_ENDPOINTS } from './endpoints';
+import { isApiConfigured } from '../../config/env.ts';
+import type { CampusNotification, NotificationType } from '../../types/marketplace.ts';
+import { apiRequest } from './client.ts';
+import { API_ENDPOINTS } from './endpoints.ts';
 
 const NOTIFICATIONS_STORAGE_KEY = 'tradex_campus_notifications';
 
@@ -60,10 +60,12 @@ const listeners = new Set<NotificationListener>();
 
 function loadStoredNotifications(): CampusNotification[] {
   try {
-    const raw = localStorage.getItem(NOTIFICATIONS_STORAGE_KEY);
-    if (raw) {
-      const parsed = JSON.parse(raw);
-      if (Array.isArray(parsed)) return parsed;
+    if (typeof localStorage !== 'undefined') {
+      const raw = localStorage.getItem(NOTIFICATIONS_STORAGE_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed)) return parsed;
+      }
     }
   } catch (err) {
     console.error('[NotificationService] Failed to load notifications from storage:', err);
@@ -73,7 +75,9 @@ function loadStoredNotifications(): CampusNotification[] {
 
 function saveStoredNotifications(notifs: CampusNotification[]): void {
   try {
-    localStorage.setItem(NOTIFICATIONS_STORAGE_KEY, JSON.stringify(notifs));
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem(NOTIFICATIONS_STORAGE_KEY, JSON.stringify(notifs));
+    }
   } catch (err) {
     console.error('[NotificationService] Failed to persist notifications:', err);
   }

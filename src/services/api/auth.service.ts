@@ -1,4 +1,4 @@
-import { isApiConfigured } from '../../config/env';
+import { isApiConfigured } from '../../config/env.ts';
 import type {
   AuthSession,
   AuthUser,
@@ -7,9 +7,9 @@ import type {
   UploadStudentIdPayload,
   VerificationStatus,
   VerifyEmailPayload,
-} from '../../types/marketplace';
-import { apiRequest, getStoredAuthToken, getStoredAuthUser, setStoredAuthToken, setStoredAuthUser } from './client';
-import { API_ENDPOINTS } from './endpoints';
+} from '../../types/marketplace.ts';
+import { apiRequest, getStoredAuthToken, getStoredAuthUser, setStoredAuthToken, setStoredAuthUser } from './client.ts';
+import { API_ENDPOINTS } from './endpoints.ts';
 
 type AuthListener = (user: AuthUser | null) => void;
 const listeners = new Set<AuthListener>();

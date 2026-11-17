@@ -1,8 +1,8 @@
-import { isApiConfigured } from '../../config/env';
-import type { CampusMeetupSpot, ChatMessage, Conversation } from '../../types/marketplace';
-import { apiRequest } from './client';
-import { API_ENDPOINTS } from './endpoints';
-import { notificationService } from './notification.service';
+import { isApiConfigured } from '../../config/env.ts';
+import type { CampusMeetupSpot, ChatMessage, Conversation } from '../../types/marketplace.ts';
+import { apiRequest } from './client.ts';
+import { API_ENDPOINTS } from './endpoints.ts';
+import { notificationService } from './notification.service.ts';
 
 export const CAMPUS_MEETUP_SPOTS: CampusMeetupSpot[] = [
   {

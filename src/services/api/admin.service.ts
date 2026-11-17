@@ -1,4 +1,4 @@
-import { isApiConfigured } from '../../config/env';
+import { isApiConfigured } from '../../config/env.ts';
 import type {
   AdminStudent,
   AdminSummary,
@@ -6,9 +6,9 @@ import type {
   ModerationReport,
   UserStatus,
   VerificationQueueItem,
-} from '../../types/marketplace';
-import { apiRequest } from './client';
-import { API_ENDPOINTS } from './endpoints';
+} from '../../types/marketplace.ts';
+import { apiRequest } from './client.ts';
+import { API_ENDPOINTS } from './endpoints.ts';
 
 // Initial realistic administrative review data for offline operation
 const INITIAL_VERIFICATIONS: VerificationQueueItem[] = [
