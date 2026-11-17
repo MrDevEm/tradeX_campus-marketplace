@@ -1,7 +1,7 @@
 import { isApiConfigured } from '../config/env';
 import { INITIAL_CONVERSATIONS, LOCAL_CHAT_MEDIA_POOL } from '../data/marketplaceSeed';
-import { messagingService } from '../services/api';
-import type { ChatMessage, ChatMobileView, Conversation, Listing } from '../types/marketplace';
+import { messagingService, chatService, CAMPUS_MEETUP_SPOTS } from '../services/api';
+import type { CampusMeetupSpot, ChatMessage, ChatMobileView, Conversation, Listing } from '../types/marketplace';
 import { escapeHtml } from '../utils/html';
 
 export interface MessagingController {
@@ -46,6 +46,14 @@ export function initMessaging(options: MessagingOptions): MessagingController {
   const btnChatUndo = document.getElementById('btn-chat-undo');
   const chatLightbox = document.getElementById('chat-lightbox');
   const chatLightboxImg = document.getElementById('chat-lightbox-img') as HTMLImageElement | null;
+
+  // Real-time Meetup & Typing Elements
+  const btnChatMeetupSpots = document.getElementById('btn-chat-meetup-spots');
+  const chatMeetupPopover = document.getElementById('chat-meetup-popover');
+  const btnCloseMeetupPicker = document.getElementById('btn-close-meetup-picker');
+  const chatMeetupSpotsList = document.getElementById('chat-meetup-spots-list');
+  const chatTypingIndicator = document.getElementById('chat-typing-indicator');
+  const chatTypingName = document.getElementById('chat-typing-name');
 
   let activeConversations: Conversation[] = INITIAL_CONVERSATIONS.map((c) => ({
     ...c,
@@ -227,12 +235,23 @@ export function initMessaging(options: MessagingOptions): MessagingController {
       </button>
     `;
 
+    const meetupCardHtml = m.meetupDetails
+      ? `<div class="chat-meetup-proposal-card">
+           <div class="chat-meetup-card-title">
+             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+             Official Safe Campus Exchange Zone
+           </div>
+           <div class="chat-meetup-card-spot">${escapeHtml(m.meetupDetails.name)}</div>
+           <div class="chat-meetup-card-meta">${escapeHtml(m.meetupDetails.safetyRating)} • Landmark: ${escapeHtml(m.meetupDetails.landmark)}</div>
+         </div>`
+      : '';
+
     const bodyHtml = m.img
       ? `<div class="msg-bubble ${m.in ? 'msg-in' : 'msg-out'} msg-photo-bubble" data-photo-src="${escapeHtml(m.img)}">
            <img src="${escapeHtml(m.img)}" alt="Shared photo" />
            ${m.text ? `<div class="msg-photo-caption">${safeText}</div>` : ''}
          </div>`
-      : `<div class="msg-bubble ${m.in ? 'msg-in' : 'msg-out'}">${safeText}</div>`;
+      : `<div class="msg-bubble ${m.in ? 'msg-in' : 'msg-out'}">${safeText}${meetupCardHtml}</div>`;
 
     group.innerHTML = `
       <div class="chat-msg-meta">
@@ -803,46 +822,78 @@ export function initMessaging(options: MessagingOptions): MessagingController {
     });
   }
 
-  function sendMessageText(text: string): void {
+  function sendMessageText(text: string, meetupDetails?: CampusMeetupSpot): void {
     if (!text || !currentConv) return;
-    const convTarget = currentConv;
-    const nowStr = getFormattedNow();
-    const outMsg: ChatMessage = { id: 'm-' + Date.now(), in: false, time: nowStr, text };
-    convTarget.messages.push(outMsg);
-    convTarget.lastTime = nowStr;
-    renderConversations();
-    appendMessageToThread(outMsg);
-
-    if (isApiConfigured()) {
-      void messagingService.sendMessage(convTarget.id, { text }).catch(() => {});
-      return;
-    }
-
-    const typingEl = document.getElementById('chat-typing-indicator');
-    if (typingEl) {
-      typingEl.classList.add('is-visible');
-      chatThread?.scrollTo({ top: chatThread.scrollHeight, behavior: 'smooth' });
-    }
-
-    window.setTimeout(() => {
-      if (!activeConversations.includes(convTarget)) return;
-      const replyTime = getFormattedNow();
-      const replyMsg: ChatMessage = {
-        id: 'm-' + (Date.now() + 1),
-        in: true,
-        time: replyTime,
-        text: 'Sounds good! I am on campus near the Main Library today. Let me know when you arrive.',
-      };
-      convTarget.messages.push(replyMsg);
-      convTarget.lastTime = replyTime;
-      renderConversations();
-      if (currentConv && currentConv.id === convTarget.id) {
-        const tEl = document.getElementById('chat-typing-indicator');
-        tEl?.classList.remove('is-visible');
-        appendMessageToThread(replyMsg);
-      }
-    }, 850);
+    const convId = currentConv.id;
+    void chatService.sendMessage(convId, { text, meetupDetails });
   }
+
+  // Subscribe to real-time chat service events
+  chatService.onMessage((msg, convId) => {
+    const convTarget = activeConversations.find((c) => c.id === convId);
+    if (!convTarget) return;
+
+    if (!convTarget.messages.some((m) => m.id === msg.id)) {
+      convTarget.messages.push(msg);
+      convTarget.lastTime = msg.time;
+      renderConversations();
+    }
+
+    if (currentConv && currentConv.id === convId) {
+      appendMessageToThread(msg);
+    }
+  });
+
+  chatService.onTyping(({ conversationId, sender, isTyping }) => {
+    if (currentConv && currentConv.id === conversationId && chatTypingIndicator) {
+      if (isTyping) {
+        if (chatTypingName) chatTypingName.textContent = sender;
+        chatTypingIndicator.style.display = 'flex';
+        chatThread?.scrollTo({ top: chatThread.scrollHeight, behavior: 'smooth' });
+      } else {
+        chatTypingIndicator.style.display = 'none';
+      }
+    }
+  });
+
+  // Meetup Spots Picker Logic
+  function renderMeetupSpots(): void {
+    if (!chatMeetupSpotsList) return;
+    chatMeetupSpotsList.innerHTML = CAMPUS_MEETUP_SPOTS.map(
+      (s) => `
+      <div class="chat-meetup-spot-card" data-spot-id="${s.id}">
+        <div class="chat-meetup-spot-name">📍 ${escapeHtml(s.name)}</div>
+        <div class="chat-meetup-spot-rating">🛡️ ${escapeHtml(s.safetyRating)}</div>
+        <div class="chat-meetup-spot-desc">${escapeHtml(s.description)} (${escapeHtml(s.landmark)})</div>
+      </div>
+    `
+    ).join('');
+  }
+
+  renderMeetupSpots();
+
+  btnChatMeetupSpots?.addEventListener('click', () => {
+    chatAttachPopover?.classList.remove('is-open');
+    btnChatPlus?.classList.remove('is-active');
+    chatMeetupPopover?.style.setProperty('display', 'block');
+  });
+
+  btnCloseMeetupPicker?.addEventListener('click', () => {
+    chatMeetupPopover?.style.setProperty('display', 'none');
+  });
+
+  chatMeetupSpotsList?.addEventListener('click', (e) => {
+    const target = e.target as HTMLElement | null;
+    const card = target?.closest<HTMLElement>('.chat-meetup-spot-card');
+    if (!card) return;
+
+    const spotId = card.getAttribute('data-spot-id');
+    const spot = CAMPUS_MEETUP_SPOTS.find((s) => s.id === spotId);
+    if (!spot) return;
+
+    chatMeetupPopover?.style.setProperty('display', 'none');
+    sendMessageText(`📍 Proposed Safe Campus Exchange: ${spot.name}. Let me know if this location works for you!`, spot);
+  });
 
   document.querySelectorAll('[data-quick-msg]').forEach((btn) => {
     btn.addEventListener('click', () => {
@@ -863,6 +914,9 @@ export function initMessaging(options: MessagingOptions): MessagingController {
     btnChatPlus?.classList.remove('is-active');
     sendMessageText(text);
   });
+
+  // Global window exposure for triggers
+  (window as unknown as { openInboxModal: () => void }).openInboxModal = openInboxModal;
 
   if (isApiConfigured()) {
     void messagingService

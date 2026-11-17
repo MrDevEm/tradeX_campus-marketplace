@@ -56,12 +56,22 @@ export interface CreateListingPayload {
   imageDataUrl?: string;
 }
 
+export interface CampusMeetupSpot {
+  id: string;
+  name: string;
+  description: string;
+  safetyRating: string;
+  landmark: string;
+}
+
 export interface ChatMessage {
   id: string;
   in: boolean;
   time: string;
   text: string;
   img?: string;
+  isMeetupProposal?: boolean;
+  meetupDetails?: CampusMeetupSpot;
 }
 
 export interface Conversation {
@@ -193,4 +203,21 @@ export interface AdminSummary {
   openReportsCount: number;
   verifiedStudentsCount: number;
   totalListingsCount: number;
+}
+
+export type NotificationType = 'CHAT' | 'VERIFICATION' | 'LISTING_OFFER' | 'CAMPUS_ALERT';
+
+export interface CampusNotification {
+  id: string;
+  userId: string;
+  type: NotificationType;
+  title: string;
+  message: string;
+  timestamp: string;
+  read: boolean;
+  data?: {
+    conversationId?: string;
+    listingId?: string;
+    verificationStatus?: UserStatus;
+  };
 }

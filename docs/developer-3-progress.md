@@ -18,26 +18,31 @@
   - Reactive identity verification status dashboard (`#verify-screen`) supporting `APPROVED`, `PENDING_APPROVAL`, `REJECTED`, and `PENDING_UPLOAD`.
   - Dynamic session state in top navbar (`#nav-user-menu`) with user avatar, name, status indicator dot, dropdown menu, and mobile logout action.
   - Pull Request #1 created and squash-merged into `main`.
-- [x] **Phase 1.2 Admin Dashboard (Verification, Student Directory, Reports, Audit Trail) Completed**:
+- [x] **Phase 1.2 Admin Dashboard (Verification, Student Directory, Reports, Audit Trail) Completed & Merged**:
   - Impeccable Operate-mode UI design following `docs/DESIGN_SYSTEM.md` (no generic gradients, restrained dark slate canvas `#061712`, high-contrast typography, high information density).
   - Split Review Console (`#admin-pane-verif`): Document inspector with zoom (+/-/reset/rotate) and student dossier with one-click approve, preset rejection reasons drawer, and custom notes.
   - Student Directory (`#admin-pane-students`): Fast tabular directory with instant search across name, email, student ID, department, and status filters with suspend/reactivate actions.
   - Listing Reports Queue (`#admin-pane-reports`): Campus peer reports triage with listing removal, user suspension, and dismissal actions.
   - Audit Trail (`#admin-pane-audit`): Immutable chronological log tracking all reviewer approvals, rejections, suspensions, and moderation actions.
-  - Summary stats & live pills in top bar and sidebar badges.
-  - Complete TypeScript types, REST endpoints contract, and `adminService` with offline mock fallback and live API hooks.
+  - Pull Request #2 created and merged into `main`.
+- [x] **Phase 1.3 Real-Time Chat & Notification System Completed**:
+  - Real-time campus chat service (`src/services/api/chat.service.ts`) with pub/sub event listeners (`onMessage`, `onTyping`, `onConnectionChange`) and WebSocket/Pusher abstraction.
+  - Official Safe Campus Exchange Zones (`CAMPUS_MEETUP_SPOTS`): Main Library Plaza, Student Union Lounge, Gate 1 Security Checkpoint, and Central Cafeteria.
+  - Interactive Meetup Spot Picker popover (`#chat-meetup-popover`) and campus safe exchange proposal cards rendered within chat bubbles.
+  - Real-time typing indicator with animated dots (`#chat-typing-indicator`).
+  - In-App Notification Service (`src/services/api/notification.service.ts`) with reactive unread badge (`#nav-notif-badge`) and flyout drawer (`#notif-drawer-card`).
+  - Interactive notification triage: click to navigate directly to chat or ID verification modal, and one-click "Mark all as read".
 
 ---
 
 ## 2. Current Task
-- **Phase 1.2 Review & PR Creation**: Commit and push Phase 1.2 changes to `origin/feat/admin-dashboard` and open Pull Request #2 into `main`.
+- **Phase 1.3 Review & PR Creation**: Commit and push Phase 1.3 changes directly to `origin/ab-pro` and open Pull Request #3 from `ab-pro` into `main`.
 
 ---
 
 ## 3. Pending Tasks
 - [ ] Connect live Auth & Verification endpoints once Developer 1 deploys them.
-- [ ] In-app notification drawer & unread notification events.
-- [ ] Real-time Chat integration via Pusher Channels / WebSocket.
+- [ ] Connect live Chat WebSocket/Pusher credentials once backend is running.
 - [ ] End-to-end integration tests (Vitest / Playwright).
 
 ---
