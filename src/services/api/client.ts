@@ -1,5 +1,5 @@
-import { ENV, isApiConfigured } from '../../config/env';
-import type { AuthUser } from '../../types/marketplace';
+import { ENV, isApiConfigured } from '../../config/env.ts';
+import type { AuthUser } from '../../types/marketplace.ts';
 
 const AUTH_TOKEN_STORAGE_KEY = 'tradex_auth_token';
 const AUTH_USER_STORAGE_KEY = 'tradex_auth_user';

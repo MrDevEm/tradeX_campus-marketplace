@@ -1,7 +1,7 @@
-import { isApiConfigured } from '../../config/env';
-import type { CreateListingPayload, Listing } from '../../types/marketplace';
-import { apiRequest } from './client';
-import { API_ENDPOINTS } from './endpoints';
+import { isApiConfigured } from '../../config/env.ts';
+import type { CreateListingPayload, Listing } from '../../types/marketplace.ts';
+import { apiRequest } from './client.ts';
+import { API_ENDPOINTS } from './endpoints.ts';
 
 export const listingsService = {
   async fetchListings(): Promise<Listing[] | null> {

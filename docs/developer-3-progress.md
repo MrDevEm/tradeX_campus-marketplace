@@ -25,25 +25,30 @@
   - Listing Reports Queue (`#admin-pane-reports`): Campus peer reports triage with listing removal, user suspension, and dismissal actions.
   - Audit Trail (`#admin-pane-audit`): Immutable chronological log tracking all reviewer approvals, rejections, suspensions, and moderation actions.
   - Pull Request #2 created and merged into `main`.
-- [x] **Phase 1.3 Real-Time Chat & Notification System Completed**:
+- [x] **Phase 1.3 Real-Time Chat & Notification System Completed & Merged**:
   - Real-time campus chat service (`src/services/api/chat.service.ts`) with pub/sub event listeners (`onMessage`, `onTyping`, `onConnectionChange`) and WebSocket/Pusher abstraction.
   - Official Safe Campus Exchange Zones (`CAMPUS_MEETUP_SPOTS`): Main Library Plaza, Student Union Lounge, Gate 1 Security Checkpoint, and Central Cafeteria.
   - Interactive Meetup Spot Picker popover (`#chat-meetup-popover`) and campus safe exchange proposal cards rendered within chat bubbles.
   - Real-time typing indicator with animated dots (`#chat-typing-indicator`).
   - In-App Notification Service (`src/services/api/notification.service.ts`) with reactive unread badge (`#nav-notif-badge`) and flyout drawer (`#notif-drawer-card`).
   - Interactive notification triage: click to navigate directly to chat or ID verification modal, and one-click "Mark all as read".
+  - Pull Request #4 created and merged into `main`.
+- [x] **Phase 1.4 Automated Integration Testing & Backend API Contract Completed**:
+  - Full automated integration test suite (`tests/integration.test.ts`) covering Auth, OTP, ID Upload, Admin Queue, Student Directory, Reports Triage, Audit Trail, Chat Engine, and Notifications.
+  - `npm test` script wired and executing via Node native test runner (16/16 tests passing).
+  - Complete Backend API & Database Contract authored in `docs/BACKEND_API_CONTRACT.md` (full Prisma schema models, REST endpoint specifications, WebSocket channel events, and security guidelines for Developer 1).
 
 ---
 
 ## 2. Current Task
-- **Phase 1.3 Review & PR Creation**: Commit and push Phase 1.3 changes directly to `origin/ab-pro` and open Pull Request #3 from `ab-pro` into `main`.
+- **Phase 1.4 Review & PR Creation**: Commit and push Phase 1.4 changes directly to `origin/ab-pro` and open Pull Request #5 from `ab-pro` into `main`.
 
 ---
 
 ## 3. Pending Tasks
 - [ ] Connect live Auth & Verification endpoints once Developer 1 deploys them.
 - [ ] Connect live Chat WebSocket/Pusher credentials once backend is running.
-- [ ] End-to-end integration tests (Vitest / Playwright).
+- [ ] Final end-to-end integration smoke testing against live deployment.
 
 ---
 
