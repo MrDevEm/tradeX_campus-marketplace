@@ -8,3 +8,6 @@ coverage/
 .env*
 !.env.example
 
+# Developer prompt files
+docs/DEVELOPER_1_PROMPT.md
+
