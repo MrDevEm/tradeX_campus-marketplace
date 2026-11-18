@@ -137,7 +137,7 @@ npm run dev
 
 ## Documentation Links
 
-- [Developer 1's Message for Developer 2 & 3](docs/Developer%201's%20message%20for%20Developer%202%20%26%20Developer%203.md) — Quick start and integration guide for teammates.
+- [Developer 1's Message for Developer 2 & 3](docs/Developer_1's_message_for_Developer_2_&_Developer_3.md) — Quick start and integration guide for teammates.
 - [Canonical Backend Contract](docs/BACKEND_API_CONTRACT.md) — Technical database and API contract.
 - [Design System Guide](docs/DESIGN_SYSTEM.md) — UI tokens and design specifications.
 
