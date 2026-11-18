@@ -9,13 +9,25 @@
     "preview": "vite preview",
     "clean": "rm -rf dist",
     "lint": "tsc --noEmit",
-    "test": "node --test tests/integration.test.ts"
+    "test": "node --import tsx --test tests/integration.test.ts"
   },
   "dependencies": {
+    "@neon/config": "^1.14.3",
+    "@neon/env": "^2.1.6",
+    "@prisma/client": "^6.19.3",
+    "bcrypt": "^6.0.0",
+    "bcryptjs": "^3.0.3",
     "vite": "^8.3.0"
   },
   "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
+    "@types/bcryptjs": "^3.0.0",
     "@types/node": "^22.14.0",
+    "prisma": "^6.19.3",
+    "tsx": "^4.23.15",
     "typescript": "^7.0.2"
+  },
+  "prisma": {
+    "seed": "node --import tsx prisma/seed.ts"
   }
 }

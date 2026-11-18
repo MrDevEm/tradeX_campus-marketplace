@@ -1,0 +1,276 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// -------------------------------------------------------------
+// ENUMS
+// -------------------------------------------------------------
+
+enum UserRole {
+  STUDENT
+  ADMIN
+  SUPERADMIN
+}
+
+enum UserStatus {
+  PENDING_EMAIL_VERIFICATION
+  PENDING_UPLOAD
+  PENDING_APPROVAL
+  APPROVED
+  REJECTED
+  SUSPENDED
+}
+
+enum ListingType {
+  BUY
+  SELL
+  SWAP
+}
+
+enum ListingCondition {
+  BRAND_NEW
+  LIKE_NEW
+  EXCELLENT
+  GOOD
+  FAIR
+}
+
+enum ListingStatus {
+  ACTIVE
+  PENDING_SWAP
+  SOLD
+  REMOVED
+}
+
+enum ReportTargetType {
+  LISTING
+  USER
+  CHAT
+}
+
+enum ReportStatus {
+  OPEN
+  RESOLVED
+  DISMISSED
+}
+
+enum ModerationAction {
+  REMOVE_LISTING
+  WARN_USER
+  SUSPEND_USER
+  DISMISS
+}
+
+enum NotificationType {
+  CHAT
+  VERIFICATION
+  LISTING_OFFER
+  CAMPUS_ALERT
+}
+
+// -------------------------------------------------------------
+// MODELS
+// -------------------------------------------------------------
+
+model User {
+  id                String     @id @default(uuid())
+  email             String     @unique
+  passwordHash      String
+  fullName          String
+  role              UserRole   @default(STUDENT)
+  status            UserStatus @default(PENDING_EMAIL_VERIFICATION)
+  emailVerified     Boolean    @default(false)
+  studentIdVerified Boolean    @default(false)
+  rejectionReason   String?
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt
+
+  studentProfile        StudentProfile?
+  emailOtps             EmailOtp[]
+  verificationRequests  VerificationRequest[]
+  listings              Listing[]
+  sentMessages          ChatMessage[]         @relation("SentMessages")
+  conversationsAsBuyer  Conversation[]        @relation("BuyerConversations")
+  conversationsAsSeller Conversation[]        @relation("SellerConversations")
+  reportsFiled          ModerationReport[]    @relation("Reporter")
+  reportsReceived       ModerationReport[]    @relation("ReportedUser")
+  auditActions          AuditLog[]            @relation("Actor")
+  notifications         CampusNotification[]
+
+  @@index([email])
+  @@index([status])
+  @@index([role])
+}
+
+model StudentProfile {
+  id           String   @id @default(uuid())
+  userId       String   @unique
+  studentId    String   @unique // e.g., UGR/1402/14
+  university   String   @default("Addis Ababa University")
+  department   String // e.g., Software Engineering
+  academicYear String // e.g., 3rd Year / Class of 2026
+  avatarUrl    String?
+  trustScore   Int      @default(100)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model EmailOtp {
+  id        String   @id @default(uuid())
+  userId    String
+  email     String
+  otpCode   String // 6-digit cryptographic random string
+  expiresAt DateTime // 5 minutes validity
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([email, otpCode])
+}
+
+model VerificationRequest {
+  id              String     @id @default(uuid())
+  userId          String
+  idDocumentUrl   String // Private S3 / local storage path (NEVER public)
+  status          UserStatus @default(PENDING_APPROVAL)
+  rejectionReason String?
+  reviewedBy      String? // Admin User ID
+  reviewedAt      DateTime?
+  submittedAt     DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([status])
+}
+
+model Listing {
+  id          String           @id @default(uuid())
+  sellerId    String
+  title       String
+  category    String // Books, Electronics, Dorm, Supplies, Clothing
+  type        ListingType      @default(SELL)
+  price       Decimal          @db.Decimal(10, 2)
+  condition   ListingCondition @default(GOOD)
+  campusSpot  String // e.g., Main Library Plaza
+  description String           @db.Text
+  images      String[]
+  status      ListingStatus    @default(ACTIVE)
+  viewsCount  Int              @default(0)
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  seller        User               @relation(fields: [sellerId], references: [id], onDelete: Cascade)
+  conversations Conversation[]
+  reports       ModerationReport[]
+
+  @@index([category])
+  @@index([status])
+  @@index([sellerId])
+}
+
+model Conversation {
+  id             String   @id @default(uuid())
+  listingId      String
+  buyerId        String
+  sellerId       String
+  pinnedByBuyer  Boolean  @default(false)
+  pinnedBySeller Boolean  @default(false)
+  lastMessageAt  DateTime @default(now())
+  createdAt      DateTime @default(now())
+
+  listing  Listing       @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  buyer    User          @relation("BuyerConversations", fields: [buyerId], references: [id], onDelete: Cascade)
+  seller   User          @relation("SellerConversations", fields: [sellerId], references: [id], onDelete: Cascade)
+  messages ChatMessage[]
+
+  @@unique([listingId, buyerId, sellerId])
+  @@index([lastMessageAt])
+}
+
+model ChatMessage {
+  id               String   @id @default(uuid())
+  conversationId   String
+  senderId         String
+  text             String   @db.Text
+  mediaUrl         String?
+  isMeetupProposal Boolean  @default(false)
+  meetupSpotId     String?
+  read             Boolean  @default(false)
+  createdAt        DateTime @default(now())
+
+  conversation Conversation      @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  sender       User              @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+  meetupSpot   CampusMeetupSpot? @relation(fields: [meetupSpotId], references: [id])
+
+  @@index([conversationId, createdAt])
+}
+
+model CampusMeetupSpot {
+  id           String        @id @default(uuid())
+  name         String // e.g., Campus Gate 1 Security Checkpoint
+  description  String
+  safetyRating String // e.g., Highest Security • 24/7 Monitored
+  landmark     String // e.g., Main Guard Pavilion
+  messages     ChatMessage[]
+}
+
+model ModerationReport {
+  id             String            @id @default(uuid())
+  reporterId     String
+  targetType     ReportTargetType
+  listingId      String?
+  reportedUserId String?
+  reason         String
+  details        String            @db.Text
+  status         ReportStatus      @default(OPEN)
+  actionTaken    ModerationAction?
+  resolutionNote String?           @db.Text
+  resolvedBy     String? // Admin User ID
+  resolvedAt     DateTime?
+  createdAt      DateTime          @default(now())
+
+  reporter     User     @relation("Reporter", fields: [reporterId], references: [id], onDelete: Cascade)
+  reportedUser User?    @relation("ReportedUser", fields: [reportedUserId], references: [id])
+  listing      Listing? @relation(fields: [listingId], references: [id])
+
+  @@index([status])
+}
+
+model AuditLog {
+  id         String   @id @default(uuid())
+  actorId    String
+  actorName  String
+  action     String // VERIFICATION_APPROVED, VERIFICATION_REJECTED, USER_SUSPENDED, REPORT_RESOLVE
+  targetType String // STUDENT, LISTING, USER
+  targetName String
+  notes      String?  @db.Text
+  timestamp  DateTime @default(now())
+
+  actor User @relation("Actor", fields: [actorId], references: [id], onDelete: Cascade)
+
+  @@index([timestamp])
+}
+
+model CampusNotification {
+  id        String           @id @default(uuid())
+  userId    String
+  type      NotificationType
+  title     String
+  message   String
+  read      Boolean          @default(false)
+  entityId  String? // e.g., conversationId or listingId
+  createdAt DateTime         @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, read])
+}
