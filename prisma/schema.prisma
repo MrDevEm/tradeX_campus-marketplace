@@ -101,6 +101,7 @@ model User {
   reportsReceived       ModerationReport[]    @relation("ReportedUser")
   auditActions          AuditLog[]            @relation("Actor")
   notifications         CampusNotification[]
+  savedListings         SavedListing[]
 
   @@index([email])
   @@index([status])
@@ -171,6 +172,7 @@ model Listing {
   seller        User               @relation(fields: [sellerId], references: [id], onDelete: Cascade)
   conversations Conversation[]
   reports       ModerationReport[]
+  savedBy       SavedListing[]
 
   @@index([category])
   @@index([status])
@@ -273,4 +275,29 @@ model CampusNotification {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId, read])
+}
+
+model Category {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  slug      String   @unique
+  icon      String?  @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([slug])
+}
+
+model SavedListing {
+  id        String   @id @default(uuid())
+  userId    String
+  listingId String
+  createdAt DateTime @default(now())
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  listing Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, listingId])
+  @@index([userId])
+  @@index([listingId])
 }
