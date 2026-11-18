@@ -1,43 +1,54 @@
 # tradeX
 
-**tradeX** is a peer-to-peer university campus marketplace frontend where verified students can buy, sell, swap, and gift textbooks, electronics, clothing, accessories, and dorm essentials safely on campus.
+**tradeX** is a full-stack peer-to-peer university campus marketplace where verified students can buy, sell, swap, and gift textbooks, electronics, clothing, accessories, and dorm essentials safely on campus.
+
+The project pairs a responsive web client with a high-performance **Node.js/Express + Prisma ORM** backend powered by serverless **Neon PostgreSQL**.
 
 ---
 
 ## Project Overview
 
-tradeX is built exclusively for campus communities to make peer-to-peer student trading fast, transparent, and local:
+tradeX is built exclusively for university communities to make peer-to-peer student trading fast, transparent, and local:
 
 - **Zero commission fees**: Students arrange campus handovers in person at public campus spots (library lobbies, student unions, cafeterias).
 - **Multiple exchange modes**: Supports direct **Buy / Sell** listings (in ETB), **Swap** barter listings, and **Free Corner** student giveaways.
-- **Standalone & API-ready**: Runs immediately with realistic seed data when no backend URL is set, and automatically switches to live REST API calls when `VITE_API_BASE_URL` is configured.
+- **Relational Integrity**: Powered by PostgreSQL with 13 canonical Prisma models, strict foreign key constraints, indexes, and soft-closure state machines.
+- **Dual-Mode Frontend Client**: Runs immediately with mock seed data when offline, and automatically connects to the live backend when `VITE_API_BASE_URL` is set.
 
 ---
 
-## Main Frontend Features
+## Main Features
 
-- **Curved Product Showcase Carousel**: Interactive 12-item perspective arch carousel driven by `requestAnimationFrame` with pointer drag inertia, hover lift, and responsive unit scaling.
-- **Responsive Floating Glass Navigation**: Desktop wave-arch hover/scroll-spy indicator paired with a mobile navigation drawer.
+### 🛒 Frontend & Marketplace UI
+- **Curved Product Showcase Carousel**: Interactive 12-item perspective arch carousel driven by `requestAnimationFrame` with drag inertia.
+- **Floating Glass Navigation**: Wave-arch indicator with responsive drawer for mobile devices.
 - **Category Explorer & Marketplace Feed**:
-  - Staggered reveal category cards (`Electronics`, `Books & Study`, `Clothing & Shoes`, `Accessories`, `Free Corner`, `Other`).
-  - Live keyword search, category pills, listing type filter (`Buy / Sell`, `Swap`, `Giveaway`), and price sorting (`Newest`, `Low to High`, `High to Low`).
-  - Listing details modal with bookmark (`Save Item`) support and campus meeting spot display.
-  - Create listing modal with drag-and-drop / file-picker photo upload and live image preview.
+  - Filter by category (`Electronics`, `Books & Study`, `Clothing & Shoes`, `Accessories`, `Free Corner`, `Other`).
+  - Full-text search, listing type filter (`Buy / Sell`, `Swap`, `Giveaway`), and sorting (`Newest`, `Price Low/High`).
+  - Listing details modal with bookmarking and verified campus meetup spot display.
+  - Create listing modal with image preview and validation.
 - **Obsidian Peer-to-Peer Chat Studio**:
-  - Desktop three-pane / tablet slide-over / mobile tabbed layout (`Chats`, `Messages`, `Info & Media`).
-  - Conversation search, pinning to top, listing context strip, photo attachments with full-screen lightbox preview, quick campus replies, and delete/clear actions with Undo toast recovery.
-- **Student Authentication & Profile Overlay**:
-  - Tabbed Sign In, Student Registration, and Identity Verification Status modal.
-  - Student Profile overlay displaying summary metrics and active campus listings.
+  - Split-pane layout with conversation pinning, listing context strips, quick campus replies, and safe meetup spot proposals.
+- **Student Authentication & Review Console**:
+  - Email OTP verification, Student ID upload, and reactive approval status badges.
+  - Admin review console for verification, directory suspension, and moderation.
+
+### ⚡ Backend & Database Architecture
+- **Marketplace REST APIs**: Complete CRUD for listings, multi-criteria filtering, live category item counts, and soft deletion (`/close`).
+- **Standard Response Envelope**: Consistent `{ "data": ..., "error": null, "meta": ... }` envelope across all endpoints.
+- **Server-Side Validation & Security**: Zod request schema validation, ownership guards, and student status checks (`APPROVED` required to post).
+- **Saved Listings (Bookmarks)**: Concurrent, race-condition-safe bookmarking via Prisma `upsert` and composite keys.
+- **Neon Serverless PostgreSQL**: Automatic branching, connection pooling, and migration history.
 
 ---
 
 ## Technologies Used
 
-- **Build Tool**: Vite 8
-- **Language**: TypeScript (`tsc --noEmit` strict type-checking)
-- **Styling**: Modular CSS (`src/styles/base.css`, `src/styles/modals.css`, `src/styles/responsive.css`) with CSS custom properties and responsive media queries (`320px` through `1440px+`)
-- **Browser APIs**: Web Animations API, SVG clip-paths & wave interpolation, `IntersectionObserver`, `FileReader`, `VisualViewport`, and `Fetch API` with `AbortController`
+- **Frontend**: Vite 8, TypeScript, Modular CSS, SVG clip-paths, Web Animations API
+- **Backend**: Node.js, Express, TypeScript (`tsx`)
+- **Database & ORM**: Neon PostgreSQL, Prisma Client v6.19.3
+- **Validation & Auth**: Zod, JSON Web Tokens (`jsonwebtoken`), `bcryptjs`
+- **Testing**: Node Native Test Runner, Supertest
 
 ---
 
@@ -45,108 +56,91 @@ tradeX is built exclusively for campus communities to make peer-to-peer student 
 
 ```text
 .
-├── index.html                  # Document shell, semantic sections, modals, and profile view
-├── package.json                # Scripts and minimal Vite + TypeScript dependencies
-├── tsconfig.json               # Strict TypeScript compiler configuration
-├── vite.config.ts              # Vite dev server and path alias configuration
-├── .env.example                # Environment variable template (no secrets)
-├── public/
-│   └── images/
-│       ├── brand/              # tradeX brand mark
-│       ├── listings/           # Campus listing photographs
-│       └── products/           # Showcase & chat media images
-└── src/
-    ├── main.ts                 # Application bootstrap & modal backdrop/keyboard handlers
-    ├── config/
-    │   └── env.ts              # Environment configuration (VITE_API_BASE_URL)
-    ├── data/
-    │   └── marketplaceSeed.ts  # Initial seed listings, categories, and conversations
-    ├── features/
-    │   ├── auth.ts             # Auth modal tabs and login/register/verification handlers
-    │   ├── carousel.ts         # Curved hero showcase physics & entrance animations
-    │   ├── dashboard.ts        # Student profile overlay & dashboard metrics
-    │   ├── marketplace.ts      # Categories, search/filter/sort, item details, create listing
-    │   ├── messaging.ts        # Obsidian chat studio, attachments, lightbox, undo actions
-    │   └── navbar.ts           # Glass navbar glow, wave-arch scroll spy, mobile menu
-    ├── services/
-    │   └── api/
-    │       ├── client.ts       # Fetch wrapper with timeout, Bearer auth token, and ApiError
-    │       ├── endpoints.ts    # Centralized REST endpoint path definitions
-    │       ├── auth.service.ts
-    │       ├── dashboard.service.ts
-    │       ├── listings.service.ts
-    │       ├── messaging.service.ts
-    │       └── index.ts
-    ├── styles/
-    │   ├── base.css            # Design tokens, hero, sections, navbar, footer
-    │   ├── modals.css          # Modals, Obsidian chat studio, profile overlay
-    │   ├── responsive.css      # Mobile/tablet/desktop responsive breakpoints
-    │   └── index.css           # Master stylesheet entry
-    ├── types/
-    │   └── marketplace.ts      # Shared TypeScript interfaces and payload types
-    └── utils/
-        └── html.ts             # HTML escaping helper for safe dynamic DOM templates
+├── prisma/
+│   ├── schema.prisma           # 13 canonical database models, enums & relations
+│   ├── seed.ts                 # Database seed script (categories, spots, accounts)
+│   └── migrations/             # Incremental migration history
+├── server/
+│   ├── app.ts                  # Express application setup, routes & CORS
+│   ├── index.ts                # Server entry point (port 3001)
+│   ├── config/env.ts           # Centralized environment variable validation
+│   ├── db/prisma.ts            # Prisma client singleton
+│   ├── controllers/            # Marketplace, category, auth & saved listing logic
+│   ├── routes/                 # Express API routes
+│   ├── middleware/             # Standard envelope, error handler, Zod validator, auth
+│   ├── validators/             # Server-side Zod request schemas
+│   └── tests/                  # Backend & marketplace integration tests
+├── src/
+│   ├── main.ts                 # Application bootstrap
+│   ├── features/               # Auth, carousel, dashboard, marketplace, chat
+│   ├── services/api/           # HTTP client, endpoints, and API service layer
+│   └── styles/                 # Modular CSS architecture
+├── docs/                       # API contracts, design system, and team handoff guides
+├── tests/                      # Frontend integration test suite
+├── package.json
+└── vite.config.ts
 ```
 
 ---
 
-## Installation Instructions
+## Installation & Setup
 
-1. Ensure **Node.js 18+** (and `npm`) is installed.
-2. Install project dependencies:
+1. Ensure **Node.js 20+** and `npm` are installed.
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Configure your local `.env` (copy from `.env.example`):
+   ```bash
+   cp .env.example .env
+   ```
 
+---
+
+## Running the Project
+
+### Start the Backend Server (Port 3001)
 ```bash
-npm install
+npm run start:server
 ```
 
----
-
-## Development Instructions
-
-Start the local Vite development server (configured for port `3000`):
-
+### Start the Frontend Client (Port 3000)
 ```bash
 npm run dev
 ```
 
-Type-check all TypeScript source files without emitting build artifacts:
+---
 
-```bash
-npm run lint
-```
+## Running Tests
+
+| Test Command | Description |
+|---|---|
+| `npm run test:backend` | Runs complete backend test suite (35 tests) |
+| `npm run test:marketplace` | Runs marketplace API tests (19 tests) |
+| `npm test` | Runs frontend client integration tests (16 tests) |
+| `npm run lint` | Type-checks all TypeScript files (`tsc --noEmit`) |
+| `npm run build` | Builds optimized client production bundle into `dist/` |
 
 ---
 
-## Production Build Instructions
-
-Build the optimized production bundle into `dist/`:
-
-```bash
-npm run build
-```
-
-Preview the production build locally:
-
-```bash
-npm run preview
-```
-
----
-
-## Environment Variable Setup
-
-Copy `.env.example` to `.env` when connecting to a backend API:
-
-```bash
-cp .env.example .env
-```
-
-Available variables:
+## Environment Variables
 
 | Variable | Description | Default |
-| --- | --- | --- |
-| `VITE_API_BASE_URL` | Base URL of the tradeX REST backend (e.g., `https://api.example.com/api/v1`) | `""` (uses local seed data) |
-| `APP_URL` | Public URL where the frontend app is hosted | `"MY_APP_URL"` |
+|---|---|---|
+| `DATABASE_URL` | Neon PostgreSQL pooled connection string | Required in `.env` |
+| `JWT_SECRET` | Secret key for signing authentication tokens | Required in `.env` |
+| `PORT` | Backend server port | `3001` |
+| `VITE_API_BASE_URL` | Frontend API base URL | `http://localhost:3001/api` |
+| `APP_URL` | Public frontend URL for CORS | `http://localhost:3000` |
+
+---
+
+## Documentation Links
+
+- [Developer 1's Message for Developer 2 & 3](docs/Developer%201's%20message%20for%20Developer%202%20%26%20Developer%203.md) — Quick start and integration guide for teammates.
+- [Canonical Backend Contract](docs/BACKEND_API_CONTRACT.md) — Technical database and API contract.
+- [Design System Guide](docs/DESIGN_SYSTEM.md) — UI tokens and design specifications.
+
 
 Never commit `.env` or real API credentials to version control.
 
