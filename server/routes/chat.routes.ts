@@ -6,6 +6,34 @@ import { createConversationSchema, sendMessageSchema } from '../validators/dev3.
 
 export const chatRouter = Router();
 
+// Root paths when mounted at /api/conversations
+chatRouter.get(
+  '/',
+  authenticateToken,
+  chatController.getConversations
+);
+
+chatRouter.post(
+  '/',
+  authenticateToken,
+  validateBody(createConversationSchema),
+  chatController.createOrGetConversation
+);
+
+chatRouter.get(
+  '/:id/messages',
+  authenticateToken,
+  chatController.getMessages
+);
+
+chatRouter.post(
+  '/:id/messages',
+  authenticateToken,
+  validateBody(sendMessageSchema),
+  chatController.sendMessage
+);
+
+// Aliases when mounted at /api/chat
 chatRouter.get(
   '/conversations',
   authenticateToken,

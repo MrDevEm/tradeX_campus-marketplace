@@ -269,32 +269,32 @@ export const chatController = {
       if (!spots || spots.length === 0) {
         spots = [
           {
-            id: 'spot-1',
-            name: 'Campus Gate 1 Security Checkpoint',
-            description: 'Highest security, 24/7 guard presence, well-lit CCTV coverage.',
-            safetyRating: 'Highest Security • 24/7 Monitored',
-            landmark: 'Main Guard Pavilion',
+            id: 'spot-lib',
+            name: 'Main Library Plaza (North Entrance)',
+            description: 'Well-lit central campus area with security presence and CCTV coverage.',
+            safetyRating: 'Verified Safe Zone • High Foot Traffic',
+            landmark: 'Opposite Academic Quadrangle',
           },
           {
-            id: 'spot-2',
-            name: 'Main Library Plaza (Fountain Area)',
-            description: 'High foot-traffic, open space, campus security patrols.',
-            safetyRating: 'High Visibility • High Foot Traffic',
-            landmark: 'Central Fountain',
-          },
-          {
-            id: 'spot-3',
+            id: 'spot-union',
             name: 'Student Union Lounge (Ground Floor)',
-            description: 'Monitored indoor space, seating available, staff present.',
-            safetyRating: 'Indoor Safe Zone • Staff Present',
-            landmark: 'Information Desk',
+            description: 'Open indoor student area with daylight hours and campus Wi-Fi.',
+            safetyRating: 'Verified Safe Zone • Daytime Access',
+            landmark: 'Ground Floor Atrium',
           },
           {
-            id: 'spot-4',
-            name: 'Central Campus Cafeteria',
-            description: 'Busy public area during daylight hours, video surveillance.',
-            safetyRating: 'Public Space • Daylight Preferred',
-            landmark: 'North Entrance',
+            id: 'spot-gate1',
+            name: 'Campus Gate 1 Security Checkpoint',
+            description: 'University security staff present 24/7; safest exchange spot for high-value items.',
+            safetyRating: 'Highest Security • 24/7 Monitored',
+            landmark: 'Main Campus Guard Pavilion',
+          },
+          {
+            id: 'spot-cafe',
+            name: 'Central Campus Cafeteria Entrance',
+            description: 'Active student gathering point during lunchtime and late afternoon.',
+            safetyRating: 'Verified Safe Zone • Peak Hours',
+            landmark: 'Near Student Services Building',
           },
         ];
       }

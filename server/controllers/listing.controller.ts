@@ -260,7 +260,7 @@ export const listingController = {
 
   async getListingById(req: Request, res: Response, next: NextFunction) {
     try {
-      const { id } = req.params;
+      const id = String(req.params.id);
       const currentUserId = req.user?.id;
 
       const item = await prisma.listing.findUnique({
@@ -370,7 +370,7 @@ export const listingController = {
         throw new AppError('Authentication required.', 401, 'UNAUTHORIZED');
       }
 
-      const { id } = req.params;
+      const id = String(req.params.id);
       const listing = await prisma.listing.findUnique({
         where: { id },
       });
@@ -446,7 +446,7 @@ export const listingController = {
         throw new AppError('Authentication required.', 401, 'UNAUTHORIZED');
       }
 
-      const { id } = req.params;
+      const id = String(req.params.id);
       const { reason } = req.body;
 
       const listing = await prisma.listing.findUnique({
@@ -505,7 +505,7 @@ export const listingController = {
         throw new AppError('Authentication required.', 401, 'UNAUTHORIZED');
       }
 
-      const { id } = req.params;
+      const id = String(req.params.id);
       const { saved } = req.body;
 
       const listing = await prisma.listing.findUnique({

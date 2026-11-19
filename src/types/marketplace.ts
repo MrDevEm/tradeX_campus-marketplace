@@ -219,5 +219,6 @@ export interface CampusNotification {
     conversationId?: string;
     listingId?: string;
     verificationStatus?: UserStatus;
+    entityId?: string;
   };
 }

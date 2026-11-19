@@ -5,6 +5,25 @@ import { sendSuccess } from '../middleware/envelope.ts';
 import { broadcastToUser } from '../realtime/gateway.ts';
 
 export const adminController = {
+  async getSummary(req: Request, res: Response, next: NextFunction) {
+    try {
+      const [pendingVerifications, openReports, totalStudents, totalListings] = await Promise.all([
+        prisma.verificationRequest.count({ where: { status: 'PENDING_APPROVAL' } }),
+        prisma.moderationReport.count({ where: { status: 'OPEN' } }),
+        prisma.user.count({ where: { role: 'STUDENT' } }),
+        prisma.listing.count({ where: { status: 'ACTIVE' } }),
+      ]);
+      return sendSuccess(res, {
+        pendingVerifications,
+        openReports,
+        totalStudents,
+        totalListings,
+      });
+    } catch (err) {
+      next(err);
+    }
+  },
+
   async getPendingVerifications(req: Request, res: Response, next: NextFunction) {
     try {
       const requests = await prisma.verificationRequest.findMany({

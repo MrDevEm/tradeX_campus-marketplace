@@ -276,4 +276,76 @@ describe('tradeX Developer 3 Integration Test Suite', () => {
       assert.strictEqual(notificationService.getUnreadCount(), 0);
     });
   });
+
+  // =========================================================
+  // 5. Complete Student Lifecycle Journey Test
+  // =========================================================
+  describe('Phase 1.4: Complete Student Onboarding & Marketplace Lifecycle', () => {
+    it('executes full student journey: Register -> OTP -> ID Upload -> Admin Approval -> Notification -> Chat Meetup', async () => {
+      // Step 1: Register
+      const registered = await authService.register({
+        fullName: 'Kalkidan Assefa',
+        email: 'kalkidan.a@mu.edu.et',
+        password: 'Password123!',
+        studentId: 'UGR/5512/15',
+        department: 'Architecture & Urban Planning',
+        academicYear: '3rd Year',
+      });
+      assert.ok(registered);
+      assert.strictEqual(registered.user.status, 'PENDING_EMAIL');
+      assert.strictEqual(authService.getCurrentUser()?.status, 'PENDING_EMAIL');
+
+      // Step 2: Email OTP Verification
+      const emailVerified = await authService.verifyEmail({
+        email: 'kalkidan.a@mu.edu.et',
+        otp: '482910',
+      });
+      assert.ok(emailVerified);
+      assert.strictEqual(emailVerified.user.status, 'PENDING_UPLOAD');
+      assert.strictEqual(authService.getCurrentUser()?.status, 'PENDING_UPLOAD');
+
+      // Step 3: Student ID Card Upload
+      const uploadResult = await authService.uploadStudentId({
+        idDocumentDataUrl:
+          'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==',
+        fileName: 'student_id_kalkidan.png',
+      });
+      assert.ok(uploadResult);
+      assert.strictEqual(uploadResult.status, 'PENDING_APPROVAL');
+      assert.strictEqual(uploadResult.badge, 'Pending Review');
+      assert.strictEqual(authService.getCurrentUser()?.status, 'PENDING_APPROVAL');
+
+      // Step 4: Admin Queue Review & Approval
+      const queue = await adminService.fetchVerifications();
+      assert.ok(queue.length > 0);
+      const pendingItem = queue[0];
+      const approveSuccess = await adminService.approveVerification(pendingItem.id);
+      assert.strictEqual(approveSuccess, true);
+
+      // Verify audit log
+      const logs = await adminService.fetchAuditLogs();
+      assert.ok(logs.some((l) => l.action === 'VERIFICATION_APPROVED'));
+
+      // Step 5: Deliver Notification to Student
+      const notif = await notificationService.pushNotification({
+        type: 'VERIFICATION',
+        title: 'Student ID Verification Approved',
+        message: 'Your official Mekelle University credentials have been confirmed. 0% student fee tier unlocked!',
+        data: { verificationStatus: 'APPROVED' },
+      });
+      assert.strictEqual(notif.type, 'VERIFICATION');
+      assert.strictEqual(notif.read, false);
+      assert.ok(notificationService.getUnreadCount() > 0);
+
+      // Step 6: Safe Campus Exchange Proposal in Chat
+      const safeSpot = CAMPUS_MEETUP_SPOTS.find((s) => s.id === 'spot-lib') || CAMPUS_MEETUP_SPOTS[0];
+      const chatMessage = await chatService.sendMessage('conv-journey-test', {
+        text: `Proposed Safe Campus Exchange: ${safeSpot.name}`,
+        meetupDetails: safeSpot,
+      });
+      assert.strictEqual(chatMessage.isMeetupProposal, true);
+      assert.strictEqual(chatMessage.meetupDetails?.id, safeSpot.id);
+      assert.strictEqual(chatMessage.in, false);
+    });
+  });
 });
