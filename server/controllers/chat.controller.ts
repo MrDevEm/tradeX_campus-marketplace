@@ -2,6 +2,7 @@ import type { Request, Response, NextFunction } from 'express';
 import { prisma } from '../db/prisma.ts';
 import { AppError } from '../middleware/errorHandler.ts';
 import { sendSuccess } from '../middleware/envelope.ts';
+import { broadcastToConversation, broadcastToUser } from '../realtime/gateway.ts';
 
 export const chatController = {
   async getConversations(req: Request, res: Response, next: NextFunction) {
@@ -219,7 +220,7 @@ export const chatController = {
 
       // Notify the recipient
       const recipientId = conversation.buyerId === req.user.id ? conversation.sellerId : conversation.buyerId;
-      await prisma.campusNotification.create({
+      const notif = await prisma.campusNotification.create({
         data: {
           userId: recipientId,
           type: 'CHAT',
@@ -227,6 +228,27 @@ export const chatController = {
           message: text.slice(0, 100),
           entityId: String(id),
         },
+      });
+
+      // Real-time WebSocket broadcasts
+      broadcastToConversation(String(id), 'new-message', {
+        id: message.id,
+        conversationId: String(id),
+        senderId: req.user.id,
+        senderName: req.user.fullName,
+        text: message.text,
+        isMeetupProposal: message.isMeetupProposal,
+        meetupSpot: message.meetupSpot,
+        createdAt: message.createdAt,
+      });
+
+      broadcastToUser(recipientId, 'new-notification', {
+        id: notif.id,
+        type: 'CHAT',
+        title: notif.title,
+        message: notif.message,
+        entityId: String(id),
+        createdAt: notif.createdAt,
       });
 
       return sendSuccess(res, message, 201);

@@ -2,6 +2,7 @@ import type { Request, Response, NextFunction } from 'express';
 import { prisma } from '../db/prisma.ts';
 import { AppError } from '../middleware/errorHandler.ts';
 import { sendSuccess } from '../middleware/envelope.ts';
+import { broadcastToUser } from '../realtime/gateway.ts';
 
 export const adminController = {
   async getPendingVerifications(req: Request, res: Response, next: NextFunction) {
@@ -78,7 +79,7 @@ export const adminController = {
       });
 
       // Send In-App Notification
-      await prisma.campusNotification.create({
+      const notif = await prisma.campusNotification.create({
         data: {
           userId: verification.userId,
           type: 'VERIFICATION',
@@ -88,6 +89,21 @@ export const adminController = {
             : `Your verification was rejected: ${rejectionReason || 'Please upload a clear student ID card.'}`,
           entityId: String(id),
         },
+      });
+
+      // Real-time WebSocket notifications
+      broadcastToUser(verification.userId, 'verification-updated', {
+        status: newStatus,
+        badge: isApprove ? 'Verified Student' : null,
+      });
+
+      broadcastToUser(verification.userId, 'new-notification', {
+        id: notif.id,
+        type: 'VERIFICATION',
+        title: notif.title,
+        message: notif.message,
+        entityId: String(id),
+        createdAt: notif.createdAt,
       });
 
       return sendSuccess(res, {

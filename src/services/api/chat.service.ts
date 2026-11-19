@@ -44,6 +44,8 @@ const typingListeners = new Set<TypingListener>();
 const connectionListeners = new Set<ConnectionListener>();
 
 let connectionStatus: 'connected' | 'connecting' | 'disconnected' = 'connected';
+let socket: WebSocket | null = null;
+let reconnectTimer: number | null = null;
 
 function notifyConnectionChange(status: 'connected' | 'connecting' | 'disconnected'): void {
   connectionStatus = status;
@@ -55,9 +57,107 @@ function getFormattedTime(): string {
   return String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
 }
 
+function getWsUrl(): string {
+  if (isApiConfigured()) {
+    const base = (typeof window !== 'undefined' && (window as unknown as { __API_BASE__?: string }).__API_BASE__) || 'http://localhost:3001/api';
+    return base.replace(/^http/, 'ws').replace(/\/api$/, '') + '/ws';
+  }
+  if (typeof window !== 'undefined' && window.location) {
+    const proto = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    return `${proto}//${window.location.host}/ws`;
+  }
+  return 'ws://localhost:3001/ws';
+}
+
 export const chatService = {
   getConnectionStatus(): 'connected' | 'connecting' | 'disconnected' {
     return connectionStatus;
+  },
+
+  connectWebSocket(token?: string): void {
+    if (typeof WebSocket === 'undefined') return;
+    if (socket && (socket.readyState === WebSocket.OPEN || socket.readyState === WebSocket.CONNECTING)) {
+      return;
+    }
+
+    notifyConnectionChange('connecting');
+    const wsUrl = getWsUrl() + (token ? `?token=${encodeURIComponent(token)}` : '');
+
+    try {
+      socket = new WebSocket(wsUrl);
+
+      socket.onopen = () => {
+        notifyConnectionChange('connected');
+        if (token) {
+          socket?.send(JSON.stringify({ type: 'auth', token }));
+        }
+      };
+
+      socket.onmessage = (event) => {
+        try {
+          const payload = JSON.parse(event.data);
+          const { event: eventName, data } = payload;
+
+          if (eventName === 'new-message' && data) {
+            const incoming: ChatMessage = {
+              id: data.id || 'msg-' + Date.now(),
+              in: true,
+              time: getFormattedTime(),
+              text: data.text || '',
+              isMeetupProposal: Boolean(data.isMeetupProposal),
+              meetupDetails: data.meetupSpot || undefined,
+            };
+            messageListeners.forEach((l) => l(incoming, data.conversationId));
+          } else if (eventName === 'typing' && data) {
+            typingListeners.forEach((l) =>
+              l({
+                conversationId: data.conversationId,
+                sender: data.sender || 'Student',
+                isTyping: Boolean(data.isTyping),
+              })
+            );
+          } else if (eventName === 'new-notification' && data) {
+            notificationService.pushNotification({
+              type: data.type || 'CHAT',
+              title: data.title || 'Campus Alert',
+              message: data.message || '',
+              data: { entityId: data.entityId },
+            });
+          }
+        } catch (e) {
+          console.warn('[ChatService] Failed to parse WebSocket message:', e);
+        }
+      };
+
+      socket.onclose = () => {
+        notifyConnectionChange('disconnected');
+        socket = null;
+        if (isApiConfigured() && !reconnectTimer && typeof window !== 'undefined') {
+          reconnectTimer = window.setTimeout(() => {
+            reconnectTimer = null;
+            this.connectWebSocket(token);
+          }, 3000);
+        }
+      };
+
+      socket.onerror = () => {
+        notifyConnectionChange('disconnected');
+      };
+    } catch {
+      notifyConnectionChange('disconnected');
+    }
+  },
+
+  sendTyping(conversationId: string, isTyping: boolean): void {
+    if (socket && socket.readyState === WebSocket.OPEN) {
+      socket.send(JSON.stringify({ type: 'typing', conversationId, isTyping }));
+    }
+  },
+
+  subscribeConversation(conversationId: string): void {
+    if (socket && socket.readyState === WebSocket.OPEN) {
+      socket.send(JSON.stringify({ type: 'subscribe', channel: `private-chat-${conversationId}` }));
+    }
   },
 
   onMessage(listener: MessageListener): () => void {

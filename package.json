@@ -13,6 +13,7 @@
     "test:backend": "node --import tsx --test server/tests/auth.test.ts server/tests/marketplace.test.ts server/tests/dev3.test.ts",
     "test:marketplace": "node --import tsx --test server/tests/marketplace.test.ts",
     "test:dev3": "node --import tsx --test server/tests/dev3.test.ts",
+    "test:realtime": "node --import tsx --test server/tests/realtime.test.ts",
     "start:server": "node --import tsx server/index.ts"
   },
   "dependencies": {
@@ -26,6 +27,7 @@
     "express": "^5.3.0",
     "jsonwebtoken": "^9.0.3",
     "vite": "^8.3.0",
+    "ws": "^8.23.0",
     "zod": "^4.6.7"
   },
   "devDependencies": {
@@ -36,6 +38,7 @@
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^22.14.0",
     "@types/supertest": "^7.2.1",
+    "@types/ws": "^8.18.2",
     "prisma": "^6.19.3",
     "supertest": "^7.3.2",
     "tsx": "^4.23.15",
