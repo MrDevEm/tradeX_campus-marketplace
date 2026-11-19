@@ -13,6 +13,12 @@ describe('Phase 3: Developer 3 Backend Endpoints Test Suite', () => {
       assert.strictEqual(res.status, 200);
       assert.strictEqual(res.body.error, null);
       assert.ok(Array.isArray(res.body.data), 'Expected data to be an array');
+      assert.strictEqual(res.body.data.length, 4);
+      const spotNames = res.body.data.map((s: { name: string }) => s.name);
+      assert.ok(spotNames.includes('Main Library Plaza (North Entrance)'));
+      assert.ok(spotNames.includes('Student Union Lounge (Ground Floor)'));
+      assert.ok(spotNames.includes('Campus Gate 1 Security Checkpoint'));
+      assert.ok(spotNames.includes('Central Campus Cafeteria Entrance'));
       assert.ok(res.body.meta?.timestamp, 'Expected envelope timestamp');
     });
   });

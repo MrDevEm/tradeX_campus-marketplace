@@ -10,7 +10,8 @@ export const verificationController = {
         throw new AppError('Authentication required.', 401, 'UNAUTHORIZED');
       }
 
-      const { idDocument, studentId, department, academicYear } = req.body;
+      const { idDocument, idDocumentDataUrl, studentId, department, academicYear } = req.body;
+      const documentUrl = idDocument || idDocumentDataUrl;
 
       // Update student profile if metadata provided
       if (studentId || department || academicYear) {
@@ -34,7 +35,7 @@ export const verificationController = {
       const verification = await prisma.verificationRequest.create({
         data: {
           userId: req.user.id,
-          idDocumentUrl: idDocument,
+          idDocumentUrl: documentUrl,
           status: 'PENDING_APPROVAL',
         },
       });
@@ -54,7 +55,12 @@ export const verificationController = {
         {
           id: verification.id,
           userId: verification.userId,
-          status: verification.status,
+          status: 'PENDING_APPROVAL',
+          badge: 'Pending Review',
+          emailConfirmed: true,
+          idDocumentUploaded: true,
+          rejectionReason: null,
+          feeTier: '0% Student Tier',
           submittedAt: verification.submittedAt,
           idDocumentUrl: verification.idDocumentUrl,
           message: 'Student ID uploaded successfully. Awaiting campus admin approval.',

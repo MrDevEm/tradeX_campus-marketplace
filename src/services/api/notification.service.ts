@@ -108,7 +108,12 @@ export const notificationService = {
       return [...activeNotifications];
     }
     try {
-      const serverNotifs = await apiRequest<CampusNotification[]>(API_ENDPOINTS.notifications.list);
+      const res = await apiRequest<unknown>(API_ENDPOINTS.notifications.list);
+      const serverNotifs: CampusNotification[] = Array.isArray(res)
+        ? (res as CampusNotification[])
+        : res && typeof res === 'object' && 'notifications' in res && Array.isArray((res as { notifications: unknown }).notifications)
+          ? ((res as { notifications: CampusNotification[] }).notifications)
+          : [];
       activeNotifications = serverNotifs;
       saveStoredNotifications(activeNotifications);
       notifyListeners();

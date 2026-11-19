@@ -193,10 +193,26 @@ export const authService = {
       };
     }
 
-    return apiRequest<VerificationStatus>(API_ENDPOINTS.auth.uploadStudentId, {
+    const body = {
+      idDocument: payload.idDocumentDataUrl,
+      idDocumentDataUrl: payload.idDocumentDataUrl,
+      fileName: payload.fileName,
+    };
+    const status = await apiRequest<VerificationStatus>(API_ENDPOINTS.auth.uploadStudentId, {
       method: 'POST',
-      body: payload,
+      body,
     });
+    const current = getStoredAuthUser();
+    if (current) {
+      const updatedUser: AuthUser = {
+        ...current,
+        status: status?.status || 'PENDING_APPROVAL',
+        idDocumentUploaded: true,
+      };
+      setStoredAuthUser(updatedUser);
+      notifyAuthListeners(updatedUser);
+    }
+    return status;
   },
 
   async getVerificationStatus(): Promise<VerificationStatus | null> {

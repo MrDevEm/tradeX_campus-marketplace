@@ -2,6 +2,7 @@ import { isApiConfigured } from '../../config/env.ts';
 import type { CampusMeetupSpot, ChatMessage, Conversation } from '../../types/marketplace.ts';
 import { apiRequest } from './client.ts';
 import { API_ENDPOINTS } from './endpoints.ts';
+import { authService } from './auth.service.ts';
 import { notificationService } from './notification.service.ts';
 
 export const CAMPUS_MEETUP_SPOTS: CampusMeetupSpot[] = [
@@ -123,6 +124,17 @@ export const chatService = {
               message: data.message || '',
               data: { entityId: data.entityId },
             });
+          } else if (eventName === 'verification-updated' && data) {
+            const currentUser = authService.getCurrentUser();
+            if (currentUser) {
+              const updatedStatus = data.status || 'APPROVED';
+              authService.setCurrentUser({
+                ...currentUser,
+                status: updatedStatus,
+                verified: updatedStatus === 'APPROVED',
+                rejectionReason: data.rejectionReason ?? null,
+              });
+            }
           }
         } catch (e) {
           console.warn('[ChatService] Failed to parse WebSocket message:', e);

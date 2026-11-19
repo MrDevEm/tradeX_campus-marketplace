@@ -1,11 +1,17 @@
 import { z } from 'zod';
 
-export const uploadIdSchema = z.object({
-  idDocument: z.string().min(1, 'Student ID document is required'),
-  studentId: z.string().optional(),
-  department: z.string().optional(),
-  academicYear: z.string().optional(),
-});
+export const uploadIdSchema = z
+  .object({
+    idDocument: z.string().optional(),
+    idDocumentDataUrl: z.string().optional(),
+    studentId: z.string().optional(),
+    department: z.string().optional(),
+    academicYear: z.string().optional(),
+  })
+  .refine((data) => Boolean(data.idDocument || data.idDocumentDataUrl), {
+    message: 'Student ID document is required',
+    path: ['idDocument'],
+  });
 
 export const createConversationSchema = z.object({
   listingId: z.string().uuid('Valid listing ID is required').or(z.string().min(1)),
