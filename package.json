@@ -10,8 +10,9 @@
     "clean": "rm -rf dist",
     "lint": "tsc --noEmit",
     "test": "node --import tsx --test tests/integration.test.ts",
-    "test:backend": "node --import tsx --test server/tests/auth.test.ts server/tests/marketplace.test.ts",
+    "test:backend": "node --import tsx --test server/tests/auth.test.ts server/tests/marketplace.test.ts server/tests/dev3.test.ts",
     "test:marketplace": "node --import tsx --test server/tests/marketplace.test.ts",
+    "test:dev3": "node --import tsx --test server/tests/dev3.test.ts",
     "start:server": "node --import tsx server/index.ts"
   },
   "dependencies": {

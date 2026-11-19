@@ -6,6 +6,10 @@ import { healthRouter } from './routes/health.routes.ts';
 import { categoryRouter } from './routes/category.routes.ts';
 import { listingRouter } from './routes/listing.routes.ts';
 import { savedListingRouter } from './routes/savedListing.routes.ts';
+import { verificationRouter } from './routes/verification.routes.ts';
+import { notificationRouter } from './routes/notification.routes.ts';
+import { chatRouter } from './routes/chat.routes.ts';
+import { adminRouter } from './routes/admin.routes.ts';
 import { errorHandler, AppError } from './middleware/errorHandler.ts';
 
 export function createApp() {
@@ -38,6 +42,10 @@ export function createApp() {
   app.use('/api/categories', categoryRouter);
   app.use('/api/listings', listingRouter);
   app.use('/api/saved-listings', savedListingRouter);
+  app.use('/api/verification', verificationRouter);
+  app.use('/api/notifications', notificationRouter);
+  app.use('/api/chat', chatRouter);
+  app.use('/api/admin', adminRouter);
 
   // 404 Handler for unmatched routes
   app.use((req, res, next) => {
