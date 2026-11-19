@@ -10,9 +10,17 @@ initWebSocketServer(server);
 
 async function startServer() {
   try {
-    // Verify DB connection
-    await prisma.$connect();
-    console.log('✅ Connected to Neon PostgreSQL database.');
+    // Verify DB connection if configured
+    if (process.env.DATABASE_URL) {
+      try {
+        await prisma.$connect();
+        console.log('✅ Connected to Neon PostgreSQL database.');
+      } catch (dbErr) {
+        console.warn('⚠️ Could not connect to Neon PostgreSQL database, continuing with fallback:', dbErr instanceof Error ? dbErr.message : dbErr);
+      }
+    } else {
+      console.log('ℹ️ DATABASE_URL not set in .env. Server running with fallback endpoints and live WebSocket gateway.');
+    }
 
     server.listen(PORT, '0.0.0.0', () => {
       console.log(`🚀 tradeX Backend API Server running at http://localhost:${PORT}`);
