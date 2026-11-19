@@ -137,8 +137,10 @@ npm run dev
 
 ## Documentation Links
 
-- [Developer 1's Message for Developer 2 & 3](docs/Developer_1's_message_for_Developer_2_&_Developer_3.md) — Quick start and integration guide for teammates.
+- [Security, Real-Time & Admin Handoff](docs/SECURITY_REALTIME_ADMIN_HANDOFF.md) — Comprehensive technical handoff for teammates.
+- [Backend & Database Integration Guide](docs/BACKEND_DATABASE_INTEGRATION_GUIDE.md) — Quick start and integration guide for teammates.
 - [Canonical Backend Contract](docs/BACKEND_API_CONTRACT.md) — Technical database and API contract.
+- [Auth, Real-Time & Moderation Module](docs/AUTH_CHAT_MODERATION_MODULE.md) — Security, chat, and admin architecture specifications.
 - [Design System Guide](docs/DESIGN_SYSTEM.md) — UI tokens and design specifications.
 
 
