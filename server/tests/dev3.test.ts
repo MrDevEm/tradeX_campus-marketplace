@@ -73,6 +73,14 @@ describe('Phase 3: Developer 3 Backend Endpoints Test Suite', () => {
       assert.strictEqual(res.body.data, null);
       assert.strictEqual(res.body.error.code, 'UNAUTHORIZED');
     });
+
+    it('GET /api/conversations alias returns 401 when unauthenticated', async () => {
+      const res = await request(app).get('/api/conversations');
+
+      assert.strictEqual(res.status, 401);
+      assert.strictEqual(res.body.data, null);
+      assert.strictEqual(res.body.error.code, 'UNAUTHORIZED');
+    });
   });
 
   describe('Admin Moderation Console Endpoints', () => {
@@ -102,6 +110,22 @@ describe('Phase 3: Developer 3 Backend Endpoints Test Suite', () => {
 
     it('GET /api/admin/audit-logs returns 401 when unauthenticated', async () => {
       const res = await request(app).get('/api/admin/audit-logs');
+
+      assert.strictEqual(res.status, 401);
+      assert.strictEqual(res.body.data, null);
+      assert.strictEqual(res.body.error.code, 'UNAUTHORIZED');
+    });
+
+    it('GET /api/admin/summary returns 401 when unauthenticated', async () => {
+      const res = await request(app).get('/api/admin/summary');
+
+      assert.strictEqual(res.status, 401);
+      assert.strictEqual(res.body.data, null);
+      assert.strictEqual(res.body.error.code, 'UNAUTHORIZED');
+    });
+
+    it('GET /api/admin/verifications returns 401 when unauthenticated', async () => {
+      const res = await request(app).get('/api/admin/verifications');
 
       assert.strictEqual(res.status, 401);
       assert.strictEqual(res.body.data, null);

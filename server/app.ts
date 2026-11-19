@@ -45,6 +45,7 @@ export function createApp() {
   app.use('/api/verification', verificationRouter);
   app.use('/api/notifications', notificationRouter);
   app.use('/api/chat', chatRouter);
+  app.use('/api/conversations', chatRouter);
   app.use('/api/admin', adminRouter);
 
   // 404 Handler for unmatched routes
