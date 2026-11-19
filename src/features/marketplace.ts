@@ -9,6 +9,10 @@ export interface MarketplaceController {
   openCreateListingModal: () => void;
   getListings: () => Listing[];
   getSelectedListing: () => Listing | undefined;
+  addListing: (listing: Listing) => void;
+  deleteListing: (id: string) => void;
+  updateListing: (id: string, updates: Partial<Listing>) => void;
+  subscribe: (fn: () => void) => () => void;
 }
 
 interface MarketplaceOptions {
@@ -459,6 +463,37 @@ export function initMarketplace(options: MarketplaceOptions): MarketplaceControl
 
   renderListings();
 
+  const changeListeners: Array<() => void> = [];
+  const notifyListeners = () => {
+    changeListeners.forEach((fn) => {
+      try {
+        fn();
+      } catch {
+        // Safe guard listener failure
+      }
+    });
+  };
+
+  function addListing(listing: Listing): void {
+    marketplaceListings.unshift(listing);
+    renderListings();
+    notifyListeners();
+  }
+
+  function deleteListing(id: string): void {
+    marketplaceListings = marketplaceListings.filter((item) => item.id !== id);
+    renderListings();
+    notifyListeners();
+  }
+
+  function updateListing(id: string, updates: Partial<Listing>): void {
+    marketplaceListings = marketplaceListings.map((item) =>
+      item.id === id ? { ...item, ...updates } : item
+    );
+    renderListings();
+    notifyListeners();
+  }
+
   if (isApiConfigured()) {
     void listingsService
       .fetchListings()
@@ -467,6 +502,7 @@ export function initMarketplace(options: MarketplaceOptions): MarketplaceControl
           marketplaceListings = remoteListings;
           selectedListingForChat = marketplaceListings[0];
           renderListings();
+          notifyListeners();
         }
       })
       .catch(() => {
@@ -479,5 +515,15 @@ export function initMarketplace(options: MarketplaceOptions): MarketplaceControl
     openCreateListingModal,
     getListings: () => marketplaceListings,
     getSelectedListing: () => selectedListingForChat,
+    addListing,
+    deleteListing,
+    updateListing,
+    subscribe: (fn: () => void) => {
+      changeListeners.push(fn);
+      return () => {
+        const idx = changeListeners.indexOf(fn);
+        if (idx !== -1) changeListeners.splice(idx, 1);
+      };
+    },
   };
 }

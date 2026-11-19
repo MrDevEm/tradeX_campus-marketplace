@@ -165,6 +165,15 @@
 
         <!-- Top Bar: Right Actions -->
         <div class="nav-actions" id="nav-actions">
+          <a href="#admin" class="btn-nav-admin" id="btn-nav-admin" title="Open tradeX Operations &amp; Admin Hub">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <rect x="3" y="3" width="7" height="7"></rect>
+              <rect x="14" y="3" width="7" height="7"></rect>
+              <rect x="14" y="14" width="7" height="7"></rect>
+              <rect x="3" y="14" width="7" height="7"></rect>
+            </svg>
+            <span>Admin Hub</span>
+          </a>
           <button class="btn-dashboard-toggle" id="btn-toggle-dash" title="Open Student Profile">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <circle cx="12" cy="12" r="9.2" stroke-opacity="0.45"></circle>
@@ -281,6 +290,15 @@
         <a href="#community" class="mobile-nav-link">
           <svg viewBox="0 0 24 24"><path d="M12 3.8a8 8 0 0 1 8 8 8 8 0 0 1-8 8 8.2 8.2 0 0 1-3.5-.8L4.2 20.2l1.2-4.1A7.9 7.9 0 0 1 4 11.8a8 8 0 0 1 8-8z" /><circle cx="9.6" cy="11.8" r="0.9" /><circle cx="14.4" cy="11.8" r="0.9" /></svg>
           About
+        </a>
+        <a href="#admin" class="mobile-nav-link" id="mobile-nav-admin">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="7" height="7"></rect>
+            <rect x="14" y="3" width="7" height="7"></rect>
+            <rect x="14" y="14" width="7" height="7"></rect>
+            <rect x="3" y="14" width="7" height="7"></rect>
+          </svg>
+          Admin Dashboard
         </a>
         <div class="mobile-nav-divider"></div>
         <div class="mobile-nav-actions">
@@ -1445,7 +1463,39 @@
         </div>
 
         <nav class="admin-sidebar-nav" aria-label="Admin Sections">
-          <button type="button" class="admin-nav-tab is-active" data-admin-tab="verifications" id="admin-tab-btn-verif">
+          <button type="button" class="admin-nav-tab is-active" data-admin-tab="overview" id="admin-tab-btn-overview">
+            <div class="admin-nav-tab-left">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="7" height="7"></rect>
+                <rect x="14" y="3" width="7" height="7"></rect>
+                <rect x="14" y="14" width="7" height="7"></rect>
+                <rect x="3" y="14" width="7" height="7"></rect>
+              </svg>
+              <span>Overview &amp; KPIs</span>
+            </div>
+          </button>
+          <button type="button" class="admin-nav-tab" data-admin-tab="products" id="admin-tab-btn-products">
+            <div class="admin-nav-tab-left">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                <line x1="12" y1="22.08" x2="12" y2="12"></line>
+              </svg>
+              <span>Manage Products</span>
+            </div>
+            <span class="admin-nav-pill-count" id="admin-nav-products-badge">12</span>
+          </button>
+          <button type="button" class="admin-nav-tab" data-admin-tab="banners" id="admin-tab-btn-banners">
+            <div class="admin-nav-tab-left">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                <polyline points="21 15 16 10 5 21"></polyline>
+              </svg>
+              <span>Hero &amp; Banners</span>
+            </div>
+          </button>
+          <button type="button" class="admin-nav-tab" data-admin-tab="verifications" id="admin-tab-btn-verif">
             <div class="admin-nav-tab-left">
               <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
               <span>ID Verifications</span>
@@ -1489,20 +1539,24 @@
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
             </button>
             <div class="admin-breadcrumb">
-              tradeX Campus / <strong id="admin-breadcrumb-active">ID Verifications</strong>
+              tradeX Campus / <strong id="admin-breadcrumb-active">Operations &amp; Overview</strong>
             </div>
           </div>
           <div class="admin-top-pills">
+            <div class="admin-stat-chip">
+              <span>Users:</span>
+              <strong id="admin-top-students-pill">4</strong>
+            </div>
+            <div class="admin-stat-chip">
+              <span>Live Items:</span>
+              <strong id="admin-top-products-pill">12</strong>
+            </div>
             <div class="admin-stat-chip">
               <span>Pending IDs:</span>
               <strong id="admin-top-pending-pill">3</strong>
             </div>
             <div class="admin-stat-chip">
-              <span>Active Students:</span>
-              <strong id="admin-top-students-pill">4</strong>
-            </div>
-            <div class="admin-stat-chip">
-              <span>Open Reports:</span>
+              <span>Reports:</span>
               <strong id="admin-top-reports-pill" style="color: #F59E0B;">2</strong>
             </div>
             <button type="button" class="btn-exit-admin" id="btn-exit-admin-top" style="width: auto; padding: 6px 14px; margin-left: 8px;">
@@ -1512,8 +1566,368 @@
         </header>
 
         <div class="admin-content-stage">
-          <!-- Pane 1: Verifications Queue (Split Review Console) -->
-          <section class="admin-tab-pane is-active" id="admin-pane-verif">
+          <!-- Pane 0: Marketplace Operations Overview & KPI Analytics -->
+          <section class="admin-tab-pane is-active" id="admin-pane-overview">
+            <div class="admin-pane-header">
+              <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px;">
+                <div>
+                  <h2 class="admin-pane-title">Campus Marketplace Operations &amp; KPIs</h2>
+                  <p class="admin-pane-desc">Live control room metrics, inventory volume, campus user registrations, and platform health.</p>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                  <button type="button" class="btn-admin-cta-primary" id="btn-overview-add-product">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    Add Product as Admin
+                  </button>
+                  <button type="button" class="btn-admin-cta-secondary" id="btn-overview-edit-banner">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                    Hero &amp; Banners
+                  </button>
+                  <button type="button" class="btn-admin-cta-secondary" id="btn-overview-review-ids">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                    Verify IDs (<span id="admin-overview-verif-count">3</span>)
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- KPI Metric Cards Grid -->
+            <div class="admin-kpi-grid">
+              <div class="admin-kpi-card">
+                <div class="admin-kpi-header">
+                  <span class="admin-kpi-label">Registered Campus Users</span>
+                  <div class="admin-kpi-icon-wrap" style="color: #06D6A0; background: rgba(6, 214, 160, 0.12);">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                  </div>
+                </div>
+                <div class="admin-kpi-val" id="admin-kpi-users-count">4</div>
+                <div class="admin-kpi-footer">
+                  <span class="admin-kpi-badge is-success">● Active Directory</span>
+                  <span class="admin-kpi-subtext">Verified university students</span>
+                </div>
+              </div>
+
+              <div class="admin-kpi-card">
+                <div class="admin-kpi-header">
+                  <span class="admin-kpi-label">Live Marketplace Products</span>
+                  <div class="admin-kpi-icon-wrap" style="color: #38BDF8; background: rgba(56, 189, 248, 0.12);">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                  </div>
+                </div>
+                <div class="admin-kpi-val" id="admin-kpi-products-count">12</div>
+                <div class="admin-kpi-footer">
+                  <span class="admin-kpi-badge is-info">● Live Inventory</span>
+                  <span class="admin-kpi-subtext">Published across AAU campus</span>
+                </div>
+              </div>
+
+              <div class="admin-kpi-card">
+                <div class="admin-kpi-header">
+                  <span class="admin-kpi-label">Estimated Platform Volume</span>
+                  <div class="admin-kpi-icon-wrap" style="color: #FBBF24; background: rgba(251, 191, 36, 0.12);">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"></path><line x1="12" y1="6" x2="12" y2="8"></line><line x1="12" y1="16" x2="12" y2="18"></line></svg>
+                  </div>
+                </div>
+                <div class="admin-kpi-val" id="admin-kpi-volume-count">ETB 148,250</div>
+                <div class="admin-kpi-footer">
+                  <span class="admin-kpi-badge is-gold">● Student Trade</span>
+                  <span class="admin-kpi-subtext">Zero platform commission fee</span>
+                </div>
+              </div>
+
+              <div class="admin-kpi-card">
+                <div class="admin-kpi-header">
+                  <span class="admin-kpi-label">Pending ID Verifications</span>
+                  <div class="admin-kpi-icon-wrap" style="color: #F43F5E; background: rgba(244, 63, 94, 0.12);">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                  </div>
+                </div>
+                <div class="admin-kpi-val" id="admin-kpi-verifs-count">3</div>
+                <div class="admin-kpi-footer">
+                  <span class="admin-kpi-badge is-danger">● Needs Staff Review</span>
+                  <span class="admin-kpi-subtext">Document queues pending</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Two-Column Overview Dashboard Details -->
+            <div class="admin-overview-columns">
+              <!-- Left Column: Category Inventory Breakdown -->
+              <div class="admin-overview-panel">
+                <div class="admin-panel-header">
+                  <h3 class="admin-panel-title">Marketplace Inventory by Category</h3>
+                  <span class="admin-panel-meta" id="admin-category-total-badge">12 Products</span>
+                </div>
+                <div class="admin-category-bars" id="admin-category-bars-list">
+                  <!-- Injected dynamically via JS with real percentages -->
+                </div>
+              </div>
+
+              <!-- Right Column: Quick Status & Campus Security Zones -->
+              <div class="admin-overview-panel">
+                <div class="admin-panel-header">
+                  <h3 class="admin-panel-title">Campus Operations &amp; Banner Status</h3>
+                  <span class="admin-panel-badge-live">● System Healthy</span>
+                </div>
+                <div class="admin-status-cards-list">
+                  <div class="admin-status-item">
+                    <div class="admin-status-icon" style="color: #06D6A0; background: rgba(6, 214, 160, 0.12);">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                    </div>
+                    <div class="admin-status-body">
+                      <div class="admin-status-title">Hero Banner Showcase</div>
+                      <div class="admin-status-sub" id="admin-overview-banner-preview">Headline: "Buy. Sell. Swap." • Subline: Active</div>
+                    </div>
+                    <button type="button" class="btn-table-action" id="btn-quick-jump-banner">Edit</button>
+                  </div>
+
+                  <div class="admin-status-item">
+                    <div class="admin-status-icon" style="color: #38BDF8; background: rgba(56, 189, 248, 0.12);">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                    </div>
+                    <div class="admin-status-body">
+                      <div class="admin-status-title">4 Monitored Campus Meetup Safe Zones</div>
+                      <div class="admin-status-sub">AAU Main Library Plaza • Science Gate • Engineering Quad • Student Center</div>
+                    </div>
+                  </div>
+
+                  <div class="admin-status-item">
+                    <div class="admin-status-icon" style="color: #FBBF24; background: rgba(251, 191, 36, 0.12);">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                    </div>
+                    <div class="admin-status-body">
+                      <div class="admin-status-title">Trust &amp; ID Safety Rating</div>
+                      <div class="admin-status-sub">100% of marketplace sellers must verify AAU student credentials</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Pane 1: Manage Products & Add Official Product -->
+          <section class="admin-tab-pane" id="admin-pane-products">
+            <div class="admin-pane-header">
+              <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px;">
+                <div>
+                  <h2 class="admin-pane-title">Marketplace Product &amp; Inventory Management</h2>
+                  <p class="admin-pane-desc">Audit live listings, toggle sold status, remove flagged items, or publish official university products directly as Admin.</p>
+                </div>
+                <button type="button" class="btn-admin-cta-primary" id="btn-admin-toggle-add-product">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                  Add Product as Admin
+                </button>
+              </div>
+            </div>
+
+            <!-- Admin Add Product Drawer / Panel (Toggleable) -->
+            <div class="admin-add-product-panel" id="admin-add-product-panel" style="display: none;">
+              <div class="admin-form-card">
+                <div class="admin-form-header">
+                  <div>
+                    <h3 class="admin-form-title">Create &amp; Publish Official Campus Product</h3>
+                    <p class="admin-form-desc">This product will immediately appear in the marketplace catalog with official administrator verification.</p>
+                  </div>
+                  <button type="button" class="admin-close-btn" id="btn-admin-close-add-product" aria-label="Close add product form">✕</button>
+                </div>
+
+                <form id="admin-add-product-form" class="admin-product-form-grid">
+                  <div class="admin-field-group">
+                    <label class="admin-input-label" for="admin-new-title">Product Title <span style="color: #06D6A0;">*</span></label>
+                    <input type="text" id="admin-new-title" class="admin-text-input" placeholder="e.g. Official AAU Campus Hoodie - Navy (Medium)" required />
+                  </div>
+
+                  <div class="admin-field-group">
+                    <label class="admin-input-label" for="admin-new-price">Price in ETB <span style="color: #06D6A0;">*</span></label>
+                    <input type="number" id="admin-new-price" class="admin-text-input" placeholder="e.g. 1200" min="0" step="10" required />
+                  </div>
+
+                  <div class="admin-field-group">
+                    <label class="admin-input-label" for="admin-new-category">Category</label>
+                    <select id="admin-new-category" class="admin-select-input">
+                      <option value="Campus Merch">Campus Merch &amp; Apparel</option>
+                      <option value="Electronics">Electronics &amp; Tech</option>
+                      <option value="Books">Textbooks &amp; Academic Guides</option>
+                      <option value="Dorm &amp; Living">Dorm &amp; Campus Living</option>
+                      <option value="Accessories">Accessories &amp; Gear</option>
+                      <option value="Free">Giveaway / Free</option>
+                    </select>
+                  </div>
+
+                  <div class="admin-field-group">
+                    <label class="admin-input-label" for="admin-new-type">Listing Type</label>
+                    <select id="admin-new-type" class="admin-select-input">
+                      <option value="Buy / Sell">Buy / Sell (Fixed Price)</option>
+                      <option value="Swap">Open to Campus Swap</option>
+                      <option value="Giveaway">Free Student Giveaway</option>
+                    </select>
+                  </div>
+
+                  <div class="admin-field-group">
+                    <label class="admin-input-label" for="admin-new-condition">Condition</label>
+                    <select id="admin-new-condition" class="admin-select-input">
+                      <option value="Brand New">Brand New (Official Campus Stock)</option>
+                      <option value="Like New">Like New (Mint Condition)</option>
+                      <option value="Good Condition">Good Condition</option>
+                    </select>
+                  </div>
+
+                  <div class="admin-field-group">
+                    <label class="admin-input-label" for="admin-new-spot">Designated Campus Meetup Spot</label>
+                    <select id="admin-new-spot" class="admin-select-input">
+                      <option value="Official Campus Store / Bookstore">Official Campus Store / Bookstore</option>
+                      <option value="AAU Main Library Plaza Safe Zone">AAU Main Library Plaza Safe Zone</option>
+                      <option value="Science Faculty Main Gate">Science Faculty Main Gate</option>
+                      <option value="Engineering Quad Center">Engineering Quad Center</option>
+                    </select>
+                  </div>
+
+                  <div class="admin-field-group full-width">
+                    <label class="admin-input-label">Product Image Preset or URL</label>
+                    <div class="admin-image-presets-strip">
+                      <button type="button" class="admin-img-preset-btn is-selected" data-img="/images/listings/college-textbooks.jpg">📚 Textbooks</button>
+                      <button type="button" class="admin-img-preset-btn" data-img="/images/listings/citizen-watch.jpg">⌚ Accessories</button>
+                      <button type="button" class="admin-img-preset-btn" data-img="https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&w=600&q=80">👕 Campus Hoodie</button>
+                      <button type="button" class="admin-img-preset-btn" data-img="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=600&q=80">💻 Laptop / Tech</button>
+                      <button type="button" class="admin-img-preset-btn" data-img="/images/listings/chocolate-pack.jpg">🎁 Dorm / Snacks</button>
+                    </div>
+                    <input type="url" id="admin-new-img-url" class="admin-text-input" style="margin-top: 8px;" placeholder="Or paste custom image URL: https://..." value="/images/listings/college-textbooks.jpg" />
+                  </div>
+
+                  <div class="admin-field-group full-width">
+                    <label class="admin-input-label" for="admin-new-desc">Product Description</label>
+                    <textarea id="admin-new-desc" class="admin-textarea-input" rows="3" placeholder="Describe the item, features, and official pickup instructions..."></textarea>
+                  </div>
+
+                  <div class="admin-form-actions full-width">
+                    <button type="submit" class="btn-admin-cta-primary" id="btn-admin-submit-product">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                      Publish to Marketplace Now
+                    </button>
+                    <button type="button" class="btn-table-action" id="btn-admin-cancel-product">Cancel</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            <!-- Product Search and Filter Bar -->
+            <div class="admin-table-controls">
+              <input type="search" class="admin-search-input" id="admin-product-search" placeholder="Search products by title, seller, or spot..." />
+              <select class="admin-tool-btn" id="admin-product-filter-cat" style="padding: 10px 14px; background: #081F17; color: #E2F5EE;">
+                <option value="ALL">All Categories</option>
+                <option value="Electronics">Electronics</option>
+                <option value="Books">Textbooks &amp; Books</option>
+                <option value="Dorm &amp; Living">Dorm &amp; Living</option>
+                <option value="Campus Merch">Campus Merch</option>
+                <option value="Accessories">Accessories</option>
+                <option value="Free">Giveaways</option>
+              </select>
+              <select class="admin-tool-btn" id="admin-product-filter-status" style="padding: 10px 14px; background: #081F17; color: #E2F5EE;">
+                <option value="ALL">All Statuses</option>
+                <option value="ACTIVE">Active Listings</option>
+                <option value="SOLD">Sold Listings</option>
+              </select>
+            </div>
+
+            <!-- Products Table -->
+            <div class="admin-table-wrap">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Item &amp; Details</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Seller</th>
+                    <th>Campus Spot</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-products-tbody"></tbody>
+              </table>
+            </div>
+          </section>
+
+          <!-- Pane 2: Hero & Banner Announcement Manager -->
+          <section class="admin-tab-pane" id="admin-pane-banners">
+            <div class="admin-pane-header">
+              <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px;">
+                <div>
+                  <h2 class="admin-pane-title">Hero Banner &amp; Campus Showcase Manager</h2>
+                  <p class="admin-pane-desc">Customize live hero headlines, announcement badges, subline copy, and promotional banners across the TradeX landing page.</p>
+                </div>
+                <div style="display: flex; gap: 10px;">
+                  <button type="button" class="btn-admin-cta-primary" id="btn-save-banner">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    Save &amp; Publish Live
+                  </button>
+                  <button type="button" class="btn-table-action" id="btn-reset-banner">Reset Defaults</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Live Banner Preview Card -->
+            <div class="admin-banner-preview-wrapper">
+              <div class="admin-banner-preview-header">
+                <span>Real-Time Banner Preview</span>
+                <span class="admin-badge-live-pulse">● Live Landing View</span>
+              </div>
+              <div class="admin-banner-preview-canvas">
+                <div class="badge" id="admin-preview-badge" style="margin: 0 auto 12px; display: inline-flex;">
+                  <span class="badge-live-group">
+                    <span class="badge-dot" aria-hidden="true"></span>
+                    <span class="badge-live-tag" id="admin-preview-badge-tag">Live</span>
+                  </span>
+                  <span class="badge-text" id="admin-preview-badge-text">Built for the University Student Community.</span>
+                </div>
+                <div class="headline-container" style="margin-top: 10px; margin-bottom: 10px; text-align: center;">
+                  <div class="headline-line" id="admin-preview-line1" style="font-family: var(--font-display); font-size: 28px; font-weight: 800; color: #F2FDF9; letter-spacing: -0.03em;">Buy. Sell. Swap.</div>
+                  <div class="headline-line" id="admin-preview-line2" style="font-family: var(--font-display); font-size: 28px; font-weight: 800; color: #06D6A0; letter-spacing: -0.03em;">TradeX Makes It Better.</div>
+                </div>
+                <p class="subline" id="admin-preview-subline" style="font-size: 13.5px; max-width: 540px; margin: 0 auto; color: #9EC7BA; text-align: center;">
+                  Find what you need. Sell what you don't. Trade with your campus community.
+                </p>
+              </div>
+            </div>
+
+            <!-- Banner Inputs Form -->
+            <div class="admin-banner-edit-grid">
+              <div class="admin-panel-card">
+                <h3 class="admin-panel-title" style="margin-bottom: 16px;">Campus Badge &amp; Tag Settings</h3>
+                <div class="admin-field-group">
+                  <label class="admin-input-label" for="admin-input-badge-tag">Badge Live Tag</label>
+                  <input type="text" id="admin-input-badge-tag" class="admin-text-input" value="Live" placeholder="e.g. Live or New" />
+                </div>
+                <div class="admin-field-group" style="margin-top: 14px;">
+                  <label class="admin-input-label" for="admin-input-badge-text">Badge Message Text</label>
+                  <input type="text" id="admin-input-badge-text" class="admin-text-input" value="Built for the University Student Community." placeholder="Badge headline..." />
+                </div>
+              </div>
+
+              <div class="admin-panel-card">
+                <h3 class="admin-panel-title" style="margin-bottom: 16px;">Main Hero Headlines</h3>
+                <div class="admin-field-group">
+                  <label class="admin-input-label" for="admin-input-headline-1">Headline Line 1 (Main Header)</label>
+                  <input type="text" id="admin-input-headline-1" class="admin-text-input" value="Buy. Sell. Swap." placeholder="First line..." />
+                </div>
+                <div class="admin-field-group" style="margin-top: 14px;">
+                  <label class="admin-input-label" for="admin-input-headline-2">Headline Line 2 (Accent Header)</label>
+                  <input type="text" id="admin-input-headline-2" class="admin-text-input" value="TradeX Makes It Better." placeholder="Second line..." />
+                </div>
+              </div>
+
+              <div class="admin-panel-card full-width">
+                <h3 class="admin-panel-title" style="margin-bottom: 16px;">Subline &amp; Community Announcement Copy</h3>
+                <div class="admin-field-group">
+                  <label class="admin-input-label" for="admin-input-subline">Subline Description</label>
+                  <textarea id="admin-input-subline" class="admin-textarea-input" rows="3" placeholder="Enter campus marketplace intro copy...">Find what you need. Sell what you don't. Trade with your campus community.</textarea>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Pane 3: Verifications Queue (Split Review Console) -->
+          <section class="admin-tab-pane" id="admin-pane-verif">
             <div class="admin-pane-header">
               <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
                 <div>

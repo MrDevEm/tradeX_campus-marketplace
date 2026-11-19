@@ -13,7 +13,6 @@ function bootstrapTradeX(): void {
   initHeroCarousel();
   initNavbar();
   initAuth();
-  initAdmin();
 
   let messagingCtrl: ReturnType<typeof initMessaging> | null = null;
 
@@ -22,6 +21,8 @@ function bootstrapTradeX(): void {
       messagingCtrl?.openChatForListing(item);
     },
   });
+
+  initAdmin(marketplaceCtrl);
 
   messagingCtrl = initMessaging({
     getListings: marketplaceCtrl.getListings,

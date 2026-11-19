@@ -44,6 +44,7 @@ export interface Listing {
   desc: string;
   img: string;
   saved: boolean;
+  sold?: boolean;
 }
 
 export interface CreateListingPayload {
