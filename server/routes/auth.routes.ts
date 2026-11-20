@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { authController } from '../controllers/auth.controller.ts';
 import { validateBody } from '../middleware/validate.ts';
 import { authenticateToken } from '../middleware/auth.ts';
+import { authRateLimiter } from '../middleware/rateLimiter.ts';
 import {
   registerSchema,
   loginSchema,
@@ -11,13 +12,13 @@ import {
 
 export const authRouter = Router();
 
-// Public routes
-authRouter.post('/register', validateBody(registerSchema), authController.register);
-authRouter.post('/login', validateBody(loginSchema), authController.login);
-authRouter.post('/verify-email', validateBody(verifyEmailSchema), authController.verifyEmail);
-authRouter.post('/verify-otp', validateBody(verifyEmailSchema), authController.verifyEmail);
-authRouter.post('/resend-otp', validateBody(resendOtpSchema), authController.resendOtp);
-authRouter.post('/send-otp', validateBody(resendOtpSchema), authController.resendOtp);
+// Public routes with brute-force / OTP flooding protection
+authRouter.post('/register', authRateLimiter, validateBody(registerSchema), authController.register);
+authRouter.post('/login', authRateLimiter, validateBody(loginSchema), authController.login);
+authRouter.post('/verify-email', authRateLimiter, validateBody(verifyEmailSchema), authController.verifyEmail);
+authRouter.post('/verify-otp', authRateLimiter, validateBody(verifyEmailSchema), authController.verifyEmail);
+authRouter.post('/resend-otp', authRateLimiter, validateBody(resendOtpSchema), authController.resendOtp);
+authRouter.post('/send-otp', authRateLimiter, validateBody(resendOtpSchema), authController.resendOtp);
 
 // Authenticated routes
 authRouter.post('/logout', authController.logout);

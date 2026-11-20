@@ -9,6 +9,7 @@ import {
   initWebSocketServer,
   broadcastToConversation,
   broadcastToUser,
+  getConnectedClientsCount,
 } from '../realtime/gateway.ts';
 
 describe('Phase 4: Real-Time WebSocket & Chat Event Gateway', () => {
@@ -184,5 +185,25 @@ describe('Phase 4: Real-Time WebSocket & Chat Event Gateway', () => {
     // Small delay to ensure Client A did not receive Client B's notification
     await new Promise((r) => setTimeout(r, 50));
     assert.strictEqual(clientAReceivedNotif, false, 'Client A should not receive User B private notification');
+  });
+
+  it('counts only active OPEN connections and prunes dead clients without inflating counts', async () => {
+    const initialCount = getConnectedClientsCount();
+    assert.strictEqual(initialCount >= 2, true);
+
+    // Create a temporary client and connect
+    const tempClient = new WebSocket(`ws://127.0.0.1:${serverPort}/ws`);
+    await new Promise<void>((resolve) => tempClient.once('open', () => resolve()));
+
+    const countWithTemp = getConnectedClientsCount();
+    assert.strictEqual(countWithTemp, initialCount + 1);
+
+    // Terminate abruptly (simulating dead socket / drop)
+    tempClient.terminate();
+    await new Promise((r) => setTimeout(r, 60));
+
+    // After termination, client count must match active sockets only
+    const countAfterDrop = getConnectedClientsCount();
+    assert.strictEqual(countAfterDrop, initialCount);
   });
 });

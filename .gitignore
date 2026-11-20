@@ -8,5 +8,5 @@ coverage/
 .env*
 !.env.example
 
-
+uploads/
 .neon

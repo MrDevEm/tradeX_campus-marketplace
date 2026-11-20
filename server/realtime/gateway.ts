@@ -9,6 +9,10 @@ interface SocketUser {
   role: string;
 }
 
+export interface ExtWebSocket extends WebSocket {
+  isAlive?: boolean;
+}
+
 interface InboundMessage {
   type: 'auth' | 'subscribe' | 'unsubscribe' | 'typing' | 'ping';
   token?: string;
@@ -29,7 +33,14 @@ export function initWebSocketServer(server: http.Server): WebSocketServer {
   wssInstance = wss;
 
   wss.on('connection', (ws: WebSocket, req: http.IncomingMessage) => {
+    const extWs = ws as ExtWebSocket;
+    extWs.isAlive = true;
+
     socketChannels.set(ws, new Set());
+
+    ws.on('pong', () => {
+      extWs.isAlive = true;
+    });
 
     // Optional query parameter auth: /ws?token=...
     try {
@@ -65,6 +76,27 @@ export function initWebSocketServer(server: http.Server): WebSocketServer {
       timestamp: new Date().toISOString(),
       service: 'tradeX Real-Time Gateway',
     });
+  });
+
+  // Server-initiated heartbeat to detect and cull dead sockets every 3 minutes (180,000 ms)
+  const heartbeatInterval = setInterval(() => {
+    wss.clients.forEach((client) => {
+      const extClient = client as ExtWebSocket;
+      if (extClient.isAlive === false) {
+        cleanupSocket(extClient);
+        return extClient.terminate();
+      }
+      extClient.isAlive = false;
+      extClient.ping();
+    });
+  }, 3 * 60 * 1000);
+
+  if (heartbeatInterval.unref) {
+    heartbeatInterval.unref();
+  }
+
+  wss.on('close', () => {
+    clearInterval(heartbeatInterval);
   });
 
   return wss;
@@ -185,7 +217,20 @@ function cleanupSocket(ws: WebSocket): void {
 
 function sendToSocket(ws: WebSocket, event: string, data: unknown, channel?: string): void {
   if (ws.readyState === WebSocket.OPEN) {
-    ws.send(JSON.stringify({ event, channel, data }));
+    try {
+      ws.send(JSON.stringify({ event, channel, data }), (err) => {
+        if (err) {
+          // Dead client removed immediately on send failure
+          cleanupSocket(ws);
+          ws.terminate();
+        }
+      });
+    } catch {
+      cleanupSocket(ws);
+      ws.terminate();
+    }
+  } else {
+    cleanupSocket(ws);
   }
 }
 
@@ -201,10 +246,21 @@ export function broadcastToChannel(
   const subscribers = channels.get(channel);
   if (!subscribers) return;
 
+  const deadSockets: WebSocket[] = [];
+
   for (const ws of subscribers) {
-    if (ws !== excludeWs && ws.readyState === WebSocket.OPEN) {
+    if (ws === excludeWs) continue;
+
+    if (ws.readyState === WebSocket.OPEN) {
       sendToSocket(ws, event, data, channel);
+    } else {
+      deadSockets.push(ws);
     }
+  }
+
+  // Prune dead clients immediately so broadcast fan-out never leaks
+  for (const dead of deadSockets) {
+    cleanupSocket(dead);
   }
 }
 
@@ -222,6 +278,16 @@ export function broadcastToUser(userId: string, event: string, data: unknown): v
   broadcastToChannel(`private-user-${userId}`, event, data);
 }
 
+/**
+ * Returns strictly active, open WebSocket connections
+ */
 export function getConnectedClientsCount(): number {
-  return wssInstance?.clients.size || 0;
+  if (!wssInstance) return 0;
+  let activeCount = 0;
+  for (const client of wssInstance.clients) {
+    if (client.readyState === WebSocket.OPEN) {
+      activeCount++;
+    }
+  }
+  return activeCount;
 }

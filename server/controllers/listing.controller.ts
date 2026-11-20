@@ -2,6 +2,7 @@ import type { Request, Response, NextFunction } from 'express';
 import { prisma } from '../db/prisma.ts';
 import { AppError } from '../middleware/errorHandler.ts';
 import { sendSuccess } from '../middleware/envelope.ts';
+import { storageService } from '../services/storage.service.ts';
 import {
   ListingType,
   ListingCondition,
@@ -335,6 +336,17 @@ export const listingController = {
         resolvedImages.push('/images/products/book.png');
       }
 
+      // Offload any Base64 payloads to S3 / object storage so PostgreSQL never stores bloat
+      const storedImages: string[] = [];
+      for (const rawImg of resolvedImages) {
+        if (rawImg.startsWith('data:image/')) {
+          const offloadedUrl = await storageService.uploadBase64Image(rawImg, 'listings');
+          storedImages.push(offloadedUrl);
+        } else {
+          storedImages.push(rawImg);
+        }
+      }
+
       const newListing = await prisma.listing.create({
         data: {
           sellerId: req.user.id,
@@ -345,7 +357,7 @@ export const listingController = {
           condition: resolvedCondition,
           campusSpot: resolvedSpot,
           description: resolvedDesc,
-          images: resolvedImages,
+          images: storedImages,
           status: ListingStatus.ACTIVE,
         },
         include: {
@@ -418,7 +430,19 @@ export const listingController = {
       if (description !== undefined || desc !== undefined) {
         dataToUpdate.description = String(description || desc).trim();
       }
-      if (Array.isArray(images)) dataToUpdate.images = images.map(String);
+      if (Array.isArray(images)) {
+        const offloadedUpdateImages: string[] = [];
+        for (const item of images) {
+          const str = String(item);
+          if (str.startsWith('data:image/')) {
+            const url = await storageService.uploadBase64Image(str, 'listings');
+            offloadedUpdateImages.push(url);
+          } else {
+            offloadedUpdateImages.push(str);
+          }
+        }
+        dataToUpdate.images = offloadedUpdateImages;
+      }
       if (status !== undefined) dataToUpdate.status = status as ListingStatus;
 
       const updated = await prisma.listing.update({
@@ -540,6 +564,39 @@ export const listingController = {
       }
 
       return sendSuccess(res, { saved: Boolean(saved) }, 200);
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  async deleteListing(req: Request, res: Response, next: NextFunction) {
+    try {
+      if (!req.user) {
+        throw new AppError('Authentication required.', 401, 'UNAUTHORIZED');
+      }
+
+      const id = String(req.params.id);
+      const listing = await prisma.listing.findUnique({
+        where: { id },
+      });
+
+      if (!listing) {
+        throw new AppError('Listing not found.', 404, 'LISTING_NOT_FOUND');
+      }
+
+      const isOwner = listing.sellerId === req.user.id;
+      const isAdmin = req.user.role === UserRole.ADMIN || req.user.role === UserRole.SUPERADMIN;
+
+      if (!isOwner && !isAdmin) {
+        throw new AppError('Forbidden: You are not authorized to delete this listing.', 403, 'FORBIDDEN');
+      }
+
+      await prisma.listing.update({
+        where: { id },
+        data: { status: ListingStatus.REMOVED },
+      });
+
+      return sendSuccess(res, { id, status: 'REMOVED', message: 'Listing successfully deleted.' }, 200);
     } catch (err) {
       next(err);
     }

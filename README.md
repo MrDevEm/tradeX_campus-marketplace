@@ -137,6 +137,7 @@ npm run dev
 
 ## Documentation Links
 
+- [Backend Extensions & Feature Handoff (Developer 1)](docs/DEVELOPER_1_PHASE_2_NEW_CHANGES_HANDOFF.md) — Specifications for Student Dashboard, S3 Uploads, Listing Deletion, and Security Rate Limiting.
 - [Security, Real-Time & Admin Handoff](docs/SECURITY_REALTIME_ADMIN_HANDOFF.md) — Comprehensive technical handoff for teammates.
 - [Backend & Database Integration Guide](docs/BACKEND_DATABASE_INTEGRATION_GUIDE.md) — Quick start and integration guide for teammates.
 - [Canonical Backend Contract](docs/BACKEND_API_CONTRACT.md) — Technical database and API contract.

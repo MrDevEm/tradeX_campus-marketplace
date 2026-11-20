@@ -81,10 +81,13 @@ All responses follow the canonical envelope:
 | `POST` | `/api/listings` | Auth (`APPROVED`) | Create listing (`ACTIVE`). |
 | `PATCH` | `/api/listings/:id` | Auth (Owner only) | Update listing fields. |
 | `POST` | `/api/listings/:id/close` | Auth (Owner only) | Close listing with reason (`SOLD`, `SWAPPED`, `WITHDRAWN`, `REMOVED`). |
+| `DELETE` | `/api/listings/:id` | Auth (Owner / Admin) | Delete/remove listing (transitions status to `REMOVED`). |
 | `PATCH` | `/api/listings/:id/save` | Auth | Toggle save status (`{ saved: boolean }`). |
 | `GET` | `/api/saved-listings` | Auth | Paginated list of student's saved listings. |
 | `POST` | `/api/saved-listings` | Auth | Bookmark listing (idempotent upsert). |
 | `DELETE` | `/api/saved-listings/:listingId` | Auth | Remove bookmark. |
+| `GET` | `/api/dashboard/summary` | Auth | Student dashboard KPIs (`activeListingsCount`, `savedItemsCount`, `unreadChatsCount`, `trustScore`). |
+| `GET` | `/api/dashboard/listings` | Auth | Student's own active/sold listings list. |
 
 ### 3.2 Query & Mutation Contracts
 
