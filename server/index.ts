@@ -33,8 +33,40 @@ async function startServer() {
   }
 }
 
+async function gracefulShutdown(signal: string) {
+  console.log(`\n🛑 Received ${signal}. Shutting down tradeX server gracefully...`);
+
+  // Force exit after 10 seconds if any connection fails to close
+  const forceExitTimer = setTimeout(() => {
+    console.error('⚠️ Graceful shutdown timed out after 10s. Forcing exit.');
+    process.exit(1);
+  }, 10000);
+  if (forceExitTimer.unref) {
+    forceExitTimer.unref();
+  }
+
+  server.close(async (err) => {
+    if (err) {
+      console.error('❌ Error closing HTTP and WebSocket server:', err);
+    } else {
+      console.log('✅ HTTP & WebSocket server closed.');
+    }
+
+    try {
+      await prisma.$disconnect();
+      console.log('✅ Neon PostgreSQL database connections disconnected cleanly.');
+    } catch (dbErr) {
+      console.error('❌ Error disconnecting from database:', dbErr);
+    }
+
+    process.exit(0);
+  });
+}
+
 if (process.env.NODE_ENV !== 'test') {
+  process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
+  process.on('SIGINT', () => gracefulShutdown('SIGINT'));
   startServer();
 }
 
-export { app, server };
+export { app, server, gracefulShutdown };
