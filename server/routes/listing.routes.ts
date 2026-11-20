@@ -57,3 +57,10 @@ listingRouter.patch(
   validateBody(toggleSaveListingSchema),
   listingController.toggleSave
 );
+
+// Delete/remove listing (owner or admin)
+listingRouter.delete(
+  '/:id',
+  authenticateToken,
+  listingController.deleteListing
+);
