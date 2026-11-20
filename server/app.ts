@@ -1,3 +1,4 @@
+import path from 'node:path';
 import express from 'express';
 import cors from 'cors';
 import { ENV } from './config/env.ts';
@@ -10,6 +11,8 @@ import { verificationRouter } from './routes/verification.routes.ts';
 import { notificationRouter } from './routes/notification.routes.ts';
 import { chatRouter } from './routes/chat.routes.ts';
 import { adminRouter } from './routes/admin.routes.ts';
+import { dashboardRouter } from './routes/dashboard.routes.ts';
+import { uploadRouter } from './routes/upload.routes.ts';
 import { errorHandler, AppError } from './middleware/errorHandler.ts';
 
 export function createApp() {
@@ -36,6 +39,9 @@ export function createApp() {
   app.use(express.json({ limit: '10mb' }));
   app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
+  // Serve uploaded media statically
+  app.use('/uploads', express.static(path.resolve(process.cwd(), 'uploads')));
+
   // API Routes
   app.use('/api', healthRouter);
   app.use('/api/auth', authRouter);
@@ -47,6 +53,8 @@ export function createApp() {
   app.use('/api/chat', chatRouter);
   app.use('/api/conversations', chatRouter);
   app.use('/api/admin', adminRouter);
+  app.use('/api/dashboard', dashboardRouter);
+  app.use('/api/upload', uploadRouter);
 
   // 404 Handler for unmatched routes
   app.use((req, res, next) => {
