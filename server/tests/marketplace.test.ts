@@ -264,6 +264,29 @@ describe('Phase 2: Developer 1 Marketplace Backend Test Suite', () => {
       assert.strictEqual(res.status, 200);
       assert.strictEqual(res.body.data.status, 'SOLD');
     });
+
+    it('DELETE /api/listings/:id removes listing when requested by owner', async () => {
+      const createRes = await request(app)
+        .post('/api/listings')
+        .set('Authorization', `Bearer ${approvedStudentToken}`)
+        .send({
+          title: 'Temporary Item to Delete',
+          category: 'Supplies',
+          price: 50,
+          condition: 'FAIR',
+          campusSpot: 'Student Union Lounge (Ground Floor)',
+          description: 'Will be deleted in automated test.',
+          type: 'SELL',
+        });
+      const tempId = createRes.body.data.id;
+
+      const deleteRes = await request(app)
+        .delete(`/api/listings/${tempId}`)
+        .set('Authorization', `Bearer ${approvedStudentToken}`);
+
+      assert.strictEqual(deleteRes.status, 200);
+      assert.strictEqual(deleteRes.body.data.status, 'REMOVED');
+    });
   });
 
   // =========================================================
