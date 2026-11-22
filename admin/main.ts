@@ -118,13 +118,6 @@ function setupAuthGate() {
   const passInput = document.getElementById('admin-auth-password') as HTMLInputElement | null;
   const errorBox = document.getElementById('admin-login-error');
   const submitBtn = document.getElementById('btn-admin-submit') as HTMLButtonElement | null;
-  const quickFillBtn = document.getElementById('btn-quick-fill-admin');
-
-  quickFillBtn?.addEventListener('click', () => {
-    if (emailInput) emailInput.value = 'admin@mu.edu.et';
-    if (passInput) passInput.value = 'Password123!';
-    if (errorBox) errorBox.style.display = 'none';
-  });
 
   form?.addEventListener('submit', async (e) => {
     e.preventDefault();
