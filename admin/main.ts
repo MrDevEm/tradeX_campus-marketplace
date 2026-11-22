@@ -76,7 +76,7 @@ function launchAdminConsole() {
   // Ensure Exit buttons navigate to main marketplace
   const exitBtn = document.getElementById('btn-exit-admin');
   const mobileExitBtn = document.getElementById('btn-admin-mobile-exit');
-  const exitMarketplaceUrl = 'https://tradex03.onrender.com';
+  const exitMarketplaceUrl = 'https://tradex-campus.onrender.com';
 
   [exitBtn, mobileExitBtn].forEach((btn) => {
     if (!btn) return;
