@@ -1,4 +1,4 @@
-import { isApiConfigured } from '../../config/env.ts';
+import { ENV, isApiConfigured } from '../../config/env.ts';
 import type { CampusMeetupSpot, ChatMessage, Conversation } from '../../types/marketplace.ts';
 import { apiRequest } from './client.ts';
 import { API_ENDPOINTS } from './endpoints.ts';
@@ -60,7 +60,7 @@ function getFormattedTime(): string {
 
 function getWsUrl(): string {
   if (isApiConfigured()) {
-    const base = (typeof window !== 'undefined' && (window as unknown as { __API_BASE__?: string }).__API_BASE__) || 'http://localhost:3001/api';
+    const base = (typeof window !== 'undefined' && (window as unknown as { __API_BASE__?: string }).__API_BASE__) || ENV.apiBaseUrl || 'http://localhost:3001/api';
     return base.replace(/^http/, 'ws').replace(/\/api$/, '') + '/ws';
   }
   if (typeof window !== 'undefined' && window.location) {
