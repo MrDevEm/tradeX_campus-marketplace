@@ -43,6 +43,9 @@ export function createApp() {
   app.use('/uploads', express.static(path.resolve(process.cwd(), 'uploads')));
 
   // API Routes
+  app.get('/', (req, res) => {
+    res.redirect('/api');
+  });
   app.use('/api', healthRouter);
   app.use('/api/auth', authRouter);
   app.use('/api/categories', categoryRouter);
