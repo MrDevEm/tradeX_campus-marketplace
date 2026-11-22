@@ -118,6 +118,26 @@ function setupAuthGate() {
   const passInput = document.getElementById('admin-auth-password') as HTMLInputElement | null;
   const errorBox = document.getElementById('admin-login-error');
   const submitBtn = document.getElementById('btn-admin-submit') as HTMLButtonElement | null;
+  const togglePassBtn = document.getElementById('btn-toggle-admin-password') as HTMLButtonElement | null;
+  const eyeShow = togglePassBtn?.querySelector('.admin-eye-icon-show') as HTMLElement | null;
+  const eyeHide = togglePassBtn?.querySelector('.admin-eye-icon-hide') as HTMLElement | null;
+
+  // Toggle password visibility (show / hide)
+  togglePassBtn?.addEventListener('click', (e) => {
+    e.preventDefault();
+    if (!passInput) return;
+    const isPassword = passInput.type === 'password';
+    passInput.type = isPassword ? 'text' : 'password';
+
+    if (eyeShow && eyeHide) {
+      eyeShow.style.display = isPassword ? 'none' : 'block';
+      eyeHide.style.display = isPassword ? 'block' : 'none';
+    }
+
+    const label = isPassword ? 'Hide password' : 'Show password';
+    togglePassBtn.setAttribute('aria-label', label);
+    togglePassBtn.setAttribute('title', label);
+  });
 
   form?.addEventListener('submit', async (e) => {
     e.preventDefault();
