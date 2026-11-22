@@ -347,4 +347,78 @@ export const adminService = {
     }
     return apiRequest<AuditLogEntry[]>(API_ENDPOINTS.admin.auditLogs);
   },
+
+  async fetchAdmins(): Promise<Array<{ id: string; email: string; fullName: string; role: string; status: string; createdAt: string }>> {
+    if (!isApiConfigured()) {
+      const stored = localStorage.getItem('tradex_platform_admins');
+      if (stored) {
+        try {
+          return JSON.parse(stored);
+        } catch {
+          // fallback
+        }
+      }
+      return [
+        {
+          id: 'admin-seed-1',
+          fullName: 'Campus Admin',
+          email: 'admin@mu.edu.et',
+          role: 'SUPERADMIN',
+          status: 'APPROVED',
+          createdAt: new Date().toISOString(),
+        },
+      ];
+    }
+    return apiRequest(API_ENDPOINTS.admin.settingsAdmins);
+  },
+
+  async createAdmin(payload: { fullName: string; email: string; role: string; password: string }): Promise<any> {
+    if (!isApiConfigured()) {
+      const current = await this.fetchAdmins();
+      const newAdmin = {
+        id: 'admin-' + Date.now(),
+        fullName: payload.fullName,
+        email: payload.email,
+        role: payload.role,
+        status: 'APPROVED',
+        createdAt: new Date().toISOString(),
+      };
+      current.unshift(newAdmin);
+      localStorage.setItem('tradex_platform_admins', JSON.stringify(current));
+
+      localAuditLogs.unshift({
+        id: 'aud-' + Date.now(),
+        timestamp: 'Today, ' + getFormattedNow(),
+        actorName: 'Campus Admin (You)',
+        action: 'ADMIN_PROVISIONED',
+        targetType: 'USER',
+        targetName: payload.email,
+        notes: `Created staff admin account for ${payload.fullName} (${payload.role}).`,
+      });
+      return newAdmin;
+    }
+    return apiRequest(API_ENDPOINTS.admin.settingsAdmins, {
+      method: 'POST',
+      body: payload,
+    });
+  },
+
+  async updateCredentials(payload: { email?: string; currentPassword?: string; newPassword?: string }): Promise<any> {
+    if (!isApiConfigured()) {
+      localAuditLogs.unshift({
+        id: 'aud-' + Date.now(),
+        timestamp: 'Today, ' + getFormattedNow(),
+        actorName: 'Campus Admin (You)',
+        action: 'STAFF_CREDENTIALS_UPDATED',
+        targetType: 'USER',
+        targetName: payload.email || 'admin@mu.edu.et',
+        notes: 'Updated staff administrator email or password security credentials.',
+      });
+      return { success: true };
+    }
+    return apiRequest(API_ENDPOINTS.admin.settingsCredentials, {
+      method: 'PATCH',
+      body: payload,
+    });
+  },
 };

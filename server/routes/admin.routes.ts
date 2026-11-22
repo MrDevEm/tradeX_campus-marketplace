@@ -58,3 +58,8 @@ adminRouter.post('/reports/:id/resolve', (req, res, next) => {
 
 // Audit Trail
 adminRouter.get('/audit-logs', adminController.getAuditLogs);
+
+// Platform Settings & Admin Management
+adminRouter.get('/settings/admins', adminController.getAdmins);
+adminRouter.post('/settings/admins', adminController.createAdmin);
+adminRouter.patch('/settings/credentials', adminController.updateCredentials);

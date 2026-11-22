@@ -149,6 +149,15 @@
               <span>Audit Trail</span>
             </div>
           </button>
+          <button type="button" class="admin-nav-tab" data-admin-tab="settings" id="admin-tab-btn-settings">
+            <div class="admin-nav-tab-left">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="3"></circle>
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+              </svg>
+              <span>Settings</span>
+            </div>
+          </button>
         </nav>
 
         <div class="admin-sidebar-footer">
@@ -724,6 +733,173 @@
                 </thead>
                 <tbody id="admin-audit-tbody"></tbody>
               </table>
+            </div>
+          </section>
+
+          <!-- Pane 5: Platform Settings & Security Administration -->
+          <section class="admin-tab-pane" id="admin-pane-settings">
+            <div class="admin-pane-header">
+              <h2 class="admin-pane-title">Platform &amp; Staff Security Settings</h2>
+              <p class="admin-pane-desc">Configure administrative security credentials, onboard campus staff admins, and enforce marketplace trust rules.</p>
+            </div>
+
+            <!-- Two Column Layout: Credentials & Add Admin -->
+            <div class="admin-overview-columns" style="margin-bottom: 24px;">
+              <!-- Left Column: Change Password & Email -->
+              <div class="admin-overview-panel">
+                <div class="admin-panel-header">
+                  <h3 class="admin-panel-title">Administrator Security Credentials</h3>
+                  <span class="admin-panel-badge-live">Active Staff Session</span>
+                </div>
+                <div style="padding: 20px;">
+                  <form id="admin-credentials-form">
+                    <div id="admin-cred-alert" style="display: none; padding: 12px; border-radius: 10px; margin-bottom: 16px; font-size: 13px;"></div>
+
+                    <div class="admin-field-group">
+                      <label class="admin-input-label" for="settings-admin-email">Staff Admin Email</label>
+                      <input type="email" id="settings-admin-email" class="admin-text-input" value="admin@mu.edu.et" required />
+                    </div>
+
+                    <div class="admin-field-group" style="margin-top: 14px;">
+                      <label class="admin-input-label" for="settings-current-password">Current Password (Required for changes)</label>
+                      <input type="password" id="settings-current-password" class="admin-text-input" placeholder="Enter current password..." />
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 14px;">
+                      <div class="admin-field-group">
+                        <label class="admin-input-label" for="settings-new-password">New Password</label>
+                        <input type="password" id="settings-new-password" class="admin-text-input" placeholder="New password..." />
+                      </div>
+                      <div class="admin-field-group">
+                        <label class="admin-input-label" for="settings-confirm-password">Confirm New</label>
+                        <input type="password" id="settings-confirm-password" class="admin-text-input" placeholder="Confirm password..." />
+                      </div>
+                    </div>
+
+                    <button type="submit" id="btn-save-credentials" class="btn-admin-cta-primary" style="width: 100%; margin-top: 20px; justify-content: center;">
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                      Update Security Credentials
+                    </button>
+                  </form>
+                </div>
+              </div>
+
+              <!-- Right Column: Provision New Campus Admin -->
+              <div class="admin-overview-panel">
+                <div class="admin-panel-header">
+                  <h3 class="admin-panel-title">Add New Campus Administrator</h3>
+                  <span class="admin-panel-meta">Staff Privilege</span>
+                </div>
+                <div style="padding: 20px;">
+                  <form id="admin-add-admin-form">
+                    <div id="admin-new-admin-alert" style="display: none; padding: 12px; border-radius: 10px; margin-bottom: 16px; font-size: 13px;"></div>
+
+                    <div class="admin-field-group">
+                      <label class="admin-input-label" for="new-admin-name">Full Name</label>
+                      <input type="text" id="new-admin-name" class="admin-text-input" placeholder="e.g. Dr. Abebe Kebede" required />
+                    </div>
+
+                    <div class="admin-field-group" style="margin-top: 14px;">
+                      <label class="admin-input-label" for="new-admin-email">Staff University Email</label>
+                      <input type="email" id="new-admin-email" class="admin-text-input" placeholder="e.g. abebe.k@mu.edu.et" required />
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 14px;">
+                      <div class="admin-field-group">
+                        <label class="admin-input-label" for="new-admin-role">Assigned Role</label>
+                        <select id="new-admin-role" class="admin-tool-btn" style="width: 100%; background: #081F17; color: #E2F5EE; padding: 11px 12px;">
+                          <option value="ADMIN">Campus Admin</option>
+                          <option value="SUPERADMIN">Super Administrator</option>
+                        </select>
+                      </div>
+                      <div class="admin-field-group">
+                        <label class="admin-input-label" for="new-admin-password">Initial Password</label>
+                        <input type="password" id="new-admin-password" class="admin-text-input" placeholder="Min. 6 chars..." required />
+                      </div>
+                    </div>
+
+                    <button type="submit" id="btn-create-admin" class="btn-admin-cta-primary" style="width: 100%; margin-top: 20px; justify-content: center; background: linear-gradient(135deg, #10B981, #059669);">
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                      Provision Admin Account
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+
+            <!-- Full Width Panel: Active Admins Directory Table -->
+            <div class="admin-overview-panel" style="margin-bottom: 24px;">
+              <div class="admin-panel-header">
+                <h3 class="admin-panel-title">Active Staff Administrators Directory</h3>
+                <span class="admin-panel-meta" id="admin-staff-count-badge">1 Active Admin</span>
+              </div>
+              <div class="admin-table-wrap" style="border: none; border-radius: 0 0 16px 16px;">
+                <table class="admin-table">
+                  <thead>
+                    <tr>
+                      <th>Administrator</th>
+                      <th>Email Address</th>
+                      <th>Assigned Role</th>
+                      <th>Account Status</th>
+                      <th>Created Date</th>
+                    </tr>
+                  </thead>
+                  <tbody id="admin-staff-tbody">
+                    <!-- Populated dynamically via JS -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Full Width Panel: Campus Trust & Marketplace Safety Policies -->
+            <div class="admin-overview-panel">
+              <div class="admin-panel-header">
+                <h3 class="admin-panel-title">Campus Trust &amp; Safety Policy Controls</h3>
+                <span class="admin-panel-badge-live">● System Enforced</span>
+              </div>
+              <div style="padding: 20px;">
+                <form id="admin-policies-form">
+                  <div id="admin-policy-alert" style="display: none; padding: 12px; border-radius: 10px; margin-bottom: 16px; font-size: 13px;"></div>
+
+                  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
+                    <div style="padding: 16px; background: rgba(8, 31, 23, 0.6); border: 1px solid rgba(6, 214, 160, 0.2); border-radius: 12px;">
+                      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                        <strong style="color: #E2F5EE; font-size: 14px;">Mandatory ID Verification</strong>
+                        <input type="checkbox" id="policy-mandatory-id" checked style="width: 18px; height: 18px; accent-color: #06D6A0; cursor: pointer;" />
+                      </div>
+                      <p style="font-size: 12.5px; color: #9EC7BA; margin: 0; line-height: 1.4;">
+                        Students must have an approved university ID card before their marketplace listings become visible.
+                      </p>
+                    </div>
+
+                    <div style="padding: 16px; background: rgba(8, 31, 23, 0.6); border: 1px solid rgba(6, 214, 160, 0.2); border-radius: 12px;">
+                      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                        <strong style="color: #E2F5EE; font-size: 14px;">Strict Campus Email Domain</strong>
+                        <input type="checkbox" id="policy-strict-domain" checked style="width: 18px; height: 18px; accent-color: #06D6A0; cursor: pointer;" />
+                      </div>
+                      <p style="font-size: 12.5px; color: #9EC7BA; margin: 0; line-height: 1.4;">
+                        Restrict student signups strictly to recognized university email domains (.edu, .edu.et, @mu.edu.et).
+                      </p>
+                    </div>
+
+                    <div style="padding: 16px; background: rgba(8, 31, 23, 0.6); border: 1px solid rgba(6, 214, 160, 0.2); border-radius: 12px;">
+                      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                        <strong style="color: #E2F5EE; font-size: 14px;">Monitored Meetup Zones</strong>
+                        <input type="checkbox" id="policy-safe-zones" checked style="width: 18px; height: 18px; accent-color: #06D6A0; cursor: pointer;" />
+                      </div>
+                      <p style="font-size: 12.5px; color: #9EC7BA; margin: 0; line-height: 1.4;">
+                        Enforce verified physical meetup locations (e.g. Library Plaza, Student Union) during student trade deals.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div style="margin-top: 20px; display: flex; justify-content: flex-end;">
+                    <button type="submit" id="btn-save-policies" class="btn-admin-cta-primary">
+                      Save Security &amp; Trust Policies
+                    </button>
+                  </div>
+                </form>
+              </div>
             </div>
           </section>
         </div>

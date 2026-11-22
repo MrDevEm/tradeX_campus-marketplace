@@ -45,6 +45,8 @@ export const API_ENDPOINTS = {
     reports: '/admin/reports',
     resolveReport: (id: string) => `/admin/reports/${encodeURIComponent(id)}/resolve`,
     auditLogs: '/admin/audit-logs',
+    settingsAdmins: '/admin/settings/admins',
+    settingsCredentials: '/admin/settings/credentials',
   },
   notifications: {
     list: '/notifications',

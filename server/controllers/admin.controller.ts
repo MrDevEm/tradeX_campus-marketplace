@@ -1,4 +1,5 @@
 import type { Request, Response, NextFunction } from 'express';
+import bcrypt from 'bcryptjs';
 import { prisma } from '../db/prisma.ts';
 import { AppError } from '../middleware/errorHandler.ts';
 import { sendSuccess } from '../middleware/envelope.ts';
@@ -319,6 +320,155 @@ export const adminController = {
       });
 
       return sendSuccess(res, logs, 200, { total: logs.length });
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  async getAdmins(req: Request, res: Response, next: NextFunction) {
+    try {
+      const admins = await prisma.user.findMany({
+        where: { role: { in: ['ADMIN', 'SUPERADMIN'] } },
+        select: {
+          id: true,
+          email: true,
+          fullName: true,
+          role: true,
+          status: true,
+          createdAt: true,
+        },
+        orderBy: { createdAt: 'desc' },
+      });
+
+      return sendSuccess(res, admins, 200, { total: admins.length });
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  async createAdmin(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { email, password, fullName, role } = req.body;
+      if (!email || !password || !fullName) {
+        throw new AppError('Email, password, and full name are required.', 400, 'VALIDATION_ERROR');
+      }
+
+      const normalizedEmail = String(email).trim().toLowerCase();
+      const existing = await prisma.user.findUnique({
+        where: { email: normalizedEmail },
+      });
+      if (existing) {
+        throw new AppError('An account with this email address already exists.', 409, 'CONFLICT');
+      }
+
+      const passwordHash = await bcrypt.hash(String(password), 10);
+      const assignedRole = role === 'SUPERADMIN' ? 'SUPERADMIN' : 'ADMIN';
+
+      const newAdmin = await prisma.user.create({
+        data: {
+          email: normalizedEmail,
+          passwordHash,
+          fullName: String(fullName).trim(),
+          role: assignedRole,
+          status: 'APPROVED',
+          emailVerified: true,
+          studentIdVerified: true,
+        },
+        select: {
+          id: true,
+          email: true,
+          fullName: true,
+          role: true,
+          status: true,
+          createdAt: true,
+        },
+      });
+
+      // Audit log
+      await prisma.auditLog.create({
+        data: {
+          actorId: req.user?.id || 'admin',
+          actorName: req.user?.fullName || 'Campus Administrator',
+          action: 'ADMIN_PROVISIONED',
+          targetType: 'USER',
+          targetName: newAdmin.email,
+          notes: `Created staff admin account for ${newAdmin.fullName} (${assignedRole}).`,
+        },
+      });
+
+      return sendSuccess(res, newAdmin, 201, { message: 'Campus admin account created successfully.' });
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  async updateCredentials(req: Request, res: Response, next: NextFunction) {
+    try {
+      const currentUserId = req.user?.id;
+      const { email, currentPassword, newPassword } = req.body;
+
+      if (!currentUserId) {
+        throw new AppError('Authentication required.', 401, 'UNAUTHORIZED');
+      }
+
+      const user = await prisma.user.findUnique({
+        where: { id: currentUserId },
+      });
+      if (!user) {
+        throw new AppError('User account not found.', 404, 'NOT_FOUND');
+      }
+
+      let updatedPasswordHash = user.passwordHash;
+      if (currentPassword && newPassword) {
+        const isMatch = await bcrypt.compare(String(currentPassword), user.passwordHash);
+        if (!isMatch) {
+          throw new AppError('Current password is incorrect.', 400, 'INVALID_PASSWORD');
+        }
+        if (String(newPassword).length < 6) {
+          throw new AppError('New password must be at least 6 characters long.', 400, 'WEAK_PASSWORD');
+        }
+        updatedPasswordHash = await bcrypt.hash(String(newPassword), 10);
+      }
+
+      let updatedEmail = user.email;
+      if (email && email.trim().toLowerCase() !== user.email) {
+        const normalized = email.trim().toLowerCase();
+        const existing = await prisma.user.findUnique({ where: { email: normalized } });
+        if (existing && existing.id !== currentUserId) {
+          throw new AppError('Email address is already in use by another account.', 409, 'CONFLICT');
+        }
+        updatedEmail = normalized;
+      }
+
+      const updated = await prisma.user.update({
+        where: { id: currentUserId },
+        data: {
+          email: updatedEmail,
+          passwordHash: updatedPasswordHash,
+        },
+        select: {
+          id: true,
+          email: true,
+          fullName: true,
+          role: true,
+          status: true,
+          updatedAt: true,
+        },
+      });
+
+      // Audit log
+      await prisma.auditLog.create({
+        data: {
+          actorId: currentUserId,
+          actorName: updated.fullName,
+          action: 'STAFF_CREDENTIALS_UPDATED',
+          targetType: 'USER',
+          targetName: updated.email,
+          notes: 'Updated staff administrator email or password security credentials.',
+        },
+      });
+
+      return sendSuccess(res, updated, 200, { message: 'Admin credentials updated successfully.' });
     } catch (err) {
       next(err);
     }

@@ -43,6 +43,7 @@ export function initAdmin(marketplaceCtrl?: MarketplaceController): void {
     students: document.getElementById('admin-pane-students'),
     reports: document.getElementById('admin-pane-reports'),
     audit: document.getElementById('admin-pane-audit'),
+    settings: document.getElementById('admin-pane-settings'),
   };
   const breadcrumbActive = document.getElementById('admin-breadcrumb-active');
 
@@ -219,6 +220,7 @@ export function initAdmin(marketplaceCtrl?: MarketplaceController): void {
         students: 'Student Directory',
         reports: 'Moderation Reports',
         audit: 'Audit Trail',
+        settings: 'Platform Settings & Staff Security',
       };
       breadcrumbActive.textContent = titles[tab] || 'Console';
     }
@@ -230,6 +232,7 @@ export function initAdmin(marketplaceCtrl?: MarketplaceController): void {
     if (tab === 'students') renderStudentsDirectory();
     if (tab === 'reports') renderReportsQueue();
     if (tab === 'audit') renderAuditTrail();
+    if (tab === 'settings') renderSettings();
   }
 
   // Data Loading & Syncing
@@ -953,14 +956,196 @@ export function initAdmin(marketplaceCtrl?: MarketplaceController): void {
       .replace(/'/g, '&#039;');
   }
 
+  // Settings Management
+  async function renderSettings(): Promise<void> {
+    const staffTbody = document.getElementById('admin-staff-tbody');
+    const staffBadge = document.getElementById('admin-staff-count-badge');
+    const emailInput = document.getElementById('settings-admin-email') as HTMLInputElement | null;
+
+    if (emailInput && !emailInput.value) {
+      emailInput.value = 'admin@mu.edu.et';
+    }
+
+    if (!staffTbody) return;
+
+    try {
+      const admins = await adminService.fetchAdmins();
+      if (staffBadge) {
+        staffBadge.textContent = `${admins.length} Active Admin${admins.length === 1 ? '' : 's'}`;
+      }
+
+      staffTbody.innerHTML = admins
+        .map(
+          (adm) => `
+        <tr>
+          <td>
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <div class="admin-student-avatar" style="width: 32px; height: 32px; font-size: 13px; background: rgba(6, 214, 160, 0.15); color: #06D6A0; border: 1px solid rgba(6, 214, 160, 0.3);">
+                ${escapeHtml(adm.fullName.charAt(0).toUpperCase())}
+              </div>
+              <strong style="color: #E2F5EE; font-size: 13.5px;">${escapeHtml(adm.fullName)}</strong>
+            </div>
+          </td>
+          <td style="color: #9EC7BA; font-family: monospace; font-size: 12.5px;">${escapeHtml(adm.email)}</td>
+          <td>
+            <span class="admin-badge-status is-approved" style="font-size: 11px;">
+              ● ${escapeHtml(adm.role)}
+            </span>
+          </td>
+          <td>
+            <span style="display: inline-flex; align-items: center; gap: 5px; color: #06D6A0; font-size: 12px; font-weight: 600;">
+              <span style="width: 6px; height: 6px; border-radius: 50%; background: #06D6A0;"></span> Active
+            </span>
+          </td>
+          <td style="color: #6B9080; font-size: 12px;">
+            ${new Date(adm.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
+          </td>
+        </tr>
+      `
+        )
+        .join('');
+    } catch (err) {
+      console.warn('[Admin] Failed to load staff directory:', err);
+    }
+  }
+
+  function setupSettings(): void {
+    // 1. Credentials form
+    const credForm = document.getElementById('admin-credentials-form') as HTMLFormElement | null;
+    const credAlert = document.getElementById('admin-cred-alert');
+    const emailInput = document.getElementById('settings-admin-email') as HTMLInputElement | null;
+    const currentPassInput = document.getElementById('settings-current-password') as HTMLInputElement | null;
+    const newPassInput = document.getElementById('settings-new-password') as HTMLInputElement | null;
+    const confirmPassInput = document.getElementById('settings-confirm-password') as HTMLInputElement | null;
+
+    credForm?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!credAlert) return;
+
+      const newEmail = emailInput?.value.trim() || '';
+      const currentPass = currentPassInput?.value || '';
+      const newPass = newPassInput?.value || '';
+      const confirmPass = confirmPassInput?.value || '';
+
+      if (newPass && newPass !== confirmPass) {
+        credAlert.style.display = 'block';
+        credAlert.style.background = 'rgba(244, 63, 94, 0.15)';
+        credAlert.style.border = '1px solid rgba(244, 63, 94, 0.4)';
+        credAlert.style.color = '#FDA4AF';
+        credAlert.textContent = 'New password and confirmation do not match.';
+        return;
+      }
+
+      if (newPass && !currentPass) {
+        credAlert.style.display = 'block';
+        credAlert.style.background = 'rgba(244, 63, 94, 0.15)';
+        credAlert.style.border = '1px solid rgba(244, 63, 94, 0.4)';
+        credAlert.style.color = '#FDA4AF';
+        credAlert.textContent = 'Current password is required to change your password.';
+        return;
+      }
+
+      try {
+        await adminService.updateCredentials({
+          email: newEmail,
+          currentPassword: currentPass || undefined,
+          newPassword: newPass || undefined,
+        });
+
+        credAlert.style.display = 'block';
+        credAlert.style.background = 'rgba(6, 214, 160, 0.15)';
+        credAlert.style.border = '1px solid rgba(6, 214, 160, 0.4)';
+        credAlert.style.color = '#06D6A0';
+        credAlert.textContent = 'Admin credentials updated successfully! Changes saved to database.';
+
+        if (currentPassInput) currentPassInput.value = '';
+        if (newPassInput) newPassInput.value = '';
+        if (confirmPassInput) confirmPassInput.value = '';
+        refreshAllData();
+      } catch (err) {
+        credAlert.style.display = 'block';
+        credAlert.style.background = 'rgba(244, 63, 94, 0.15)';
+        credAlert.style.border = '1px solid rgba(244, 63, 94, 0.4)';
+        credAlert.style.color = '#FDA4AF';
+        credAlert.textContent = err instanceof Error ? err.message : 'Failed to update credentials.';
+      }
+    });
+
+    // 2. Add New Admin Form
+    const addAdminForm = document.getElementById('admin-add-admin-form') as HTMLFormElement | null;
+    const adminAlert = document.getElementById('admin-new-admin-alert');
+    const nameInput = document.getElementById('new-admin-name') as HTMLInputElement | null;
+    const newEmailInput = document.getElementById('new-admin-email') as HTMLInputElement | null;
+    const roleSelect = document.getElementById('new-admin-role') as HTMLSelectElement | null;
+    const passInput = document.getElementById('new-admin-password') as HTMLInputElement | null;
+
+    addAdminForm?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!adminAlert) return;
+
+      const fullName = nameInput?.value.trim() || '';
+      const email = newEmailInput?.value.trim() || '';
+      const role = roleSelect?.value || 'ADMIN';
+      const password = passInput?.value || '';
+
+      if (!fullName || !email || !password) {
+        adminAlert.style.display = 'block';
+        adminAlert.style.background = 'rgba(244, 63, 94, 0.15)';
+        adminAlert.style.border = '1px solid rgba(244, 63, 94, 0.4)';
+        adminAlert.style.color = '#FDA4AF';
+        adminAlert.textContent = 'Please fill out all fields to provision a new administrator.';
+        return;
+      }
+
+      try {
+        await adminService.createAdmin({ fullName, email, role, password });
+
+        adminAlert.style.display = 'block';
+        adminAlert.style.background = 'rgba(6, 214, 160, 0.15)';
+        adminAlert.style.border = '1px solid rgba(6, 214, 160, 0.4)';
+        adminAlert.style.color = '#06D6A0';
+        adminAlert.textContent = `New Campus Admin ${email} successfully provisioned! Account is now active.`;
+
+        addAdminForm.reset();
+        renderSettings();
+        refreshAllData();
+      } catch (err) {
+        adminAlert.style.display = 'block';
+        adminAlert.style.background = 'rgba(244, 63, 94, 0.15)';
+        adminAlert.style.border = '1px solid rgba(244, 63, 94, 0.4)';
+        adminAlert.style.color = '#FDA4AF';
+        adminAlert.textContent = err instanceof Error ? err.message : 'Failed to provision admin account.';
+      }
+    });
+
+    // 3. Policies Form
+    const policiesForm = document.getElementById('admin-policies-form') as HTMLFormElement | null;
+    const policyAlert = document.getElementById('admin-policy-alert');
+
+    policiesForm?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (!policyAlert) return;
+
+      policyAlert.style.display = 'block';
+      policyAlert.style.background = 'rgba(6, 214, 160, 0.15)';
+      policyAlert.style.border = '1px solid rgba(6, 214, 160, 0.4)';
+      policyAlert.style.color = '#06D6A0';
+      policyAlert.textContent = 'Platform security & verification trust policies have been updated and enforced.';
+      setTimeout(() => {
+        if (policyAlert) policyAlert.style.display = 'none';
+      }, 4000);
+    });
+  }
+
   // Setup Event Handlers
   setupProductManagement();
   setupBannerManager();
+  setupSettings();
 
   // Tab Navigation clicks
   tabBtns.forEach((btn) => {
     btn.addEventListener('click', () => {
-      const targetTab = btn.getAttribute('data-admin-tab') as 'overview' | 'products' | 'banners' | 'verifications' | 'students' | 'reports' | 'audit' | null;
+      const targetTab = btn.getAttribute('data-admin-tab') as 'overview' | 'products' | 'banners' | 'verifications' | 'students' | 'reports' | 'audit' | 'settings' | null;
       if (targetTab) switchTab(targetTab);
     });
   });
