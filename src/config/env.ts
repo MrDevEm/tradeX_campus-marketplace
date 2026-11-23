@@ -7,7 +7,7 @@ const rawApiBaseUrl = (
 
 export const ENV = {
   apiBaseUrl: rawApiBaseUrl.replace(/\/+$/, ''),
-  requestTimeoutMs: 12000,
+  requestTimeoutMs: 60000,
 } as const;
 
 export function isApiConfigured(): boolean {

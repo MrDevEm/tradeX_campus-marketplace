@@ -153,7 +153,7 @@ function setupAuthGate() {
 
     if (submitBtn) {
       submitBtn.disabled = true;
-      submitBtn.innerHTML = '<span>Verifying credentials...</span>';
+      submitBtn.innerHTML = '<span>Logging in...</span>';
     }
 
     try {
@@ -176,7 +176,7 @@ function setupAuthGate() {
     } finally {
       if (submitBtn) {
         submitBtn.disabled = false;
-        submitBtn.innerHTML = '<span>Unlock Admin Console</span>';
+        submitBtn.innerHTML = '<span>Login</span>';
       }
     }
   });

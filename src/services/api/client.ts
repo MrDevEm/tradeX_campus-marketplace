@@ -62,6 +62,7 @@ export interface RequestOptions {
   body?: unknown;
   headers?: Record<string, string>;
   signal?: AbortSignal;
+  timeoutMs?: number;
 }
 
 export async function apiRequest<T>(path: string, options: RequestOptions = {}): Promise<T> {
@@ -70,7 +71,12 @@ export async function apiRequest<T>(path: string, options: RequestOptions = {}):
   }
 
   const controller = new AbortController();
-  const timeoutId = window.setTimeout(() => controller.abort(), ENV.requestTimeoutMs);
+  let timedOut = false;
+  const timeoutMs = options.timeoutMs ?? ENV.requestTimeoutMs;
+  const timeoutId = window.setTimeout(() => {
+    timedOut = true;
+    controller.abort();
+  }, timeoutMs);
 
   const token = getStoredAuthToken();
   const isFormData = typeof FormData !== 'undefined' && options.body instanceof FormData;
@@ -133,6 +139,13 @@ export async function apiRequest<T>(path: string, options: RequestOptions = {}):
     return payload as T;
   } catch (err) {
     if (err instanceof ApiError) throw err;
+    if (
+      timedOut ||
+      controller.signal.aborted ||
+      (err instanceof Error && (err.name === 'AbortError' || err.message.toLowerCase().includes('abort')))
+    ) {
+      throw new ApiError('The server took longer than expected to respond (it may be waking up from idle). Please try again.', 408, err);
+    }
     const message = err instanceof Error ? err.message : 'Network request failed';
     throw new ApiError(message, 0, err);
   } finally {
