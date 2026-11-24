@@ -240,16 +240,42 @@
               <span id="admin-telemetry-latency" style="color: var(--admin-emerald); font-weight: 600;">2ms</span>
             </div>
 
-            <div class="admin-staff-chip">
-              <div class="admin-staff-avatar" id="admin-staff-avatar">CA</div>
-              <span class="admin-staff-email" id="admin-staff-email">admin@mu.edu.et</span>
-              <button type="button" class="btn-admin-icon-action" id="btn-admin-top-logout" title="Sign Out of Admin Console">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-                  <polyline points="16 17 21 12 16 7"></polyline>
-                  <line x1="21" y1="12" x2="9" y2="12"></line>
+            <div class="admin-staff-dropdown-container">
+              <button type="button" class="admin-staff-chip" id="admin-staff-chip-btn" aria-haspopup="true" aria-expanded="false" title="Staff Profile Menu">
+                <div class="admin-staff-avatar" id="admin-staff-avatar">CA</div>
+                <span class="admin-staff-email" id="admin-staff-email">admin@mu.edu.et</span>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="admin-staff-chevron">
+                  <polyline points="6 9 12 15 18 9"></polyline>
                 </svg>
               </button>
+
+              <div class="admin-staff-dropdown" id="admin-staff-dropdown" style="display: none;">
+                <div class="admin-staff-dropdown-header">
+                  <div class="admin-staff-dropdown-name" id="admin-dropdown-staff-name">Staff Administrator</div>
+                  <div class="admin-staff-dropdown-email" id="admin-dropdown-staff-email">admin@mu.edu.et</div>
+                  <div class="admin-staff-dropdown-badge">
+                    <span class="admin-pulse-dot" style="width: 5px; height: 5px;"></span>
+                    <span>Admin • Full Staff Privileges</span>
+                  </div>
+                </div>
+                <div class="admin-staff-dropdown-divider"></div>
+                <a href="https://tradex-campus.onrender.com" target="_blank" rel="noopener noreferrer" class="admin-staff-dropdown-item">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                    <polyline points="15 3 21 3 21 9"></polyline>
+                    <line x1="10" y1="14" x2="21" y2="3"></line>
+                  </svg>
+                  <span>Open Public Marketplace</span>
+                </a>
+                <button type="button" class="admin-staff-dropdown-item is-logout" id="btn-admin-dropdown-signout">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                    <polyline points="16 17 21 12 16 7"></polyline>
+                    <line x1="21" y1="12" x2="9" y2="12"></line>
+                  </svg>
+                  <span>Sign Out</span>
+                </button>
+              </div>
             </div>
           </div>
 

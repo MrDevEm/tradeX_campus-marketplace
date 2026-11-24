@@ -65,11 +65,17 @@ async function syncLiveListings() {
 }
 
 function updateStaffProfileUI() {
-  const user = authService.getUser();
+  const user = authService.getCurrentUser();
   if (user) {
     const staffEmailEl = document.getElementById('admin-staff-email');
     const staffAvatarEl = document.getElementById('admin-staff-avatar');
+    const dropdownNameEl = document.getElementById('admin-dropdown-staff-name');
+    const dropdownEmailEl = document.getElementById('admin-dropdown-staff-email');
+
     if (staffEmailEl) staffEmailEl.textContent = user.email || 'admin@mu.edu.et';
+    if (dropdownEmailEl) dropdownEmailEl.textContent = user.email || 'admin@mu.edu.et';
+    if (dropdownNameEl) dropdownNameEl.textContent = user.fullName || 'Staff Administrator';
+
     if (staffAvatarEl) {
       const nameSource = user.fullName || user.email || 'Admin';
       const initials = nameSource
@@ -126,17 +132,55 @@ function launchAdminConsole() {
     });
   });
 
-  // Wire Top Command Bar & Sidebar Sign Out
+  // Staff Profile Dropdown Menu Toggle
+  const staffChipBtn = document.getElementById('admin-staff-chip-btn');
+  const staffDropdown = document.getElementById('admin-staff-dropdown');
+
+  staffChipBtn?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (!staffDropdown) return;
+    const isOpen = staffDropdown.style.display !== 'none';
+    staffDropdown.style.display = isOpen ? 'none' : 'flex';
+    staffChipBtn.classList.toggle('is-open', !isOpen);
+    staffChipBtn.setAttribute('aria-expanded', String(!isOpen));
+  });
+
+  document.addEventListener('click', (e) => {
+    if (staffDropdown && staffDropdown.style.display !== 'none') {
+      const target = e.target as Node;
+      if (!staffDropdown.contains(target) && !staffChipBtn?.contains(target)) {
+        staffDropdown.style.display = 'none';
+        staffChipBtn?.classList.remove('is-open');
+        staffChipBtn?.setAttribute('aria-expanded', 'false');
+      }
+    }
+  });
+
+  // Wire Top Command Bar, Dropdown & Sidebar Sign Out
   const handleLogout = async () => {
-    await authService.logout();
+    try {
+      await authService.logout();
+    } catch (err) {
+      console.warn('[Admin] Logout error:', err);
+    }
+    try {
+      localStorage.removeItem('tradex_auth_token');
+      localStorage.removeItem('tradex_auth_user');
+      sessionStorage.clear();
+    } catch {
+      // ignore
+    }
     document.body.classList.remove('is-authenticated');
+    window.location.reload();
   };
 
   const sidebarSignoutBtn = document.getElementById('btn-admin-signout');
-  sidebarSignoutBtn?.addEventListener('click', handleLogout);
-
   const topLogoutBtn = document.getElementById('btn-admin-top-logout');
+  const dropdownSignoutBtn = document.getElementById('btn-admin-dropdown-signout');
+
+  sidebarSignoutBtn?.addEventListener('click', handleLogout);
   topLogoutBtn?.addEventListener('click', handleLogout);
+  dropdownSignoutBtn?.addEventListener('click', handleLogout);
 
   // Global search shortcut (Ctrl+K or Cmd+K)
   const searchInput = document.getElementById('admin-global-search-input') as HTMLInputElement | null;

@@ -1,4 +1,4 @@
-import { adminService } from '../services/api';
+import { adminService, authService } from '../services/api';
 import type {
   AdminStudent,
   AdminSummary,
@@ -1381,6 +1381,32 @@ export function initAdmin(marketplaceCtrl?: MarketplaceController): void {
   btnExitAdmin?.addEventListener('click', handleExit);
   btnExitAdminTop?.addEventListener('click', handleExit);
   btnAdminMobileExit?.addEventListener('click', handleExit);
+
+  // Sign out handlers (Sidebar, Top bar, and Dropdown)
+  const handleAdminSignout = async () => {
+    try {
+      await authService.logout();
+    } catch (e) {
+      console.warn('[Admin] Sign out error:', e);
+    }
+    try {
+      localStorage.removeItem('tradex_auth_token');
+      localStorage.removeItem('tradex_auth_user');
+      sessionStorage.clear();
+    } catch {
+      // ignore
+    }
+    closeAdminDashboard();
+    window.location.reload();
+  };
+
+  const btnAdminSignout = document.getElementById('btn-admin-signout');
+  const btnAdminTopLogout = document.getElementById('btn-admin-top-logout');
+  const btnAdminDropdownSignout = document.getElementById('btn-admin-dropdown-signout');
+
+  btnAdminSignout?.addEventListener('click', handleAdminSignout);
+  btnAdminTopLogout?.addEventListener('click', handleAdminSignout);
+  btnAdminDropdownSignout?.addEventListener('click', handleAdminSignout);
 
   // Verification queue controls
   btnQueuePrev?.addEventListener('click', retreatQueue);
