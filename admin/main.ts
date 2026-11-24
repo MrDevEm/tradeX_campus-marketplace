@@ -64,6 +64,44 @@ async function syncLiveListings() {
   }
 }
 
+function updateStaffProfileUI() {
+  const user = authService.getUser();
+  if (user) {
+    const staffEmailEl = document.getElementById('admin-staff-email');
+    const staffAvatarEl = document.getElementById('admin-staff-avatar');
+    if (staffEmailEl) staffEmailEl.textContent = user.email || 'admin@mu.edu.et';
+    if (staffAvatarEl) {
+      const nameSource = user.fullName || user.email || 'Admin';
+      const initials = nameSource
+        .split(/[ @._]/)
+        .filter(Boolean)
+        .map((s: string) => s[0])
+        .slice(0, 2)
+        .join('')
+        .toUpperCase();
+      staffAvatarEl.textContent = initials || 'CA';
+    }
+  }
+}
+
+async function updateTelemetryStatus() {
+  try {
+    const start = performance.now();
+    const res = await fetch('/api/health/ready');
+    const elapsed = Math.max(1, Math.round(performance.now() - start));
+    const latencyEl = document.getElementById('admin-telemetry-latency');
+    if (latencyEl) {
+      latencyEl.textContent = `${elapsed}ms`;
+      latencyEl.style.color = res.ok ? 'var(--admin-emerald)' : 'var(--admin-rose)';
+    }
+  } catch {
+    const latencyEl = document.getElementById('admin-telemetry-latency');
+    if (latencyEl) {
+      latencyEl.textContent = 'online';
+    }
+  }
+}
+
 function launchAdminConsole() {
   document.body.classList.add('is-authenticated');
 
@@ -71,6 +109,8 @@ function launchAdminConsole() {
     initAdmin(standaloneMarketplaceCtrl);
     adminInitialized = true;
     syncLiveListings();
+    updateStaffProfileUI();
+    updateTelemetryStatus();
   }
 
   // Ensure Exit buttons navigate to main marketplace
@@ -86,30 +126,44 @@ function launchAdminConsole() {
     });
   });
 
-  // Inject a dedicated Sign Out button in the sidebar footer if not present
-  const sidebarFooter = document.querySelector('.admin-sidebar-footer');
-  if (sidebarFooter && !document.getElementById('btn-admin-signout')) {
-    const signoutBtn = document.createElement('button');
-    signoutBtn.type = 'button';
-    signoutBtn.id = 'btn-admin-signout';
-    signoutBtn.className = 'btn-exit-admin';
-    signoutBtn.style.marginTop = '8px';
-    signoutBtn.style.borderColor = 'rgba(244, 63, 94, 0.4)';
-    signoutBtn.style.color = '#FDA4AF';
-    signoutBtn.innerHTML = `
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-        <polyline points="16 17 21 12 16 7"></polyline>
-        <line x1="21" y1="12" x2="9" y2="12"></line>
-      </svg>
-      <span>Sign Out</span>
-    `;
-    signoutBtn.addEventListener('click', async () => {
-      await authService.logout();
-      document.body.classList.remove('is-authenticated');
-    });
-    sidebarFooter.appendChild(signoutBtn);
-  }
+  // Wire Top Command Bar & Sidebar Sign Out
+  const handleLogout = async () => {
+    await authService.logout();
+    document.body.classList.remove('is-authenticated');
+  };
+
+  const sidebarSignoutBtn = document.getElementById('btn-admin-signout');
+  sidebarSignoutBtn?.addEventListener('click', handleLogout);
+
+  const topLogoutBtn = document.getElementById('btn-admin-top-logout');
+  topLogoutBtn?.addEventListener('click', handleLogout);
+
+  // Global search shortcut (Ctrl+K or Cmd+K)
+  const searchInput = document.getElementById('admin-global-search-input') as HTMLInputElement | null;
+  window.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+      e.preventDefault();
+      searchInput?.focus();
+    }
+  });
+
+  // Global quick-search input handler (filters active tab or jumps to sections)
+  searchInput?.addEventListener('input', (e) => {
+    const term = (e.target as HTMLInputElement).value.trim().toLowerCase();
+    if (!term) return;
+
+    if (term.startsWith('prod') || term.startsWith('item')) {
+      document.getElementById('admin-tab-btn-products')?.click();
+    } else if (term.startsWith('verif') || term.startsWith('id')) {
+      document.getElementById('admin-tab-btn-verif')?.click();
+    } else if (term.startsWith('rep')) {
+      document.getElementById('admin-tab-btn-reports')?.click();
+    } else if (term.startsWith('stud')) {
+      document.getElementById('admin-tab-btn-students')?.click();
+    } else if (term.startsWith('set')) {
+      document.getElementById('admin-tab-btn-settings')?.click();
+    }
+  });
 }
 
 function setupAuthGate() {

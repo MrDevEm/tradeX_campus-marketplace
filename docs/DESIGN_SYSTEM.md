@@ -13,8 +13,32 @@ tradeX is an exclusive university student marketplace built for safe, transparen
 - **Primary Brand Theme**: Brunswick & Deep Emerald Green (`#061914`, `#06D6A0`, `#05BA8B`).
 - **Surface Modes**:
   - **Persuade (Marketplace Feed & Landing)**: High visual energy, dynamic 3D arch product showcase carousel, fluid curved wave navigation.
-  - **Operate (Chat Studio & Admin Dashboard)**: Restrained, dense, highly functional, zero clutter. The tool disappears into the task.
+  - **Operate (Admin Dashboard & Staff Console)**: *Obsidian Slate & Precision Emerald*. Clean architectural density, neutral dark foundation, high-contrast typography, and purposeful semantic accents. Zero decorative slop or glowing swamp gradients.
   - **Trust Circle**: High-visibility verification badges (`Verified Student`), transparent safety notices, and private encrypted document handling.
+
+---
+
+## 2. Admin Dashboard Visual Specification (Obsidian Slate)
+
+### Ground & Structural Surface Layers
+- **Workspace Ground (`--admin-bg`)**: `#090D16` (Deep Obsidian Blue-Black, neutral resting base)
+- **Sidebar & Rails (`--admin-sidebar-bg`)**: `#0D1322` (Subtle Slate Tinted Dark Rail)
+- **Panels & Cards (`--admin-panel-bg`)**: `#131B2E` (Structured Crisp Panel)
+- **Active / Hover State (`--admin-hover-bg`)**: `#1E2A44`
+- **Architectural Borders (`--admin-border`)**: `#1E293B` (1px crisp structural borders, 0 glowing halos)
+
+### Semantic Vocabulary (Used exclusively for data & state)
+- **Positive / Approved (`--admin-emerald`)**: `#10B981` (Accent: `#059669`, Badge BG: `rgba(16, 185, 129, 0.12)`)
+- **Pending / Warning (`--admin-amber`)**: `#F59E0B` (Accent: `#D97706`, Badge BG: `rgba(245, 158, 11, 0.12)`)
+- **Danger / Destructive (`--admin-rose`)**: `#F43F5E` (Accent: `#E11D48`, Badge BG: `rgba(244, 63, 94, 0.14)`)
+- **System Active / Info (`--admin-sky`)**: `#38BDF8` (Accent: `#0284C7`, Badge BG: `rgba(56, 189, 248, 0.12)`)
+
+### High-Contrast Typography Hierarchy
+- **Primary Text (`--admin-text-primary`)**: `#F8FAFC` (Slate 50 — WCAG AAA contrast ≥ 14:1)
+- **Secondary Text (`--admin-text-secondary`)**: `#94A3B8` (Slate 400 — contrast ≥ 5.5:1)
+- **Muted Captions & Column Headers (`--admin-text-muted`)**: `#64748B` (Slate 500)
+- **Numbers & Metrics**: `font-variant-numeric: tabular-nums` (Monospaced alignment for figures and ETB amounts)
+- **Column Header Micro-Typography**: `text-[11px] font-semibold uppercase tracking-wider text-slate-400`
 
 ---
 

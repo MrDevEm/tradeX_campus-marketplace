@@ -84,31 +84,33 @@
       <aside class="admin-sidebar">
         <div class="admin-sidebar-brand">
           <div class="admin-brand-logo-icon">
-            <svg style="width: 100%; height: 100%; display: block;" viewBox="97 20 294 256" aria-hidden="true">
-              <image href="/images/brand/tradex-mark.png" x="0" y="0" width="478" height="276" filter="url(#tx-emerald-recolor)" />
+            <svg style="width: 20px; height: 20px; display: block;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="#10B981" />
             </svg>
           </div>
           <div>
-            <div class="admin-brand-title">trade<span style="color: #06D6A0;">X</span> Admin</div>
+            <div class="admin-brand-title">trade<span style="color: var(--admin-emerald);">X</span> Admin</div>
+            <span class="admin-brand-subtitle">Addis Ababa University</span>
             <span class="admin-badge-role">Staff Console</span>
           </div>
         </div>
 
         <nav class="admin-sidebar-nav" aria-label="Admin Sections">
+          <div class="admin-nav-group-title">Operations</div>
           <button type="button" class="admin-nav-tab is-active" data-admin-tab="overview" id="admin-tab-btn-overview">
             <div class="admin-nav-tab-left">
-              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <rect x="3" y="3" width="7" height="7"></rect>
-                <rect x="14" y="3" width="7" height="7"></rect>
-                <rect x="14" y="14" width="7" height="7"></rect>
-                <rect x="3" y="14" width="7" height="7"></rect>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="7" height="7" rx="1"></rect>
+                <rect x="14" y="3" width="7" height="7" rx="1"></rect>
+                <rect x="14" y="14" width="7" height="7" rx="1"></rect>
+                <rect x="3" y="14" width="7" height="7" rx="1"></rect>
               </svg>
               <span>Overview &amp; KPIs</span>
             </div>
           </button>
           <button type="button" class="admin-nav-tab" data-admin-tab="products" id="admin-tab-btn-products">
             <div class="admin-nav-tab-left">
-              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
                 <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
                 <line x1="12" y1="22.08" x2="12" y2="12"></line>
@@ -117,9 +119,46 @@
             </div>
             <span class="admin-nav-pill-count" id="admin-nav-products-badge">12</span>
           </button>
+
+          <div class="admin-nav-group-title">Trust &amp; Moderation</div>
+          <button type="button" class="admin-nav-tab" data-admin-tab="verifications" id="admin-tab-btn-verif">
+            <div class="admin-nav-tab-left">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                <path d="M9 12l2 2 4-4"></path>
+              </svg>
+              <span>ID Verifications</span>
+            </div>
+            <span class="admin-nav-pill-count is-amber" id="admin-nav-verif-badge">3</span>
+          </button>
+          <button type="button" class="admin-nav-tab" data-admin-tab="reports" id="admin-tab-btn-reports">
+            <div class="admin-nav-tab-left">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                <line x1="12" y1="9" x2="12" y2="13"></line>
+                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+              </svg>
+              <span>Listing Reports</span>
+            </div>
+            <span class="admin-nav-pill-count is-warning" id="admin-nav-reports-badge">2</span>
+          </button>
+
+          <div class="admin-nav-group-title">Campus Community</div>
+          <button type="button" class="admin-nav-tab" data-admin-tab="students" id="admin-tab-btn-students">
+            <div class="admin-nav-tab-left">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+              </svg>
+              <span>Student Directory</span>
+            </div>
+            <span class="admin-nav-pill-count" id="admin-nav-students-badge">4</span>
+          </button>
           <button type="button" class="admin-nav-tab" data-admin-tab="banners" id="admin-tab-btn-banners">
             <div class="admin-nav-tab-left">
-              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
                 <circle cx="8.5" cy="8.5" r="1.5"></circle>
                 <polyline points="21 15 16 10 5 21"></polyline>
@@ -127,48 +166,47 @@
               <span>Hero &amp; Banners</span>
             </div>
           </button>
-          <button type="button" class="admin-nav-tab" data-admin-tab="verifications" id="admin-tab-btn-verif">
-            <div class="admin-nav-tab-left">
-              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-              <span>ID Verifications</span>
-            </div>
-            <span class="admin-nav-pill-count" id="admin-nav-verif-badge">3</span>
-          </button>
-          <button type="button" class="admin-nav-tab" data-admin-tab="students" id="admin-tab-btn-students">
-            <div class="admin-nav-tab-left">
-              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-              <span>Student Directory</span>
-            </div>
-            <span class="admin-nav-pill-count" id="admin-nav-students-badge">4</span>
-          </button>
-          <button type="button" class="admin-nav-tab" data-admin-tab="reports" id="admin-tab-btn-reports">
-            <div class="admin-nav-tab-left">
-              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
-              <span>Listing Reports</span>
-            </div>
-            <span class="admin-nav-pill-count is-warning" id="admin-nav-reports-badge">2</span>
-          </button>
+
+          <div class="admin-nav-group-title">System &amp; Policies</div>
           <button type="button" class="admin-nav-tab" data-admin-tab="audit" id="admin-tab-btn-audit">
             <div class="admin-nav-tab-left">
-              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="16" y1="13" x2="8" y2="13"></line>
+                <line x1="16" y1="17" x2="8" y2="17"></line>
+                <polyline points="10 9 9 9 8 9"></polyline>
+              </svg>
               <span>Audit Trail</span>
             </div>
           </button>
           <button type="button" class="admin-nav-tab" data-admin-tab="settings" id="admin-tab-btn-settings">
             <div class="admin-nav-tab-left">
-              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <circle cx="12" cy="12" r="3"></circle>
-                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
               </svg>
-              <span>Settings</span>
+              <span>Platform Settings</span>
             </div>
           </button>
         </nav>
 
         <div class="admin-sidebar-footer">
-          <button type="button" class="btn-exit-admin" id="btn-exit-admin">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+          <a href="https://tradex-campus.onrender.com" target="_blank" rel="noopener noreferrer" class="btn-exit-admin" id="btn-exit-admin">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+              <polyline points="15 3 21 3 21 9"></polyline>
+              <line x1="10" y1="14" x2="21" y2="3"></line>
+            </svg>
             <span>Exit to Marketplace</span>
+          </a>
+          <button type="button" class="btn-exit-admin" id="btn-admin-signout" style="color: var(--admin-rose); border-color: var(--admin-rose-border);">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+              <polyline points="16 17 21 12 16 7"></polyline>
+              <line x1="21" y1="12" x2="9" y2="12"></line>
+            </svg>
+            <span>Sign Out</span>
           </button>
         </div>
       </aside>
@@ -177,32 +215,51 @@
         <header class="admin-top-bar">
           <div class="admin-top-left">
             <button type="button" class="admin-mobile-menu-btn" id="btn-admin-mobile-exit" aria-label="Close Admin Console">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
             </button>
             <div class="admin-breadcrumb">
-              tradeX Campus / <strong id="admin-breadcrumb-active">Operations &amp; Overview</strong>
+              <span>tradeX Admin</span>
+              <span style="color: var(--admin-border-hover); font-size: 11px;">/</span>
+              <strong id="admin-breadcrumb-active">Overview &amp; KPIs</strong>
+            </div>
+            <div class="admin-top-search-wrap">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+              <input type="text" id="admin-global-search-input" class="admin-top-search-input" placeholder="Jump to student, listing, or tab..." />
+              <kbd class="admin-top-search-kbd">⌘K</kbd>
             </div>
           </div>
-          <div class="admin-top-pills">
-            <div class="admin-stat-chip">
-              <span>Users:</span>
-              <strong id="admin-top-students-pill">4</strong>
+
+          <div class="admin-top-controls">
+            <div class="admin-telemetry-chip" title="Real-time Neon database connection latency">
+              <span class="admin-pulse-dot"></span>
+              <span>Neon AWS-EU</span>
+              <span style="color: var(--admin-border-hover);">•</span>
+              <span id="admin-telemetry-latency" style="color: var(--admin-emerald); font-weight: 600;">2ms</span>
             </div>
-            <div class="admin-stat-chip">
-              <span>Live Items:</span>
-              <strong id="admin-top-products-pill">12</strong>
+
+            <div class="admin-staff-chip">
+              <div class="admin-staff-avatar" id="admin-staff-avatar">CA</div>
+              <span class="admin-staff-email" id="admin-staff-email">admin@mu.edu.et</span>
+              <button type="button" class="btn-admin-icon-action" id="btn-admin-top-logout" title="Sign Out of Admin Console">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                  <polyline points="16 17 21 12 16 7"></polyline>
+                  <line x1="21" y1="12" x2="9" y2="12"></line>
+                </svg>
+              </button>
             </div>
-            <div class="admin-stat-chip">
-              <span>Pending IDs:</span>
-              <strong id="admin-top-pending-pill">3</strong>
-            </div>
-            <div class="admin-stat-chip">
-              <span>Reports:</span>
-              <strong id="admin-top-reports-pill" style="color: #F59E0B;">2</strong>
-            </div>
-            <button type="button" class="btn-exit-admin" id="btn-exit-admin-top" style="width: auto; padding: 6px 14px; margin-left: 8px;">
-              <span>Exit</span>
-            </button>
+          </div>
+
+          <!-- Hidden telemetry vault for backward-compatible script lookups -->
+          <div class="admin-hidden-telemetry-vault" aria-hidden="true">
+            <span id="admin-top-students-pill">4</span>
+            <span id="admin-top-products-pill">12</span>
+            <span id="admin-top-pending-pill">3</span>
+            <span id="admin-top-reports-pill">2</span>
+            <button id="btn-exit-admin-top"></button>
           </div>
         </header>
 
