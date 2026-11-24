@@ -70,6 +70,12 @@ export function initAdmin(marketplaceCtrl?: MarketplaceController): void {
   const btnOverviewEditBanner = document.getElementById('btn-overview-edit-banner');
   const btnOverviewReviewIds = document.getElementById('btn-overview-review-ids');
   const btnQuickJumpBanner = document.getElementById('btn-quick-jump-banner');
+  const overviewVerifsList = document.getElementById('admin-overview-verifs-list');
+  const overviewReportsList = document.getElementById('admin-overview-reports-list');
+  const overviewTriageVerifBadge = document.getElementById('admin-overview-triage-verif-badge');
+  const overviewTriageReportsBadge = document.getElementById('admin-overview-triage-reports-badge');
+  const btnOverviewJumpVerifs = document.getElementById('btn-overview-jump-verifs');
+  const btnOverviewJumpReports = document.getElementById('btn-overview-jump-reports');
 
   // Products Management Elements
   const btnToggleAddProduct = document.getElementById('btn-admin-toggle-add-product');
@@ -340,6 +346,96 @@ export function initAdmin(marketplaceCtrl?: MarketplaceController): void {
     const currentBanner = loadBannerConfig();
     if (overviewBannerPreview) {
       overviewBannerPreview.textContent = `Headline: "${currentBanner.headline1}" • Active`;
+    }
+
+    // Urgent Student ID Verifications Triage
+    if (overviewTriageVerifBadge) {
+      overviewTriageVerifBadge.textContent = `${pendingCount} Queued`;
+    }
+    if (overviewVerifsList) {
+      if (verificationQueue.length === 0) {
+        overviewVerifsList.innerHTML = `
+          <div class="admin-triage-empty">
+            <span style="color: var(--admin-emerald); font-weight: 600;">✓ All caught up!</span> No student ID verifications are currently pending.
+          </div>
+        `;
+      } else {
+        const topVerifs = verificationQueue.slice(0, 3);
+        overviewVerifsList.innerHTML = topVerifs
+          .map((item, idx) => {
+            const initials = (item.studentName || 'Student')
+              .split(' ')
+              .map((s: string) => s[0])
+              .slice(0, 2)
+              .join('')
+              .toUpperCase();
+            return `
+              <div class="admin-triage-item">
+                <div class="admin-triage-item-left">
+                  <div class="admin-triage-avatar">${escapeHtml(initials || 'ST')}</div>
+                  <div class="admin-triage-info">
+                    <div class="admin-triage-name">${escapeHtml(item.studentName)}</div>
+                    <div class="admin-triage-meta">${escapeHtml(item.studentId || 'ID Pending')} • ${escapeHtml(item.department || 'AAU Campus')}</div>
+                  </div>
+                </div>
+                <button type="button" class="btn-triage-action" data-jump-verif-idx="${idx}">
+                  Review
+                </button>
+              </div>
+            `;
+          })
+          .join('');
+
+        overviewVerifsList.querySelectorAll<HTMLButtonElement>('[data-jump-verif-idx]').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            const idx = parseInt(btn.getAttribute('data-jump-verif-idx') || '0', 10);
+            currentQueueIndex = idx;
+            switchTab('verifications');
+          });
+        });
+      }
+    }
+
+    // Urgent Listing Moderation Reports Triage
+    const openReports = reportsList.filter((r) => r.status === 'OPEN');
+    if (overviewTriageReportsBadge) {
+      overviewTriageReportsBadge.textContent = `${openReports.length} Open`;
+    }
+    if (overviewReportsList) {
+      if (openReports.length === 0) {
+        overviewReportsList.innerHTML = `
+          <div class="admin-triage-empty">
+            <span style="color: var(--admin-emerald); font-weight: 600;">✓ Safe Community!</span> No open listing moderation reports.
+          </div>
+        `;
+      } else {
+        const topReports = openReports.slice(0, 3);
+        overviewReportsList.innerHTML = topReports
+          .map((report) => {
+            const reasonClean = report.reason.replace(/_/g, ' ');
+            return `
+              <div class="admin-triage-item">
+                <div class="admin-triage-item-left">
+                  <div class="admin-triage-avatar" style="color: var(--admin-rose); background: var(--admin-rose-subtle); border-color: var(--admin-rose-border);">!</div>
+                  <div class="admin-triage-info">
+                    <div class="admin-triage-name">${escapeHtml(report.targetTitle || 'Marketplace Item')}</div>
+                    <div class="admin-triage-meta"><span style="color: var(--admin-rose); font-weight: 600;">${escapeHtml(reasonClean)}</span> • Reported by ${escapeHtml(report.reporterName || 'Student')}</div>
+                  </div>
+                </div>
+                <button type="button" class="btn-triage-action" data-jump-report-id="${escapeHtml(report.id)}">
+                  Triage
+                </button>
+              </div>
+            `;
+          })
+          .join('');
+
+        overviewReportsList.querySelectorAll<HTMLButtonElement>('[data-jump-report-id]').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            switchTab('reports');
+          });
+        });
+      }
     }
   }
 
@@ -1172,6 +1268,8 @@ export function initAdmin(marketplaceCtrl?: MarketplaceController): void {
   btnOverviewEditBanner?.addEventListener('click', () => switchTab('banners'));
   btnQuickJumpBanner?.addEventListener('click', () => switchTab('banners'));
   btnOverviewReviewIds?.addEventListener('click', () => switchTab('verifications'));
+  btnOverviewJumpVerifs?.addEventListener('click', () => switchTab('verifications'));
+  btnOverviewJumpReports?.addEventListener('click', () => switchTab('reports'));
 
   // Exit handlers
   const handleExit = () => {
@@ -1300,6 +1398,9 @@ export function initAdmin(marketplaceCtrl?: MarketplaceController): void {
       if (activeTab === 'products') renderProductsTable();
     });
   }
+
+  // Initial load of admin data
+  refreshAllData();
 
   // Direct Hash Routing: if URL has #admin, open dashboard automatically!
   function checkHashRouting(): void {
