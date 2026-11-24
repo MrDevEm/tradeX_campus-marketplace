@@ -159,6 +159,7 @@ export function initAdmin(marketplaceCtrl?: MarketplaceController): void {
 
   // Reports Queue Elements
   const reportsContainer = document.getElementById('admin-reports-container');
+  const reportsCountBadge = document.getElementById('admin-reports-count-badge');
 
   // Audit Trail Elements
   const auditTbody = document.getElementById('admin-audit-tbody');
@@ -785,7 +786,7 @@ export function initAdmin(marketplaceCtrl?: MarketplaceController): void {
     if (verificationQueue.length === 0) {
       splitConsole.style.display = 'none';
       queueEmpty.style.display = 'block';
-      if (queueCounter) queueCounter.textContent = '0 of 0';
+      if (queueCounter) queueCounter.textContent = '0 of 0 Cleared';
       return;
     }
 
@@ -800,7 +801,7 @@ export function initAdmin(marketplaceCtrl?: MarketplaceController): void {
     if (!item) return;
 
     if (queueCounter) {
-      queueCounter.textContent = `${currentQueueIndex + 1} of ${verificationQueue.length}`;
+      queueCounter.textContent = `${currentQueueIndex + 1} of ${verificationQueue.length} Queued`;
     }
 
     // Update Doc Inspector
@@ -809,7 +810,7 @@ export function initAdmin(marketplaceCtrl?: MarketplaceController): void {
       resetDocTransform();
     }
     if (docMetaFile) {
-      docMetaFile.textContent = `Scan: ${item.idDocumentUrl ? item.idDocumentUrl.split('.').pop()?.toUpperCase() : 'JPG'} • University ID`;
+      docMetaFile.textContent = `Scan: ${item.idDocumentUrl ? item.idDocumentUrl.split('.').pop()?.toUpperCase() : 'PNG'} • AAU Student Card`;
     }
     if (docMetaTime) {
       docMetaTime.textContent = `Submitted: ${item.submittedAt}`;
@@ -817,7 +818,7 @@ export function initAdmin(marketplaceCtrl?: MarketplaceController): void {
 
     // Update Student Dossier
     if (studentAvatar) {
-      studentAvatar.textContent = item.studentName.charAt(0).toUpperCase();
+      studentAvatar.textContent = getInitials(item.studentName);
     }
     if (studentName) studentName.textContent = item.studentName;
     if (studentEmail) studentEmail.textContent = item.email;
@@ -1002,11 +1003,16 @@ export function initAdmin(marketplaceCtrl?: MarketplaceController): void {
 
     const openReports = reportsList.filter((r) => r.status === 'OPEN');
 
+    if (reportsCountBadge) {
+      reportsCountBadge.textContent = `${openReports.length} Open Report${openReports.length === 1 ? '' : 's'}`;
+    }
+
     if (openReports.length === 0) {
       reportsContainer.innerHTML = `
-        <div style="padding: 48px; text-align: center; background: #081F17; border: 1px solid rgba(6, 214, 160, 0.2); border-radius: 18px;">
-          <h3 style="font-size: 18px; font-weight: 700; color: #F2FDF9; margin-bottom: 6px;">No Active Reports</h3>
-          <p style="font-size: 13.5px; color: var(--polar-500);">Community report queue is clear. No policy violations flagged.</p>
+        <div class="admin-queue-empty-card">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" style="margin: 0 auto 12px; color: var(--admin-emerald);"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+          <h3 class="admin-queue-empty-title">All Reports Resolved!</h3>
+          <p class="admin-queue-empty-desc">Community report queue is clear. No policy violations or flagged listings.</p>
         </div>
       `;
       return;
@@ -1016,10 +1022,13 @@ export function initAdmin(marketplaceCtrl?: MarketplaceController): void {
       .map((report) => `
         <div class="admin-report-card" data-report-id="${report.id}">
           <div class="admin-report-top">
-            <div>
-              <div class="admin-report-title">Listing: ${escapeHtml(report.targetTitle)}</div>
-              <div style="font-size: 12px; color: var(--polar-500); margin-top: 2px;">
-                Reported by <strong>${escapeHtml(report.reporterName)}</strong> (${escapeHtml(report.timestamp)})
+            <div style="min-width: 0;">
+              <div class="admin-report-title">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--admin-rose); margin-right: 6px; vertical-align: -2px;"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                <span>${escapeHtml(report.targetTitle)}</span>
+              </div>
+              <div class="admin-report-meta">
+                Reported by <strong style="color: var(--admin-text-primary);">${escapeHtml(report.reporterName)}</strong> • ${escapeHtml(report.timestamp)}
               </div>
             </div>
             <span class="admin-report-badge">${escapeHtml(report.reason)}</span>
@@ -1028,13 +1037,16 @@ export function initAdmin(marketplaceCtrl?: MarketplaceController): void {
             "${escapeHtml(report.details)}"
           </div>
           <div class="admin-report-actions">
-            <button type="button" class="btn-table-action is-danger" data-report-action="REMOVE_LISTING" data-id="${report.id}">
+            <button type="button" class="btn-table-action is-danger" data-report-action="REMOVE_LISTING" data-id="${report.id}" title="Remove this flagged listing from marketplace">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 4px; vertical-align: -1px;"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
               Remove Listing
             </button>
-            <button type="button" class="btn-table-action is-danger" data-report-action="SUSPEND_USER" data-id="${report.id}">
+            <button type="button" class="btn-table-action is-danger" data-report-action="SUSPEND_USER" data-id="${report.id}" title="Suspend user account from publishing listings">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 4px; vertical-align: -1px;"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="18" y1="8" x2="23" y2="13"></line><line x1="23" y1="8" x2="18" y2="13"></line></svg>
               Suspend Seller
             </button>
-            <button type="button" class="btn-table-action" data-report-action="DISMISS" data-id="${report.id}">
+            <button type="button" class="btn-table-action" data-report-action="DISMISS" data-id="${report.id}" title="Dismiss report if no violation occurred">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 4px; vertical-align: -1px;"><polyline points="20 6 9 17 4 12"></polyline></svg>
               Dismiss Report
             </button>
           </div>
@@ -1049,6 +1061,7 @@ export function initAdmin(marketplaceCtrl?: MarketplaceController): void {
       reportsList = reportsList.filter((r) => r.id !== reportId);
       updateSummaryCounts();
       renderReportsQueue();
+      renderOverview();
       window.alert(`Report resolved with action: ${action}`);
     } catch (err) {
       console.error('[Admin] Error resolving report:', err);

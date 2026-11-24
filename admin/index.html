@@ -679,12 +679,14 @@
                   <p class="admin-pane-desc">Compare submitted student document credentials against university identity enrollment.</p>
                 </div>
                 <div style="display: flex; align-items: center; gap: 8px;">
-                  <button type="button" class="admin-tool-btn" id="btn-queue-prev" title="Previous verification">
-                    ← Prev
+                  <button type="button" class="btn-table-action" id="btn-queue-prev" title="Previous verification">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 3px; vertical-align: -1px;"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                    Prev
                   </button>
-                  <span style="font-size: 12.5px; font-weight: 600; color: #9EC7BA; padding: 0 4px;" id="admin-queue-counter">1 of 3</span>
-                  <button type="button" class="admin-tool-btn" id="btn-queue-next" title="Next verification">
-                    Next →
+                  <span class="admin-queue-counter-badge" id="admin-queue-counter">1 of 3 Queued</span>
+                  <button type="button" class="btn-table-action" id="btn-queue-next" title="Next verification">
+                    Next
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-left: 3px; vertical-align: -1px;"><polyline points="9 18 15 12 9 6"></polyline></svg>
                   </button>
                 </div>
               </div>
@@ -694,7 +696,10 @@
               <!-- Left Column: Document Inspector -->
               <div class="admin-doc-inspector-card">
                 <div class="admin-inspector-header">
-                  <span>Official Student ID Document Scan</span>
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--admin-emerald);"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                    <span>Official Student ID Document Scan</span>
+                  </div>
                   <div class="admin-inspector-tools">
                     <button type="button" class="admin-tool-btn" id="btn-doc-zoom-out" title="Zoom Out">−</button>
                     <button type="button" class="admin-tool-btn" id="btn-doc-reset" title="Reset Zoom">100%</button>
@@ -714,17 +719,18 @@
               <!-- Right Column: Student Dossier & Decision -->
               <div class="admin-dossier-card">
                 <div class="admin-dossier-student-top">
-                  <div class="admin-student-avatar" id="admin-student-avatar">B</div>
-                  <div>
-                    <div class="admin-student-name" id="admin-student-name">Biruk Tadesse</div>
-                    <div class="admin-student-email" id="admin-student-email">biruk.t@aau.edu.et</div>
+                  <div class="admin-student-avatar" id="admin-student-avatar">SB</div>
+                  <div style="min-width: 0; flex: 1;">
+                    <div class="admin-student-name" id="admin-student-name">Sara Bekele</div>
+                    <div class="admin-student-email" id="admin-student-email">sara.b@aau.edu.et</div>
                   </div>
+                  <span class="admin-triage-badge is-amber" style="margin-left: auto;">Pending Review</span>
                 </div>
 
                 <div class="admin-dossier-fields">
                   <div class="admin-field-row">
                     <span class="admin-field-label">Student ID #</span>
-                    <span class="admin-field-value" id="admin-dossier-id">UGR/4910/14</span>
+                    <span class="admin-field-value" id="admin-dossier-id">UGR/1402/14</span>
                   </div>
                   <div class="admin-field-row">
                     <span class="admin-field-label">University</span>
@@ -732,7 +738,7 @@
                   </div>
                   <div class="admin-field-row">
                     <span class="admin-field-label">Department</span>
-                    <span class="admin-field-value" id="admin-dossier-dept">Computer Science</span>
+                    <span class="admin-field-value" id="admin-dossier-dept">Software Engineering</span>
                   </div>
                   <div class="admin-field-row">
                     <span class="admin-field-label">Academic Year</span>
@@ -746,11 +752,11 @@
 
                 <div class="admin-actions-group">
                   <button type="button" class="btn-admin-approve" id="btn-admin-approve">
-                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
                     Approve Student ID
                   </button>
                   <button type="button" class="btn-admin-reject" id="btn-admin-reject-toggle">
-                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                     Reject / Request Re-upload
                   </button>
 
@@ -766,7 +772,7 @@
                     <input type="text" class="admin-custom-reason-input" id="admin-custom-reason-input" placeholder="Or type a custom rejection note for the student..." />
                     <div style="display: flex; gap: 8px;">
                       <button type="button" class="btn-confirm-rejection" id="btn-confirm-rejection">Confirm Rejection</button>
-                      <button type="button" class="btn-admin-reject" id="btn-cancel-rejection" style="width: auto; padding: 8px 14px;">Cancel</button>
+                      <button type="button" class="btn-table-action" id="btn-cancel-rejection" style="flex: 1; padding: 9px 14px;">Cancel</button>
                     </div>
                   </div>
                 </div>
@@ -774,10 +780,10 @@
             </div>
 
             <!-- Empty Queue State -->
-            <div id="admin-queue-empty" style="display: none; padding: 48px; text-align: center; background: #081F17; border: 1px solid rgba(6, 214, 160, 0.2); border-radius: 18px;">
-              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#06D6A0" stroke-width="2" style="margin: 0 auto 16px;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-              <h3 style="font-family: var(--font-display); font-size: 20px; font-weight: 700; color: #F2FDF9; margin-bottom: 8px;">All Verifications Cleared!</h3>
-              <p style="font-size: 14px; color: var(--polar-500); max-width: 420px; margin: 0 auto;">No pending student identity verification requests currently waiting in the review queue.</p>
+            <div id="admin-queue-empty" class="admin-queue-empty-card" style="display: none;">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" style="margin: 0 auto 12px; color: var(--admin-emerald);"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+              <h3 class="admin-queue-empty-title">All ID Verifications Cleared!</h3>
+              <p class="admin-queue-empty-desc">No pending student identity verification requests currently waiting in the review queue.</p>
             </div>
           </section>
 
@@ -816,8 +822,13 @@
           <!-- Pane 3: Reports Queue -->
           <section class="admin-tab-pane" id="admin-pane-reports">
             <div class="admin-pane-header">
-              <h2 class="admin-pane-title">Campus Moderation Reports</h2>
-              <p class="admin-pane-desc">Review and triage peer-reported listings for policy violations, counterfeit goods, or scam attempts.</p>
+              <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+                <div>
+                  <h2 class="admin-pane-title">Campus Moderation Reports</h2>
+                  <p class="admin-pane-desc">Review and triage peer-reported listings for policy violations, counterfeit goods, or scam attempts.</p>
+                </div>
+                <span class="admin-results-counter" id="admin-reports-count-badge">2 Open Reports</span>
+              </div>
             </div>
             <div class="admin-reports-grid" id="admin-reports-container"></div>
           </section>
