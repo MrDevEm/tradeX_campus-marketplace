@@ -625,10 +625,10 @@
                   <span class="badge-text" id="admin-preview-badge-text">Built for the University Student Community.</span>
                 </div>
                 <div class="headline-container" style="margin-top: 10px; margin-bottom: 10px; text-align: center;">
-                  <div class="headline-line" id="admin-preview-line1" style="font-family: var(--font-display); font-size: 28px; font-weight: 800; color: #F2FDF9; letter-spacing: -0.03em;">Buy. Sell. Swap.</div>
-                  <div class="headline-line" id="admin-preview-line2" style="font-family: var(--font-display); font-size: 28px; font-weight: 800; color: #06D6A0; letter-spacing: -0.03em;">TradeX Makes It Better.</div>
+                  <div class="headline-line" id="admin-preview-line1" style="font-family: var(--font-display); font-size: 28px; font-weight: 800; color: var(--admin-text-primary); letter-spacing: -0.03em;">Buy. Sell. Swap.</div>
+                  <div class="headline-line" id="admin-preview-line2" style="font-family: var(--font-display); font-size: 28px; font-weight: 800; color: var(--admin-emerald); letter-spacing: -0.03em;">TradeX Makes It Better.</div>
                 </div>
-                <p class="subline" id="admin-preview-subline" style="font-size: 13.5px; max-width: 540px; margin: 0 auto; color: #9EC7BA; text-align: center;">
+                <p class="subline" id="admin-preview-subline" style="font-size: 13.5px; max-width: 540px; margin: 0 auto; color: var(--admin-text-secondary); text-align: center;">
                   Find what you need. Sell what you don't. Trade with your campus community.
                 </p>
               </div>
@@ -790,16 +790,27 @@
           <!-- Pane 2: Student Directory -->
           <section class="admin-tab-pane" id="admin-pane-students">
             <div class="admin-pane-header">
-              <h2 class="admin-pane-title">University Students Directory</h2>
-              <p class="admin-pane-desc">Audit registered campus students, manage account status, and enforce trust policies.</p>
+              <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+                <div>
+                  <h2 class="admin-pane-title">University Students Directory</h2>
+                  <p class="admin-pane-desc">Audit registered campus students, manage account status, and enforce trust policies.</p>
+                </div>
+                <span class="admin-results-counter" id="admin-student-count-badge">Showing 5 students</span>
+              </div>
             </div>
             <div class="admin-table-controls">
-              <input type="search" class="admin-search-input" id="admin-student-search" placeholder="Search by name, email, or student ID..." />
-              <select class="admin-tool-btn" id="admin-student-filter" style="padding: 10px 14px; background: #081F17; color: #E2F5EE;">
+              <div class="admin-search-wrap">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input type="search" class="admin-search-input" id="admin-student-search" placeholder="Search by student name, email, or ID..." />
+              </div>
+              <select class="admin-filter-select" id="admin-student-filter">
                 <option value="ALL">All Statuses</option>
-                <option value="APPROVED">Verified Only</option>
+                <option value="APPROVED">Verified Students</option>
                 <option value="PENDING">Pending Review</option>
-                <option value="SUSPENDED">Suspended Only</option>
+                <option value="SUSPENDED">Suspended Accounts</option>
               </select>
             </div>
             <div class="admin-table-wrap">
@@ -808,10 +819,10 @@
                   <tr>
                     <th>Student</th>
                     <th>Student ID</th>
-                    <th>Department & Uni</th>
+                    <th>Department &amp; Uni</th>
                     <th>Status</th>
                     <th>Registered</th>
-                    <th>Actions</th>
+                    <th style="text-align: right;">Actions</th>
                   </tr>
                 </thead>
                 <tbody id="admin-students-tbody"></tbody>
@@ -836,18 +847,23 @@
           <!-- Pane 4: Audit Trail -->
           <section class="admin-tab-pane" id="admin-pane-audit">
             <div class="admin-pane-header">
-              <h2 class="admin-pane-title">Moderator Action Audit Trail</h2>
-              <p class="admin-pane-desc">Immutable log of administrative actions, student approvals, suspensions, and moderation decisions.</p>
+              <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+                <div>
+                  <h2 class="admin-pane-title">Moderator Action Audit Trail</h2>
+                  <p class="admin-pane-desc">Immutable log of administrative actions, student approvals, suspensions, and moderation decisions.</p>
+                </div>
+                <span class="admin-results-counter" id="admin-audit-count-badge">5 Immutable Records</span>
+              </div>
             </div>
             <div class="admin-table-wrap">
               <table class="admin-table">
                 <thead>
                   <tr>
                     <th>Timestamp</th>
-                    <th>Moderator</th>
+                    <th>Staff Moderator</th>
                     <th>Action</th>
-                    <th>Target</th>
-                    <th>Reason / Details</th>
+                    <th>Target Subject</th>
+                    <th>Reason / Audit Notes</th>
                   </tr>
                 </thead>
                 <tbody id="admin-audit-tbody"></tbody>
@@ -926,7 +942,7 @@
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 14px;">
                       <div class="admin-field-group">
                         <label class="admin-input-label" for="new-admin-role">Assigned Role</label>
-                        <select id="new-admin-role" class="admin-tool-btn" style="width: 100%; background: #081F17; color: #E2F5EE; padding: 11px 12px;">
+                        <select id="new-admin-role" class="admin-select-input">
                           <option value="ADMIN">Campus Admin</option>
                           <option value="SUPERADMIN">Super Administrator</option>
                         </select>
@@ -937,7 +953,7 @@
                       </div>
                     </div>
 
-                    <button type="submit" id="btn-create-admin" class="btn-admin-cta-primary" style="width: 100%; margin-top: 20px; justify-content: center; background: linear-gradient(135deg, #10B981, #059669);">
+                    <button type="submit" id="btn-create-admin" class="btn-admin-cta-primary" style="width: 100%; margin-top: 20px; justify-content: center;">
                       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
                       Provision Admin Account
                     </button>
@@ -952,7 +968,7 @@
                 <h3 class="admin-panel-title">Active Staff Administrators Directory</h3>
                 <span class="admin-panel-meta" id="admin-staff-count-badge">1 Active Admin</span>
               </div>
-              <div class="admin-table-wrap" style="border: none; border-radius: 0 0 16px 16px;">
+              <div class="admin-table-wrap">
                 <table class="admin-table">
                   <thead>
                     <tr>
@@ -978,35 +994,35 @@
               </div>
               <div style="padding: 20px;">
                 <form id="admin-policies-form">
-                  <div id="admin-policy-alert" style="display: none; padding: 12px; border-radius: 10px; margin-bottom: 16px; font-size: 13px;"></div>
+                  <div id="admin-policy-alert" style="display: none; padding: 12px; border-radius: 6px; margin-bottom: 16px; font-size: 13px;"></div>
 
                   <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
-                    <div style="padding: 16px; background: rgba(8, 31, 23, 0.6); border: 1px solid rgba(6, 214, 160, 0.2); border-radius: 12px;">
+                    <div class="admin-policy-toggle-card">
                       <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
-                        <strong style="color: #E2F5EE; font-size: 14px;">Mandatory ID Verification</strong>
-                        <input type="checkbox" id="policy-mandatory-id" checked style="width: 18px; height: 18px; accent-color: #06D6A0; cursor: pointer;" />
+                        <strong style="color: var(--admin-text-primary); font-size: 13.5px;">Mandatory ID Verification</strong>
+                        <input type="checkbox" id="policy-mandatory-id" checked style="width: 17px; height: 17px; accent-color: var(--admin-emerald); cursor: pointer;" />
                       </div>
-                      <p style="font-size: 12.5px; color: #9EC7BA; margin: 0; line-height: 1.4;">
+                      <p style="font-size: 12px; color: var(--admin-text-muted); margin: 0; line-height: 1.4;">
                         Students must have an approved university ID card before their marketplace listings become visible.
                       </p>
                     </div>
 
-                    <div style="padding: 16px; background: rgba(8, 31, 23, 0.6); border: 1px solid rgba(6, 214, 160, 0.2); border-radius: 12px;">
+                    <div class="admin-policy-toggle-card">
                       <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
-                        <strong style="color: #E2F5EE; font-size: 14px;">Strict Campus Email Domain</strong>
-                        <input type="checkbox" id="policy-strict-domain" checked style="width: 18px; height: 18px; accent-color: #06D6A0; cursor: pointer;" />
+                        <strong style="color: var(--admin-text-primary); font-size: 13.5px;">Strict Campus Email Domain</strong>
+                        <input type="checkbox" id="policy-strict-domain" checked style="width: 17px; height: 17px; accent-color: var(--admin-emerald); cursor: pointer;" />
                       </div>
-                      <p style="font-size: 12.5px; color: #9EC7BA; margin: 0; line-height: 1.4;">
+                      <p style="font-size: 12px; color: var(--admin-text-muted); margin: 0; line-height: 1.4;">
                         Restrict student signups strictly to recognized university email domains (.edu, .edu.et, @mu.edu.et).
                       </p>
                     </div>
 
-                    <div style="padding: 16px; background: rgba(8, 31, 23, 0.6); border: 1px solid rgba(6, 214, 160, 0.2); border-radius: 12px;">
+                    <div class="admin-policy-toggle-card">
                       <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
-                        <strong style="color: #E2F5EE; font-size: 14px;">Monitored Meetup Zones</strong>
-                        <input type="checkbox" id="policy-safe-zones" checked style="width: 18px; height: 18px; accent-color: #06D6A0; cursor: pointer;" />
+                        <strong style="color: var(--admin-text-primary); font-size: 13.5px;">Monitored Meetup Zones</strong>
+                        <input type="checkbox" id="policy-safe-zones" checked style="width: 17px; height: 17px; accent-color: var(--admin-emerald); cursor: pointer;" />
                       </div>
-                      <p style="font-size: 12.5px; color: #9EC7BA; margin: 0; line-height: 1.4;">
+                      <p style="font-size: 12px; color: var(--admin-text-muted); margin: 0; line-height: 1.4;">
                         Enforce verified physical meetup locations (e.g. Library Plaza, Student Union) during student trade deals.
                       </p>
                     </div>

@@ -155,6 +155,7 @@ export function initAdmin(marketplaceCtrl?: MarketplaceController): void {
   // Student Directory Elements
   const studentSearchInput = document.getElementById('admin-student-search') as HTMLInputElement | null;
   const studentFilterSelect = document.getElementById('admin-student-filter') as HTMLSelectElement | null;
+  const studentCountBadge = document.getElementById('admin-student-count-badge');
   const studentsTbody = document.getElementById('admin-students-tbody');
 
   // Reports Queue Elements
@@ -162,6 +163,7 @@ export function initAdmin(marketplaceCtrl?: MarketplaceController): void {
   const reportsCountBadge = document.getElementById('admin-reports-count-badge');
 
   // Audit Trail Elements
+  const auditCountBadge = document.getElementById('admin-audit-count-badge');
   const auditTbody = document.getElementById('admin-audit-tbody');
 
   // Local State
@@ -922,11 +924,16 @@ export function initAdmin(marketplaceCtrl?: MarketplaceController): void {
       filtered = filtered.filter((s) => s.status === statusFilter);
     }
 
+    if (studentCountBadge) {
+      studentCountBadge.textContent = `Showing ${filtered.length} student${filtered.length === 1 ? '' : 's'}`;
+    }
+
     if (filtered.length === 0) {
       studentsTbody.innerHTML = `
         <tr>
-          <td colspan="6" style="text-align: center; padding: 32px; color: var(--polar-500);">
-            No student accounts matching criteria.
+          <td colspan="6" style="text-align: center; padding: 48px 16px; color: var(--admin-text-muted);">
+            <div style="font-size: 13.5px; font-weight: 500;">No student accounts matching criteria.</div>
+            <div style="font-size: 12px; margin-top: 4px; color: var(--admin-border-hover);">Try searching by different keywords or selecting "All Statuses".</div>
           </td>
         </tr>
       `;
@@ -937,38 +944,47 @@ export function initAdmin(marketplaceCtrl?: MarketplaceController): void {
       .map((student) => {
         const isSuspended = student.status === 'SUSPENDED';
         const isApproved = student.status === 'APPROVED';
-        const statusBadgeClass = isApproved
-          ? 'admin-badge-approved'
+        const statusBadge = isApproved
+          ? '<span class="admin-status-pill is-active"><span style="width: 5px; height: 5px; border-radius: 50%; background: var(--admin-emerald); display: inline-block;"></span> VERIFIED</span>'
           : isSuspended
-            ? 'admin-badge-suspended'
-            : 'admin-badge-pending';
-        const statusLabel = isApproved ? 'VERIFIED' : isSuspended ? 'SUSPENDED' : 'PENDING';
+            ? '<span class="admin-status-pill" style="background: var(--admin-rose-subtle); color: var(--admin-rose); border: 1px solid var(--admin-rose-border);"><span style="width: 5px; height: 5px; border-radius: 50%; background: var(--admin-rose); display: inline-block;"></span> SUSPENDED</span>'
+            : '<span class="admin-status-pill" style="background: var(--admin-amber-subtle); color: var(--admin-amber); border: 1px solid var(--admin-amber-border);"><span style="width: 5px; height: 5px; border-radius: 50%; background: var(--admin-amber); display: inline-block;"></span> PENDING</span>';
 
         const actionBtn = isSuspended
-          ? `<button type="button" class="btn-table-action" data-action="reactivate" data-id="${student.id}">Reactivate</button>`
-          : `<button type="button" class="btn-table-action is-danger" data-action="suspend" data-id="${student.id}">Suspend</button>`;
+          ? `<button type="button" class="btn-table-action" data-action="reactivate" data-id="${student.id}" title="Reactivate student account access">
+               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 3px; vertical-align: -1px;"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+               Reactivate
+             </button>`
+          : `<button type="button" class="btn-table-action is-danger" data-action="suspend" data-id="${student.id}" title="Suspend student marketplace permissions">
+               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 3px; vertical-align: -1px;"><circle cx="12" cy="12" r="10"></circle><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line></svg>
+               Suspend
+             </button>`;
+
+        const initials = getInitials(student.fullName);
 
         return `
           <tr data-student-id="${student.id}">
             <td>
               <div style="display: flex; align-items: center; gap: 10px;">
-                <div class="admin-table-avatar">${student.fullName.charAt(0).toUpperCase()}</div>
-                <div>
-                  <div style="font-weight: 600; color: #F2FDF9;">${escapeHtml(student.fullName)}</div>
-                  <div style="font-size: 11.5px; color: var(--polar-500);">${escapeHtml(student.email)}</div>
+                <div class="admin-table-avatar">${initials}</div>
+                <div style="min-width: 0;">
+                  <div style="font-weight: 600; color: var(--admin-text-primary); font-size: 13px;">${escapeHtml(student.fullName)}</div>
+                  <div style="font-size: 11.5px; color: var(--admin-text-muted);">${escapeHtml(student.email)}</div>
                 </div>
               </div>
             </td>
-            <td style="font-family: monospace; font-size: 12px; color: #E2F5EE;">${escapeHtml(student.studentId)}</td>
+            <td style="font-family: var(--font-mono); font-size: 12px; font-weight: 600; color: var(--admin-text-primary);">${escapeHtml(student.studentId)}</td>
             <td>
-              <div style="font-size: 12.5px; color: #E2F5EE;">${escapeHtml(student.department)}</div>
-              <div style="font-size: 11px; color: var(--polar-500);">${escapeHtml(student.academicYear)}</div>
+              <div style="font-size: 12.5px; font-weight: 500; color: var(--admin-text-primary);">${escapeHtml(student.department)}</div>
+              <div style="font-size: 11px; color: var(--admin-text-muted);">${escapeHtml(student.academicYear)} • Addis Ababa University</div>
             </td>
-            <td>
-              <span class="${statusBadgeClass}">${statusLabel}</span>
+            <td>${statusBadge}</td>
+            <td style="font-size: 12px; font-family: var(--font-mono); color: var(--admin-text-muted);">${student.joinedAt}</td>
+            <td style="text-align: right;">
+              <div style="display: flex; gap: 6px; justify-content: flex-end;">
+                ${actionBtn}
+              </div>
             </td>
-            <td style="font-size: 12px; color: var(--polar-500);">${student.joinedAt}</td>
-            <td>${actionBtn}</td>
           </tr>
         `;
       })
@@ -1073,11 +1089,16 @@ export function initAdmin(marketplaceCtrl?: MarketplaceController): void {
   function renderAuditTrail(): void {
     if (!auditTbody) return;
 
+    if (auditCountBadge) {
+      auditCountBadge.textContent = `${auditLogs.length} Immutable Record${auditLogs.length === 1 ? '' : 's'}`;
+    }
+
     if (auditLogs.length === 0) {
       auditTbody.innerHTML = `
         <tr>
-          <td colspan="5" style="text-align: center; padding: 32px; color: var(--polar-500);">
-            No logged moderation events recorded.
+          <td colspan="5" style="text-align: center; padding: 48px 16px; color: var(--admin-text-muted);">
+            <div style="font-size: 13.5px; font-weight: 500;">No logged moderation events recorded.</div>
+            <div style="font-size: 12px; margin-top: 4px; color: var(--admin-border-hover);">All platform administrative actions are automatically committed here.</div>
           </td>
         </tr>
       `;
@@ -1085,19 +1106,41 @@ export function initAdmin(marketplaceCtrl?: MarketplaceController): void {
     }
 
     auditTbody.innerHTML = auditLogs
-      .map((log) => `
-        <tr>
-          <td style="font-size: 11.5px; color: var(--polar-500);">${log.timestamp}</td>
-          <td style="font-weight: 600; color: #E2F5EE;">${escapeHtml(log.actorName)}</td>
-          <td>
-            <span style="font-size: 11px; font-weight: 700; color: #06D6A0; background: rgba(6, 214, 160, 0.1); padding: 2px 6px; border-radius: 4px;">
-              ${log.action}
-            </span>
-          </td>
-          <td style="font-size: 13px; color: #F2FDF9;">${escapeHtml(log.targetName)}</td>
-          <td style="font-size: 12px; color: var(--polar-500);">${escapeHtml(log.notes || '')}</td>
-        </tr>
-      `)
+      .map((log) => {
+        const act = (log.action || '').toUpperCase();
+        const pillClass = act.includes('APPROV')
+          ? 'is-approve'
+          : act.includes('REJECT') || act.includes('SUSPEND')
+            ? 'is-reject'
+            : act.includes('REMOVE')
+              ? 'is-remove'
+              : 'is-info';
+
+        return `
+          <tr>
+            <td>
+              <span style="font-family: var(--font-mono); font-size: 11.5px; color: var(--admin-text-muted);">${log.timestamp}</span>
+            </td>
+            <td>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <div class="admin-table-avatar" style="width: 24px; height: 24px; font-size: 10px;">${getInitials(log.actorName)}</div>
+                <span style="font-weight: 600; color: var(--admin-text-primary); font-size: 12.5px;">${escapeHtml(log.actorName)}</span>
+              </div>
+            </td>
+            <td>
+              <span class="admin-audit-pill ${pillClass}">
+                ● ${escapeHtml(log.action)}
+              </span>
+            </td>
+            <td>
+              <span style="font-size: 12.5px; font-weight: 500; color: var(--admin-text-primary);">${escapeHtml(log.targetName)}</span>
+            </td>
+            <td>
+              <span style="font-size: 12px; color: var(--admin-text-muted);">${escapeHtml(log.notes || '—')}</span>
+            </td>
+          </tr>
+        `;
+      })
       .join('');
   }
 
@@ -1130,34 +1173,41 @@ export function initAdmin(marketplaceCtrl?: MarketplaceController): void {
       }
 
       staffTbody.innerHTML = admins
-        .map(
-          (adm) => `
-        <tr>
-          <td>
-            <div style="display: flex; align-items: center; gap: 10px;">
-              <div class="admin-student-avatar" style="width: 32px; height: 32px; font-size: 13px; background: rgba(6, 214, 160, 0.15); color: #06D6A0; border: 1px solid rgba(6, 214, 160, 0.3);">
-                ${escapeHtml(adm.fullName.charAt(0).toUpperCase())}
-              </div>
-              <strong style="color: #E2F5EE; font-size: 13.5px;">${escapeHtml(adm.fullName)}</strong>
-            </div>
-          </td>
-          <td style="color: #9EC7BA; font-family: monospace; font-size: 12.5px;">${escapeHtml(adm.email)}</td>
-          <td>
-            <span class="admin-badge-status is-approved" style="font-size: 11px;">
-              ● ${escapeHtml(adm.role)}
-            </span>
-          </td>
-          <td>
-            <span style="display: inline-flex; align-items: center; gap: 5px; color: #06D6A0; font-size: 12px; font-weight: 600;">
-              <span style="width: 6px; height: 6px; border-radius: 50%; background: #06D6A0;"></span> Active
-            </span>
-          </td>
-          <td style="color: #6B9080; font-size: 12px;">
-            ${new Date(adm.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
-          </td>
-        </tr>
-      `
-        )
+        .map((adm) => {
+          const isSuper = adm.role === 'SUPERADMIN';
+          const rolePill = isSuper
+            ? '<span class="admin-status-pill" style="background: var(--admin-amber-subtle); color: var(--admin-amber); border: 1px solid var(--admin-amber-border); font-size: 10.5px;">SUPERADMIN</span>'
+            : '<span class="admin-status-pill" style="background: var(--admin-sky-subtle); color: var(--admin-sky); border: 1px solid var(--admin-sky-border); font-size: 10.5px;">CAMPUS ADMIN</span>';
+
+          return `
+            <tr>
+              <td>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <div class="admin-table-avatar" style="width: 28px; height: 28px; font-size: 11px;">
+                    ${getInitials(adm.fullName)}
+                  </div>
+                  <strong style="color: var(--admin-text-primary); font-size: 13px;">${escapeHtml(adm.fullName)}</strong>
+                </div>
+              </td>
+              <td>
+                <span style="color: var(--admin-text-secondary); font-family: var(--font-mono); font-size: 12px;">${escapeHtml(adm.email)}</span>
+              </td>
+              <td>
+                ${rolePill}
+              </td>
+              <td>
+                <span class="admin-status-pill is-active">
+                  <span style="width: 5px; height: 5px; border-radius: 50%; background: var(--admin-emerald); display: inline-block;"></span> Active
+                </span>
+              </td>
+              <td>
+                <span style="color: var(--admin-text-muted); font-family: var(--font-mono); font-size: 12px;">
+                  ${new Date(adm.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
+                </span>
+              </td>
+            </tr>
+          `;
+        })
         .join('');
     } catch (err) {
       console.warn('[Admin] Failed to load staff directory:', err);
