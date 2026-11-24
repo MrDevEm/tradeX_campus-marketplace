@@ -95,6 +95,7 @@ export function initAdmin(marketplaceCtrl?: MarketplaceController): void {
   const productSearchInput = document.getElementById('admin-product-search') as HTMLInputElement | null;
   const productFilterCat = document.getElementById('admin-product-filter-cat') as HTMLSelectElement | null;
   const productFilterStatus = document.getElementById('admin-product-filter-status') as HTMLSelectElement | null;
+  const productCountBadge = document.getElementById('admin-product-count-badge');
   const productsTbody = document.getElementById('admin-products-tbody');
 
   // Banner Manager Elements
@@ -439,6 +440,14 @@ export function initAdmin(marketplaceCtrl?: MarketplaceController): void {
     }
   }
 
+  // Helper for Student / Seller Initials
+  function getInitials(name: string): string {
+    if (!name) return 'ST';
+    const parts = name.trim().split(/\s+/);
+    if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+    return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+  }
+
   // --- Pane 1: Products & Inventory Management ---
   function renderProductsTable(): void {
     if (!productsTbody) return;
@@ -467,11 +476,18 @@ export function initAdmin(marketplaceCtrl?: MarketplaceController): void {
       listings = listings.filter((item) => Boolean(item.sold) === wantSold);
     }
 
+    if (productCountBadge) {
+      productCountBadge.textContent = listings.length === 0
+        ? '0 listings found'
+        : `Showing ${listings.length} listing${listings.length === 1 ? '' : 's'}`;
+    }
+
     if (listings.length === 0) {
       productsTbody.innerHTML = `
         <tr>
-          <td colspan="7" style="text-align: center; padding: 36px; color: var(--polar-500);">
-            No products match the selected filters.
+          <td colspan="7" style="text-align: center; padding: 48px 16px; color: var(--admin-text-muted);">
+            <div style="font-size: 13.5px; font-weight: 500;">No products match the selected filters.</div>
+            <div style="font-size: 12px; margin-top: 4px; color: var(--admin-border-hover);">Try clearing your search query or selecting "All Categories".</div>
           </td>
         </tr>
       `;
@@ -482,36 +498,56 @@ export function initAdmin(marketplaceCtrl?: MarketplaceController): void {
       .map((item) => {
         const isSold = Boolean(item.sold);
         const statusBadge = isSold
-          ? '<span class="admin-status-pill is-sold">SOLD</span>'
-          : '<span class="admin-status-pill is-active">ACTIVE</span>';
+          ? '<span class="admin-status-pill is-sold"><span style="width: 5px; height: 5px; border-radius: 50%; background: var(--admin-text-muted); display: inline-block;"></span> SOLD</span>'
+          : '<span class="admin-status-pill is-active"><span style="width: 5px; height: 5px; border-radius: 50%; background: var(--admin-emerald); display: inline-block;"></span> ACTIVE</span>';
 
         const toggleBtnLabel = isSold ? 'Reactivate' : 'Mark Sold';
+        const sellerInitials = getInitials(item.seller || 'Student');
 
         return `
           <tr data-prod-id="${escapeHtml(item.id)}">
             <td>
               <div class="admin-prod-cell">
                 <img src="${escapeHtml(item.img)}" class="admin-prod-thumb" alt="${escapeHtml(item.title)}" onerror="this.src='/images/listings/college-textbooks.jpg'" />
-                <div>
-                  <div class="admin-prod-title">${escapeHtml(item.title)}</div>
-                  <div class="admin-prod-meta">${escapeHtml(item.condition || 'Good')} • ${escapeHtml(item.type || 'Buy / Sell')}</div>
+                <div style="min-width: 0;">
+                  <div class="admin-prod-title" title="${escapeHtml(item.title)}">${escapeHtml(item.title)}</div>
+                  <div class="admin-prod-meta">
+                    <span class="admin-condition-tag">${escapeHtml(item.condition || 'Good')}</span>
+                    <span>•</span>
+                    <span>${escapeHtml(item.type || 'Buy / Sell')}</span>
+                  </div>
                 </div>
               </div>
             </td>
-            <td><span class="admin-badge-cat" style="font-size: 11px; padding: 2px 7px; border-radius: 6px; background: rgba(6, 214, 160, 0.1); color: #06D6A0;">${escapeHtml(item.category)}</span></td>
-            <td style="font-weight: 700; color: #F2FDF9; font-family: var(--font-display);">${item.price > 0 ? Number(item.price).toLocaleString() + ' ETB' : 'FREE'}</td>
+            <td><span class="admin-badge-cat">${escapeHtml(item.category)}</span></td>
             <td>
-              <div style="font-size: 13px; font-weight: 600; color: #E2F5EE;">${escapeHtml(item.seller || 'Student')}</div>
-              <div style="font-size: 11px; color: var(--polar-500);">${escapeHtml(item.dept || 'Campus')}</div>
+              <span class="${item.price > 0 ? 'admin-price-cell' : 'admin-price-free'}">
+                ${item.price > 0 ? Number(item.price).toLocaleString() + ' ETB' : 'FREE'}
+              </span>
             </td>
-            <td style="font-size: 12px; color: #9EC7BA;">${escapeHtml(item.spot || 'Library Safe Zone')}</td>
-            <td>${statusBadge}</td>
             <td>
-              <div style="display: flex; gap: 6px;">
-                <button type="button" class="btn-table-action" data-action="toggle-sold" data-id="${escapeHtml(item.id)}">
+              <div class="admin-seller-cell">
+                <div class="admin-seller-avatar">${sellerInitials}</div>
+                <div style="min-width: 0;">
+                  <div style="font-size: 12.5px; font-weight: 600; color: var(--admin-text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${escapeHtml(item.seller || 'Student')}</div>
+                  <div style="font-size: 11px; color: var(--admin-text-muted);">${escapeHtml(item.dept || 'Campus')}</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <div class="admin-spot-cell" title="${escapeHtml(item.spot || 'Library Safe Zone')}">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink: 0; color: var(--admin-sky);"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                <span>${escapeHtml(item.spot || 'Library Safe Zone')}</span>
+              </div>
+            </td>
+            <td>${statusBadge}</td>
+            <td style="text-align: right;">
+              <div style="display: flex; gap: 6px; justify-content: flex-end;">
+                <button type="button" class="btn-table-action" data-action="toggle-sold" data-id="${escapeHtml(item.id)}" title="${isSold ? 'Reactivate listing' : 'Mark as sold'}">
                   ${toggleBtnLabel}
                 </button>
                 <button type="button" class="btn-table-action is-danger" data-action="delete-product" data-id="${escapeHtml(item.id)}" title="Delete item from marketplace">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 3px; vertical-align: -1px;"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
                   Delete
                 </button>
               </div>
