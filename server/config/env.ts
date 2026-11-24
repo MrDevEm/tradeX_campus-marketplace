@@ -23,12 +23,18 @@ export const ENV = {
   PORT: parseInt(process.env.BACKEND_PORT || process.env.PORT || '3001', 10),
   DATABASE_URL: process.env.DATABASE_URL || '',
   JWT_SECRET: resolveJwtSecret(),
-  JWT_EXPIRES_IN: process.env.JWT_EXPIRES_IN || '7d',
+  JWT_EXPIRES_IN: process.env.JWT_EXPIRES_IN || '15m',
   CORS_ORIGINS: [
+    'https://tradex-campus.onrender.com',
+    'https://tradex-admin-dashboard03.onrender.com',
+    'https://tradex-frontend-b4zg.onrender.com',
     'http://localhost:3000',
     'http://localhost:5173',
     'http://127.0.0.1:3000',
     'http://127.0.0.1:5173',
     ...(process.env.APP_URL ? [process.env.APP_URL] : []),
+    ...(process.env.CORS_ORIGINS
+      ? process.env.CORS_ORIGINS.split(',').map((s) => s.trim())
+      : []),
   ],
 };

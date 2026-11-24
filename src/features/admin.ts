@@ -157,7 +157,7 @@ export function initAdmin(marketplaceCtrl?: MarketplaceController): void {
   const auditTbody = document.getElementById('admin-audit-tbody');
 
   // Local State
-  let activeTab: 'overview' | 'products' | 'banners' | 'verifications' | 'students' | 'reports' | 'audit' = 'overview';
+  let activeTab: 'overview' | 'products' | 'banners' | 'verifications' | 'students' | 'reports' | 'audit' | 'settings' = 'overview';
   let verificationQueue: VerificationQueueItem[] = [];
   let currentQueueIndex = 0;
   let studentsList: AdminStudent[] = [];
@@ -197,7 +197,17 @@ export function initAdmin(marketplaceCtrl?: MarketplaceController): void {
   }
 
   // Tab Navigation
-  function switchTab(tab: 'overview' | 'products' | 'banners' | 'verifications' | 'students' | 'reports' | 'audit'): void {
+  function switchTab(
+    tab:
+      | 'overview'
+      | 'products'
+      | 'banners'
+      | 'verifications'
+      | 'students'
+      | 'reports'
+      | 'audit'
+      | 'settings'
+  ): void {
     activeTab = tab;
 
     tabBtns.forEach((btn) => {

@@ -1,6 +1,12 @@
 import type { Request, Response, NextFunction } from 'express';
-import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
+import { hashPassword, verifyPassword, isArgon2Hash } from '../services/password.service.ts';
+import {
+  signAccessToken,
+  createRefreshToken,
+  rotateRefreshToken,
+  revokeRefreshToken,
+} from '../services/token.service.ts';
 import { prisma } from '../db/prisma.ts';
 import { AppError } from '../middleware/errorHandler.ts';
 import { sendSuccess } from '../middleware/envelope.ts';
@@ -124,7 +130,7 @@ export const authController = {
         }
       }
 
-      const passwordHash = await bcrypt.hash(password, 10);
+      const passwordHash = await hashPassword(password);
       const otpCode = generateOtpCode();
       const expiresAt = new Date(Date.now() + 5 * 60 * 1000); // 5 minutes
 
@@ -160,10 +166,11 @@ export const authController = {
         },
       });
 
-      const token = signUserToken(user);
+      const accessToken = signAccessToken(user);
+      const refreshToken = await createRefreshToken(user.id);
       const authUser = formatAuthUser(user);
 
-      return sendSuccess(res, { token, user: authUser }, 201);
+      return sendSuccess(res, { token: accessToken, accessToken, refreshToken, user: authUser }, 201);
     } catch (err) {
       next(err);
     }
@@ -189,9 +196,23 @@ export const authController = {
         throw new AppError('Invalid email or password.', 401, 'INVALID_CREDENTIALS');
       }
 
-      const isMatch = await bcrypt.compare(password, user.passwordHash);
+      const isMatch = await verifyPassword(password, user.passwordHash);
       if (!isMatch) {
         throw new AppError('Invalid email or password.', 401, 'INVALID_CREDENTIALS');
+      }
+
+      // Transparently re-hash legacy bcrypt passwords to Argon2id
+      if (!isArgon2Hash(user.passwordHash)) {
+        hashPassword(password)
+          .then((upgradedHash) =>
+            prisma.user.update({
+              where: { id: user.id },
+              data: { passwordHash: upgradedHash },
+            })
+          )
+          .catch((upgradeErr) =>
+            console.warn('[Auth] Transparent Argon2id migration skipped:', upgradeErr)
+          );
       }
 
       if (user.status === UserStatus.SUSPENDED) {
@@ -202,10 +223,11 @@ export const authController = {
         );
       }
 
-      const token = signUserToken(user);
+      const accessToken = signAccessToken(user);
+      const refreshToken = await createRefreshToken(user.id);
       const authUser = formatAuthUser(user);
 
-      return sendSuccess(res, { token, user: authUser }, 200);
+      return sendSuccess(res, { token: accessToken, accessToken, refreshToken, user: authUser }, 200);
     } catch (err) {
       next(err);
     }
@@ -317,7 +339,36 @@ export const authController = {
   },
 
   async logout(req: Request, res: Response) {
-    return sendSuccess(res, { success: true }, 200);
+    const rawRefreshToken =
+      req.body?.refreshToken || (req.headers['x-refresh-token'] as string | undefined);
+    if (rawRefreshToken) {
+      await revokeRefreshToken(rawRefreshToken);
+    }
+    return sendSuccess(res, { success: true, message: 'Logged out successfully.' }, 200);
+  },
+
+  async refreshToken(req: Request, res: Response, next: NextFunction) {
+    try {
+      const rawRefreshToken =
+        req.body?.refreshToken || (req.headers['x-refresh-token'] as string | undefined);
+      if (!rawRefreshToken) {
+        throw new AppError('Refresh token is required.', 400, 'REFRESH_TOKEN_REQUIRED');
+      }
+
+      const result = await rotateRefreshToken(rawRefreshToken);
+      return sendSuccess(
+        res,
+        {
+          token: result.accessToken,
+          accessToken: result.accessToken,
+          refreshToken: result.refreshToken,
+          user: result.user,
+        },
+        200
+      );
+    } catch (err) {
+      next(err);
+    }
   },
 
   async getVerificationStatus(req: Request, res: Response, next: NextFunction) {

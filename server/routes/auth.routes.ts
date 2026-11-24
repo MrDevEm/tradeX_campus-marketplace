@@ -8,6 +8,7 @@ import {
   loginSchema,
   verifyEmailSchema,
   resendOtpSchema,
+  refreshTokenSchema,
 } from '../validators/auth.validator.ts';
 
 export const authRouter = Router();
@@ -19,6 +20,10 @@ authRouter.post('/verify-email', authRateLimiter, validateBody(verifyEmailSchema
 authRouter.post('/verify-otp', authRateLimiter, validateBody(verifyEmailSchema), authController.verifyEmail);
 authRouter.post('/resend-otp', authRateLimiter, validateBody(resendOtpSchema), authController.resendOtp);
 authRouter.post('/send-otp', authRateLimiter, validateBody(resendOtpSchema), authController.resendOtp);
+
+// Refresh token rotation (short-lived access tokens + revocable refresh tokens)
+authRouter.post('/refresh', authRateLimiter, validateBody(refreshTokenSchema), authController.refreshToken);
+authRouter.post('/refresh-token', authRateLimiter, validateBody(refreshTokenSchema), authController.refreshToken);
 
 // Authenticated routes
 authRouter.post('/logout', authController.logout);

@@ -14,26 +14,72 @@ import { adminRouter } from './routes/admin.routes.ts';
 import { dashboardRouter } from './routes/dashboard.routes.ts';
 import { uploadRouter } from './routes/upload.routes.ts';
 import { errorHandler, AppError } from './middleware/errorHandler.ts';
+import { globalApiRateLimiter } from './middleware/rateLimiter.ts';
 
 export function createApp() {
   const app = express();
 
-  // CORS configuration
+  // Trust reverse proxy (e.g. Render, Cloudflare) for secure cookies and accurate client IP
+  app.set('trust proxy', 1);
+
+  // HTTPS Enforcement & HTTP Security Headers
+  app.use((req, res, next) => {
+    // Enforce HTTPS in production environments behind reverse proxies
+    if (
+      process.env.NODE_ENV === 'production' &&
+      req.headers['x-forwarded-proto'] &&
+      req.headers['x-forwarded-proto'] !== 'https'
+    ) {
+      return res.redirect(301, `https://${req.headers.host}${req.url}`);
+    }
+
+    // Security Headers
+    res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
+    res.setHeader('X-Content-Type-Options', 'nosniff');
+    res.setHeader('X-Frame-Options', 'SAMEORIGIN');
+    res.setHeader('X-XSS-Protection', '1; mode=block');
+    res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+    res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
+    next();
+  });
+
+  // Strict CORS Whitelist Configuration
   app.use(
     cors({
       origin: (origin, callback) => {
-        // Allow requests with no origin (like mobile apps, curl, or server-to-server)
+        // Allow requests with no origin (e.g., curl, mobile apps, internal health checks)
         if (!origin) return callback(null, true);
-        if (ENV.CORS_ORIGINS.includes(origin) || origin.startsWith('http://localhost:')) {
+
+        // Check against whitelist
+        if (ENV.CORS_ORIGINS.includes(origin)) {
           return callback(null, true);
         }
-        return callback(null, true); // Permissive in development
+
+        // In development/test, allow localhost ports
+        if (
+          process.env.NODE_ENV !== 'production' &&
+          (origin.startsWith('http://localhost:') || origin.startsWith('http://127.0.0.1:'))
+        ) {
+          return callback(null, true);
+        }
+
+        // In production, reject unapproved origins
+        if (process.env.NODE_ENV === 'production') {
+          return callback(
+            new AppError(`Origin ${origin} is not allowed by CORS policy.`, 403, 'CORS_FORBIDDEN')
+          );
+        }
+
+        return callback(null, true);
       },
       credentials: true,
       methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-      allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
+      allowedHeaders: ['Content-Type', 'Authorization', 'Accept', 'X-Refresh-Token'],
     })
   );
+
+  // Global API Rate Limiter (100 req/min per IP)
+  app.use('/api', globalApiRateLimiter);
 
   // Body parsing middleware
   app.use(express.json({ limit: '10mb' }));

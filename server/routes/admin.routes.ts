@@ -7,6 +7,10 @@ import {
   updateStudentStatusSchema,
   moderationActionSchema,
 } from '../validators/dev3.validator.ts';
+import {
+  createAdminSchema,
+  updateCredentialsSchema,
+} from '../validators/admin.validator.ts';
 
 export const adminRouter = Router();
 
@@ -61,5 +65,5 @@ adminRouter.get('/audit-logs', adminController.getAuditLogs);
 
 // Platform Settings & Admin Management
 adminRouter.get('/settings/admins', adminController.getAdmins);
-adminRouter.post('/settings/admins', adminController.createAdmin);
-adminRouter.patch('/settings/credentials', adminController.updateCredentials);
+adminRouter.post('/settings/admins', validateBody(createAdminSchema), adminController.createAdmin);
+adminRouter.patch('/settings/credentials', validateBody(updateCredentialsSchema), adminController.updateCredentials);

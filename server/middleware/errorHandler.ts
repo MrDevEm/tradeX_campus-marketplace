@@ -1,6 +1,7 @@
 import type { Request, Response, NextFunction } from 'express';
 import { ZodError } from 'zod';
 import { sendError } from './envelope.ts';
+import { logError } from '../services/logger.service.ts';
 
 export class AppError extends Error {
   statusCode: number;
@@ -38,12 +39,22 @@ export function errorHandler(
   }
 
   if (err instanceof AppError) {
+    if (err.statusCode >= 500) {
+      logError(err, req);
+    }
     return sendError(res, err.message, err.statusCode, err.code, err.details);
   }
 
-  console.error('[Unhandled Server Error]:', err);
-  const message =
-    err instanceof Error ? err.message : 'An unexpected server error occurred';
+  // Ship unexpected server error context securely to Axiom / centralized logger
+  logError(err, req);
 
-  return sendError(res, message, 500, 'INTERNAL_SERVER_ERROR');
+  // Error Response Security: Never expose stack traces, database queries, internal paths or sensitive details in production responses
+  const isProduction = process.env.NODE_ENV === 'production';
+  const safeMessage = isProduction
+    ? 'An unexpected internal server error occurred.'
+    : err instanceof Error
+      ? err.message
+      : 'An unexpected server error occurred';
+
+  return sendError(res, safeMessage, 500, 'INTERNAL_SERVER_ERROR');
 }

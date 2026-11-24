@@ -2,6 +2,7 @@ import http from 'node:http';
 import { app } from './app.ts';
 import { ENV } from './config/env.ts';
 import { prisma } from './db/prisma.ts';
+import { connectWithRetry } from './services/dbRetry.service.ts';
 import { initWebSocketServer } from './realtime/gateway.ts';
 
 const PORT = ENV.PORT;
@@ -10,14 +11,9 @@ initWebSocketServer(server);
 
 async function startServer() {
   try {
-    // Verify DB connection if configured
+    // Verify DB connection with exponential backoff retries if configured
     if (process.env.DATABASE_URL) {
-      try {
-        await prisma.$connect();
-        console.log('✅ Connected to Neon PostgreSQL database.');
-      } catch (dbErr) {
-        console.warn('⚠️ Could not connect to Neon PostgreSQL database, continuing with fallback:', dbErr instanceof Error ? dbErr.message : dbErr);
-      }
+      await connectWithRetry(prisma, { maxRetries: 5, initialDelayMs: 1000 });
     } else {
       console.log('ℹ️ DATABASE_URL not set in .env. Server running with fallback endpoints and live WebSocket gateway.');
     }

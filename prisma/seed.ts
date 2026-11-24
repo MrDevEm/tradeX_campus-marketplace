@@ -9,7 +9,7 @@ import {
   ReportStatus,
   NotificationType,
 } from '@prisma/client';
-import bcrypt from 'bcryptjs';
+import { hashPassword } from '../server/services/password.service.ts';
 
 const prisma = new PrismaClient();
 
@@ -76,9 +76,9 @@ async function main() {
   }
   console.log(`✅ Seeded ${categories.length} marketplace categories.`);
 
-  // 3. Hash default password
+  // 3. Hash default password with Argon2id
   const defaultPassword = 'Password123!';
-  const passwordHash = await bcrypt.hash(defaultPassword, 10);
+  const passwordHash = await hashPassword(defaultPassword);
 
   // 4. Seed Admin Account (admin@mu.edu.et)
   const adminUser = await prisma.user.upsert({

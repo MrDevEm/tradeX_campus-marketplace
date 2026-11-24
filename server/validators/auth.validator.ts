@@ -22,3 +22,7 @@ export const verifyEmailSchema = z.object({
 export const resendOtpSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
 });
+
+export const refreshTokenSchema = z.object({
+  refreshToken: z.string().min(1, 'Refresh token is required'),
+});

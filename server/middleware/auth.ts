@@ -3,7 +3,10 @@ import jwt from 'jsonwebtoken';
 import { ENV } from '../config/env.ts';
 import { prisma } from '../db/prisma.ts';
 import { AppError } from './errorHandler.ts';
+import { signAccessToken } from '../services/token.service.ts';
 import type { User, StudentProfile, VerificationRequest } from '@prisma/client';
+
+export { signAccessToken };
 
 export interface AuthenticatedUser extends User {
   studentProfile: StudentProfile | null;
@@ -32,15 +35,7 @@ export function signUserToken(user: {
   role: string;
   status: string;
 }): string {
-  const payload: JwtPayload = {
-    userId: user.id,
-    email: user.email,
-    role: user.role,
-    status: user.status,
-  };
-  return jwt.sign(payload, ENV.JWT_SECRET, {
-    expiresIn: '7d',
-  });
+  return signAccessToken(user);
 }
 
 export async function authenticateToken(

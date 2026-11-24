@@ -1,5 +1,6 @@
 import type { Request, Response, NextFunction } from 'express';
-import bcrypt from 'bcryptjs';
+import { hashPassword, verifyPassword } from '../services/password.service.ts';
+import { revokeAllUserRefreshTokens } from '../services/token.service.ts';
 import { prisma } from '../db/prisma.ts';
 import { AppError } from '../middleware/errorHandler.ts';
 import { sendSuccess } from '../middleware/envelope.ts';
@@ -361,7 +362,7 @@ export const adminController = {
         throw new AppError('An account with this email address already exists.', 409, 'CONFLICT');
       }
 
-      const passwordHash = await bcrypt.hash(String(password), 10);
+      const passwordHash = await hashPassword(String(password));
       const assignedRole = role === 'SUPERADMIN' ? 'SUPERADMIN' : 'ADMIN';
 
       const newAdmin = await prisma.user.create({
@@ -420,14 +421,16 @@ export const adminController = {
 
       let updatedPasswordHash = user.passwordHash;
       if (currentPassword && newPassword) {
-        const isMatch = await bcrypt.compare(String(currentPassword), user.passwordHash);
+        const isMatch = await verifyPassword(String(currentPassword), user.passwordHash);
         if (!isMatch) {
           throw new AppError('Current password is incorrect.', 400, 'INVALID_PASSWORD');
         }
         if (String(newPassword).length < 6) {
           throw new AppError('New password must be at least 6 characters long.', 400, 'WEAK_PASSWORD');
         }
-        updatedPasswordHash = await bcrypt.hash(String(newPassword), 10);
+        updatedPasswordHash = await hashPassword(String(newPassword));
+        // Revoke all existing refresh sessions when password is changed
+        await revokeAllUserRefreshTokens(currentUserId);
       }
 
       let updatedEmail = user.email;

@@ -88,10 +88,12 @@ export const authRateLimiter = createRateLimiter({
   skipInTests: true,
 });
 
-// General API rate limiter (200 requests per minute)
-export const generalRateLimiter = createRateLimiter({
+// General API rate limiter (100 requests per minute per IP)
+export const globalApiRateLimiter = createRateLimiter({
   windowMs: 60 * 1000,
-  maxRequests: 200,
-  message: 'Too many requests.',
+  maxRequests: 100,
+  message: 'API rate limit exceeded (100 requests per minute per IP).',
   skipInTests: true,
 });
+
+export const generalRateLimiter = globalApiRateLimiter;
